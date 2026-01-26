@@ -1,0 +1,42 @@
+.wave-container {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+}
+
+.wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%; /* Делаем ширину в 2 раза больше, чтобы бесшовно двигалось */
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes wave1 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes wave2 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes wave3 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-wave1 {
+  animation: wave1 8s linear infinite;
+}
+
+.animate-wave2 {
+  animation: wave2 10s linear infinite;
+}
+
+.animate-wave3 {
+  animation: wave3 12s linear infinite;
+}

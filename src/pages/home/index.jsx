@@ -3,13 +3,13 @@ import about from '../../assets/about.png'
 import frame from '../../assets/Frame 74.png'
 import arrow from '../../assets/maki_arrow.png'
 // import blur from '../../assets/blur.png'
-import wave from '../../assets/wave.png'
 import EducationCard from '../../componenets/EducationCard/index.jsx'
 import DirectionCard from '../../componenets/DirectionCard/index.jsx'
 import ProcessCard from '../../componenets/processCard/index.jsx'
 import ResultsCard from '../../componenets/resultsCard/index.jsx'
 import CountableCard from '../../componenets/conutableCard/index.jsx'
 import human from '../../assets/human.png'
+import Wave from '../../componenets/wave/index.jsx'
 
 const Home = () => {
   return (
@@ -39,7 +39,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div>
-                    <img src={wave} alt="wave" />
+                    <Wave/>
                 </div>
             </div>
         </section>
