@@ -1,6 +1,6 @@
-import icon1 from '../../assets/education/Izah iconları.png';
-import icon2 from '../../assets/education/Izah iconları (1).png';
-import icon3 from '../../assets/education/Izah iconları (2).png';
+import icon1 from '../assets/icon1.png';
+import icon2 from '../assets/icon2.png';
+import icon3 from '../assets/icon3.png';
 
 const education = [
     {
