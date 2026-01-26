@@ -8,6 +8,7 @@ import EducationCard from '../../componenets/EducationCard/index.jsx'
 import DirectionCard from '../../componenets/DirectionCard/index.jsx'
 import ProcessCard from '../../componenets/processCard/index.jsx'
 import ResultsCard from '../../componenets/resultsCard/index.jsx'
+import CountableCard from '../../componenets/conutableCard/index.jsx'
 
 const Home = () => {
   return (
@@ -70,7 +71,9 @@ const Home = () => {
             <div>
                 <ResultsCard />
             </div>
-            <div></div>
+            <div>
+                <CountableCard/>
+            </div>
         </section>
     </div>
   )
