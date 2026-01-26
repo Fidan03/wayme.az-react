@@ -9,6 +9,7 @@ import DirectionCard from '../../componenets/DirectionCard/index.jsx'
 import ProcessCard from '../../componenets/processCard/index.jsx'
 import ResultsCard from '../../componenets/resultsCard/index.jsx'
 import CountableCard from '../../componenets/conutableCard/index.jsx'
+import human from '../../assets/human.png'
 
 const Home = () => {
   return (
@@ -71,8 +72,18 @@ const Home = () => {
             <div>
                 <ResultsCard />
             </div>
-            <div>
+            <div className='mt-5'>
                 <CountableCard/>
+            </div>
+        </section>
+        <section>
+            <div className='flex items-center flex-col '>
+                <img src={human} alt="human" className='size-[73px]'/>
+                <p>Başlamağa hazırsınız?</p>
+                <p>İndi testdən keçin və hansı iş istiqamətinin sizə ən uyğun olduğunu öyrənin</p>
+                <div className='flex mt-[70px]'>
+                    <button className='text-white font-semibold text-[20px] px-[10px] py-[5px] rounded-[10px] cursor-pointer flex items-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'>Testə Başla <span><img src={arrow} alt="arrow"  className='w-[20px]'/></span></button>
+                </div>
             </div>
         </section>
     </div>

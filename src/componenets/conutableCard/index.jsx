@@ -2,13 +2,22 @@ import data from '../../data/countableData'
 
 const CountableCard = () => {
   return (
-    <div>
-        {data.map((item, index) => (
-            <div key={index} className='flex flex-col justify-center items-center text-center mx-5 my-10'>
-                <p className='font-bold text-[40px] text-white'>{item.title}</p>
-                <p className='text-[#A2A8B2] text-[20px]'>{item.desc}</p>
-            </div>
-        ))}
+    <div className='flex justify-between'>
+      {data.map((item, index) => (
+        <div
+          key={index}
+          className='mx-5 my-10 p-[2px] rounded-[15px] border-[1px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'
+        >
+          <div className='flex flex-col justify-center items-center text-center bg-[#132746] w-[285px] h-[163px] rounded-[13px]'>
+            <p className='font-bold text-[36px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent'>
+              {item.title}
+            </p>
+            <p className='text-[19px] font-medium text-[#A2A8B2]'>
+              {item.desc}
+            </p>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
