@@ -5,7 +5,7 @@ import icon3 from '../assets/icon3.png';
 const education = [
     {
         id: 0,
-        icon: icon1,
+        icon: icon3,
         title: "Psixoloji təhlil",
         description: "Şəxsi keyfiyyətlərin, motivasiyanın və müxtəlif fəaliyyət növlərinə psixoloji hazırlığın qiymətləndirilməsi",
     },
@@ -17,7 +17,7 @@ const education = [
     },
     {
         id: 2,
-        icon: icon3,
+        icon: icon1,
         title: "Şəxsi tövsiyyələr",
         description: "Öyrənilməsi lazım olan konkret mövzular və təkmilləşdirilməsi lazım olan sahələrlə ətraflı inkişaf planı",
     }

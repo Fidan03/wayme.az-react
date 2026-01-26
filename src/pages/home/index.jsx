@@ -4,7 +4,8 @@ import frame from '../../assets/Frame 74.png'
 import arrow from '../../assets/maki_arrow.png'
 import blur from '../../assets/blur.png'
 import wave from '../../assets/wave.png'
-import EducationCard from '../../componenets/educationCard'
+import EducationCard from '../../componenets/EducationCard/index.jsx'
+import DirectionCard from '../../componenets/DirectionCard/index.jsx'
 
 const Home = () => {
   return (
@@ -38,11 +39,17 @@ const Home = () => {
                 </div>
             </div>
         </section>
-        <section>
-            <div>
+        <section className='flex flex-col items-center px-[100px]'>
+            <div className='mt-[50px]'>
                 <EducationCard />
             </div>
-            <div></div>
+            <div className='flex items-center flex-col bg-[#132746]'>
+                <p>Mövcud İstiqamətlər</p>
+                <p>Ən çox tələb olunan və perspektivli ixtisaslar</p>
+                <div>
+                    <DirectionCard />
+                </div>
+            </div>
         </section>
     </div>
   )
