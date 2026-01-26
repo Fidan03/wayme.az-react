@@ -40,16 +40,26 @@ const Home = () => {
             </div>
         </section>
         <section className='flex flex-col items-center px-[100px]'>
-            <div className='mt-[50px]'>
-                <EducationCard />
+        <div className='mt-[50px] w-full max-w-7xl'>
+            <EducationCard />
+        </div>
+
+        <div className='w-full max-w-7xl flex items-center flex-col bg-[#132746] p-[40px] mt-10 rounded-3xl'>
+            <p className='font-bold text-[36px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent'>
+            Mövcud İstiqamətlər
+            </p>
+            <p className='text-[#A2A8B2] text-[20px] mb-10'>
+            Ən çox tələb olunan və perspektivli ixtisaslar
+            </p>
+
+            <div className='grid grid-cols-3 gap-[32px] w-full'>
+            <DirectionCard />
             </div>
-            <div className='flex items-center flex-col bg-[#132746]'>
-                <p>Mövcud İstiqamətlər</p>
-                <p>Ən çox tələb olunan və perspektivli ixtisaslar</p>
-                <div>
-                    <DirectionCard />
-                </div>
-            </div>
+        </div>
+        </section>
+        <section className='mt-5'>
+            <p className='font-bold text-[36px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent'>Necə işləyir</p>
+            <div></div>
         </section>
     </div>
   )

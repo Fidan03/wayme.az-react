@@ -10,7 +10,7 @@ const DirectionCard = () => {
           className='flex gap-[20px] px-8 py-6 rounded-xl bg-transparent-[20%]' 
           style={{ backgroundColor: item.color, transparency: '80%' }}
         >
-          <div className='flex items-center gap-3'>
+          <div className='flex items-center gap-3 flex-wrap'>
             <img src={item.icon} alt={item.title} className='w-12 h-12' />
           </div>
           <div>
