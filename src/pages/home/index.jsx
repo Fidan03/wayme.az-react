@@ -7,6 +7,7 @@ import wave from '../../assets/wave.png'
 import EducationCard from '../../componenets/EducationCard/index.jsx'
 import DirectionCard from '../../componenets/DirectionCard/index.jsx'
 import ProcessCard from '../../componenets/processCard/index.jsx'
+import ResultsCard from '../../componenets/resultsCard/index.jsx'
 
 const Home = () => {
   return (
@@ -66,7 +67,9 @@ const Home = () => {
         </section>
         <section className='mt-5 flex flex-col items-center mt-[100px]'>
             <p className='font-bold text-[36px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent'>Nə əldə edəcəksiniz</p>
-            <div></div>
+            <div>
+                <ResultsCard />
+            </div>
             <div></div>
         </section>
     </div>
