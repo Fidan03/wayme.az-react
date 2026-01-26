@@ -1,4 +1,3 @@
-
 const process = [
     {
         id: 0,
@@ -31,9 +30,11 @@ const process = [
         desc: 'AI tövsiyələri, bacarıq uyğunluğu və öyrənmə resursları ilə nəticələri görün',
     },
     {
-        id: 3,
+        id: 5,
         icon: '6',
         title: 'PDF hesabatı emailə alın',
         desc: 'Fərdi inkişaf planı ilə PDF formatında ətraflı hesabat yükləyin',
     }
 ]
+
+export default process

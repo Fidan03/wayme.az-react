@@ -2,10 +2,11 @@ import logo from '../../assets/logo.png'
 import about from '../../assets/about.png'
 import frame from '../../assets/Frame 74.png'
 import arrow from '../../assets/maki_arrow.png'
-import blur from '../../assets/blur.png'
+// import blur from '../../assets/blur.png'
 import wave from '../../assets/wave.png'
 import EducationCard from '../../componenets/EducationCard/index.jsx'
 import DirectionCard from '../../componenets/DirectionCard/index.jsx'
+import ProcessCard from '../../componenets/processCard/index.jsx'
 
 const Home = () => {
   return (
@@ -53,12 +54,19 @@ const Home = () => {
             </p>
 
             <div className='grid grid-cols-3 gap-[32px] w-full'>
-            <DirectionCard />
+                <DirectionCard />
             </div>
         </div>
         </section>
-        <section className='mt-5'>
-            <p className='font-bold text-[36px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent'>Necə işləyir</p>
+        <section className='mt-5 flex flex-col items-center mt-[100px]'>
+            <p className='inline-block font-bold text-[36px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent'>Necə işləyir</p>
+            <div>
+                <ProcessCard />
+            </div>
+        </section>
+        <section className='mt-5 flex flex-col items-center mt-[100px]'>
+            <p className='font-bold text-[36px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent'>Nə əldə edəcəksiniz</p>
+            <div></div>
             <div></div>
         </section>
     </div>
