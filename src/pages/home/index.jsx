@@ -7,7 +7,7 @@ import wave from '../../assets/wave.png'
 
 const Home = () => {
   return (
-    <div className='bg-background w-full pt-[10px]'>
+    <div className='bg-background w-full pt-[20px]'>
         <section>
             {/* <div className='bgDesign flex justify-between absolute'>
                 <div><img src={blur} alt="blur" className='relative'/></div>
@@ -22,15 +22,14 @@ const Home = () => {
                         <img src={about} alt="about" />
                     </div>
                 </div>
-                <div className='flex flex-col justify-center items-center text-center mt-20'>
+                <div className='flex flex-col justify-center items-center text-center mt-[100px]'>
                     <div>
                         <img src={frame} alt="frame" className='w-77.5'/>
                     </div>
-                    <p className='text-[80px] font-bold w-[762px] mt-[10px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent' >İdeal iş istiqamətinizi tapın</p>
+                    <p className='text-[80px] font-bold w-[762px] mt-[20px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent' >İdeal iş istiqamətinizi tapın</p>
                     <p className='font-medium w-[710px] text-[#A2A8B2] mt-[10px]'>Ən uyğun karyera istiqamətini müəyyən etmək üçün psixoloji keyfiyyətlərinizin və peşəkar bacarıqlarınızın kompleks qiymətləndirmə sistemi</p>
-                    <div className='flex mt-[30px]'>
-                        <button className='text-white font-semibold text-[28px] w-[235px]'>Testə Başla</button>
-                        <img src={arrow} alt="arrow"  className=''/>
+                    <div className='flex mt-[70px] '>
+                        <button className='text-white font-semibold text-[20px] px-[10px] py-[5px] rounded-[10px] flex items-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'>Testə Başla <span><img src={arrow} alt="arrow"  className='w-[20px]'/></span></button>
                     </div>
                 </div>
                 <div>
@@ -39,7 +38,8 @@ const Home = () => {
             </div>
         </section>
         <section>
-            
+            <div></div>
+            <div></div>
         </section>
     </div>
   )
