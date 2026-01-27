@@ -35,10 +35,10 @@ const Home = () => {
                     <p className='text-[80px] font-bold w-[762px] mt-[20px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent' >İdeal iş istiqamətinizi tapın</p>
                     <p className='font-medium w-[710px] text-[#A2A8B2] mt-[10px]'>Ən uyğun karyera istiqamətini müəyyən etmək üçün psixoloji keyfiyyətlərinizin və peşəkar bacarıqlarınızın kompleks qiymətləndirmə sistemi</p>
                     <div className='flex mt-[70px]'>
-                        <button className='text-white font-semibold text-[20px] px-[10px] py-[5px] rounded-[10px] cursor-pointer flex items-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'>Testə Başla <span><img src={arrow} alt="arrow"  className='w-[20px]'/></span></button>
+                        <button className='text-white font-semibold text-[20px] p-[10px] rounded-[10px] cursor-pointer flex items-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'>Testə Başla <span><img src={arrow} alt="arrow"  className='w-[20px]'/></span></button>
                     </div>
                 </div>
-                <div>
+                <div className='mt-[35px]'>
                     <Wave/>
                 </div>
             </div>
@@ -76,13 +76,13 @@ const Home = () => {
                 <CountableCard/>
             </div>
         </section>
-        <section>
-            <div className='flex items-center flex-col '>
-                <img src={human} alt="human" className='size-[73px]'/>
-                <p>Başlamağa hazırsınız?</p>
-                <p>İndi testdən keçin və hansı iş istiqamətinin sizə ən uyğun olduğunu öyrənin</p>
+        <section className='pb-10 flex justify-center items-center mt-10'>
+            <div className='flex items-center justify-center flex-col bg-[#132746] w-[875px] h-[395px] rounded-2xl'>
+                <img src={human} alt="human" className='size-[73px] mb-10'/>
+                <p className='font-bold text-[36px] text-white'>Başlamağa hazırsınız?</p>
+                <p className='text-[#A2A8B2] font-medium text-[19px] '>İndi testdən keçin və hansı iş istiqamətinin sizə ən uyğun olduğunu öyrənin</p>
                 <div className='flex mt-[70px]'>
-                    <button className='text-white font-semibold text-[20px] px-[10px] py-[5px] rounded-[10px] cursor-pointer flex items-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'>Testə Başla <span><img src={arrow} alt="arrow"  className='w-[20px]'/></span></button>
+                    <button className='text-white font-semibold text-[20px] p-[10px] rounded-[10px] cursor-pointer flex items-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'>Testə Başla <span><img src={arrow} alt="arrow"  className='w-[20px]'/></span></button>
                 </div>
             </div>
         </section>
