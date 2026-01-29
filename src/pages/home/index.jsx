@@ -33,7 +33,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className='mt-[35px]'>
-                    {/* <Wave/> */}
+                    <Wave/>
                 </div>
             </div>
         </section>

@@ -5,38 +5,34 @@
   overflow: hidden;
 }
 
-.wave {
+.wave-wrapper {
   position: absolute;
   top: 0;
   left: 0;
-  width: 200%; /* Делаем ширину в 2 раза больше, чтобы бесшовно двигалось */
+  display: flex;
+  width: 200%;
+  height: 100%;
+}
+
+.wave-img {
+  width: 50%;
   height: 100%;
   object-fit: cover;
 }
 
-@keyframes wave1 {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-@keyframes wave2 {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-@keyframes wave3 {
+@keyframes slideWave {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
 .animate-wave1 {
-  animation: wave1 8s linear infinite;
+  animation: slideWave 10s linear infinite;
 }
 
 .animate-wave2 {
-  animation: wave2 10s linear infinite;
+  animation: slideWave 12s linear infinite;
 }
 
 .animate-wave3 {
-  animation: wave3 12s linear infinite;
+  animation: slideWave 14s linear infinite;
 }
