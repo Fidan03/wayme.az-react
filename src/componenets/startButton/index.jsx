@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import arrow from '../../assets/maki_arrow.png';
-import './Button.css'; // import the CSS file
+import './Button.css';
 
 const Button = () => {
     let navigate = useNavigate();
