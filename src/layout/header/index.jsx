@@ -13,7 +13,7 @@ const Header = () => {
                     <img src={logo} alt="logo" className='h-17 w-39.5'/>
                 </div>
                 <div className='about'>
-                    <img src={about} alt="about" />
+                    <img src={about} alt="about" className='cursor-pointer'/>
                 </div>
             </div>
         ) : (

@@ -6,7 +6,7 @@ import ProcessCard from '../../componenets/processCard/index.jsx'
 import ResultsCard from '../../componenets/resultsCard/index.jsx'
 import CountableCard from '../../componenets/conutableCard/index.jsx'
 import human from '../../assets/human.png'
-import Wave from '../../componenets/wave/index.jsx'
+// import Wave from '../../componenets/wave/index.jsx'
 import Header from '../../layout/header/index.jsx'
 import Button from '../../componenets/startButton/index.jsx'
 
@@ -33,7 +33,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className='mt-[35px]'>
-                    <Wave/>
+                    {/* <Wave/> */}
                 </div>
             </div>
         </section>

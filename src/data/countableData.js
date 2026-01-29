@@ -1,10 +1,5 @@
 const count = [
     {
-        id: 0,
-        title: '10',
-        desc: 'İstifadəçi'
-    },
-    {
         id: 1,
         title: '30',
         desc: 'Sual'

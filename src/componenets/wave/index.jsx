@@ -6,9 +6,9 @@ import './Wave.css';
 const Wave = () => {
   return (
     <div className="wave-container">
-      <div className="wave-wrapper animate-wave1">
+      <div className="wave-wrapper animate-wave1 relative">
         <img src={wave1} alt="wave1" className="wave-img" />
-        <img src={wave1} alt="wave1" className="wave-img" />
+        <img src={wave1} alt="wave1" className="wave-img relative" />
       </div>
       <div className="wave-wrapper animate-wave2 opacity-70">
         <img src={wave2} alt="wave2" className="wave-img" />
