@@ -1,5 +1,5 @@
 import frame from '../../assets/Frame 74.png'
-// import blur from '../../assets/blur.png'
+import blur from '../../assets/blur.png'
 import EducationCard from '../../componenets/EducationCard/index.jsx'
 import DirectionCard from '../../componenets/DirectionCard/index.jsx'
 import ProcessCard from '../../componenets/processCard/index.jsx'
@@ -14,10 +14,10 @@ const Home = () => {
   return (
     <div className='bg-background w-full pt-[20px]'>
         <section>
-            {/* <div className='bgDesign flex justify-between absolute'>
-                <div><img src={blur} alt="blur" className='relative'/></div>
-                <div><img src={blur} alt="blur" className='relative'/></div>
-            </div> */}
+            <div className='bgDesign flex gap-40 absolute'>
+                <div><img src={blur} alt="blur" className='relative bottom-50'/></div>
+                <div><img src={blur} alt="blur" className='relative top-50'/></div>
+            </div>
             <div>
                 <div>
                     <Header/>
