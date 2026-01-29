@@ -1,5 +1,3 @@
-import logo from '../../assets/logo.png'
-import about from '../../assets/about.png'
 import frame from '../../assets/Frame 74.png'
 import arrow from '../../assets/maki_arrow.png'
 // import blur from '../../assets/blur.png'
@@ -11,6 +9,7 @@ import CountableCard from '../../componenets/conutableCard/index.jsx'
 import human from '../../assets/human.png'
 import Wave from '../../componenets/wave/index.jsx'
 import { useNavigate } from "react-router";
+import Header from '../../layout/header/index.jsx'
 
 const Home = () => {
     let navigate = useNavigate();
@@ -22,13 +21,8 @@ const Home = () => {
                 <div><img src={blur} alt="blur" className='relative'/></div>
             </div> */}
             <div>
-                <div className="max-w-7xl mx-auto h-100% flex justify-between items-center px-4">
-                    <div className='logo'>
-                        <img src={logo} alt="logo" className='h-17 w-39.5'/>
-                    </div>
-                    <div className='about'>
-                        <img src={about} alt="about" />
-                    </div>
+                <div>
+                    <Header/>
                 </div>
                 <div className='flex flex-col justify-center items-center text-center mt-[100px]'>
                     <div>
