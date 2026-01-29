@@ -1,5 +1,4 @@
 import frame from '../../assets/Frame 74.png'
-import arrow from '../../assets/maki_arrow.png'
 // import blur from '../../assets/blur.png'
 import EducationCard from '../../componenets/EducationCard/index.jsx'
 import DirectionCard from '../../componenets/DirectionCard/index.jsx'
@@ -8,11 +7,10 @@ import ResultsCard from '../../componenets/resultsCard/index.jsx'
 import CountableCard from '../../componenets/conutableCard/index.jsx'
 import human from '../../assets/human.png'
 import Wave from '../../componenets/wave/index.jsx'
-import { useNavigate } from "react-router";
 import Header from '../../layout/header/index.jsx'
+import Button from '../../componenets/startButton/index.jsx'
 
 const Home = () => {
-    let navigate = useNavigate();
   return (
     <div className='bg-background w-full pt-[20px]'>
         <section>
@@ -30,11 +28,8 @@ const Home = () => {
                     </div>
                     <p className='text-[80px] font-bold w-[762px] mt-[20px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent' >İdeal iş istiqamətinizi tapın</p>
                     <p className='font-medium w-[710px] text-[#A2A8B2] mt-[10px]'>Ən uyğun karyera istiqamətini müəyyən etmək üçün psixoloji keyfiyyətlərinizin və peşəkar bacarıqlarınızın kompleks qiymətləndirmə sistemi</p>
-                    <div className='flex mt-[70px]'>
-                        <button className='text-white font-semibold text-[20px] p-[10px] rounded-[10px] cursor-pointer flex items-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'
-                        onClick={() => navigate("/login")}>
-                            Testə Başla <span><img src={arrow} alt="arrow"  className='w-[20px]'/></span>
-                        </button>
+                    <div className='mt-[70px]'>
+                        <Button/>
                     </div>
                 </div>
                 <div className='mt-[35px]'>
@@ -80,9 +75,8 @@ const Home = () => {
                 <img src={human} alt="human" className='size-[73px] mb-10'/>
                 <p className='font-bold text-[36px] text-white'>Başlamağa hazırsınız?</p>
                 <p className='text-[#A2A8B2] font-medium text-[19px] '>İndi testdən keçin və hansı iş istiqamətinin sizə ən uyğun olduğunu öyrənin</p>
-                <div className='flex mt-[70px]'>
-                    <button className='text-white font-semibold text-[20px] p-[10px] rounded-[10px] cursor-pointer flex items-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'
-                    onClick={() => navigate("/login")}>Testə Başla <span><img src={arrow} alt="arrow"  className='w-[20px]'/></span></button>
+                <div className='mt-[70px]'>
+                    <Button/>
                 </div>
             </div>
         </section>
