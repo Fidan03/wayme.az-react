@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <div className='bg-background w-full pt-[20px]'>
         <section>
-            <div className='bgDesign flex gap-40 absolute'>
+            <div className='bgDesign flex gap-40 absolute '>
                 <div><img src={blur} alt="blur" className='relative bottom-50'/></div>
                 <div><img src={blur} alt="blur" className='relative top-50'/></div>
             </div>
@@ -28,7 +28,7 @@ const Home = () => {
                     </div>
                     <p className='text-[80px] font-bold w-[762px] mt-[20px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent' >İdeal iş istiqamətinizi tapın</p>
                     <p className='font-medium w-[710px] text-[#A2A8B2] mt-[10px]'>Ən uyğun karyera istiqamətini müəyyən etmək üçün psixoloji keyfiyyətlərinizin və peşəkar bacarıqlarınızın kompleks qiymətləndirmə sistemi</p>
-                    <div className='mt-[70px]'>
+                    <div className='mt-[70px] relative z-1'>
                         <Button/>
                     </div>
                 </div>
