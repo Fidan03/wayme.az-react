@@ -18,7 +18,7 @@ const DirectionCard = () => {
             <p className='text-[#A2A8B2] mt-2'>{item.description}</p>
           </div>
           <div className="rounded-[10px] size-6 flex justify-center items-center cursor-pointer" style={{ backgroundColor: item.arrowColor }}>
-            <img src={downArrow} alt="downArrow" className="w-4 h-4 object-contain"/>
+            <img src={downArrow} alt="downArrow" className="w-6 h-6 object-contain"/>
           </div>
         </div>
       ))}
