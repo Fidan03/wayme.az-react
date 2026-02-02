@@ -50,7 +50,7 @@ const Home = () => {
             Ən çox tələb olunan və perspektivli ixtisaslar
             </p>
 
-            <div className='grid grid-cols-3 gap-[32px] w-full'>
+            <div className='flex flex-wrap w-full flex-gap-6 gap-6 justify-center'>
                 <DirectionCard />
             </div>
         </div>

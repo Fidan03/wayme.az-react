@@ -1,4 +1,3 @@
-import React from 'react'
 import data from '../../data/directionsData'
 
 const DirectionCard = () => {
@@ -7,8 +6,8 @@ const DirectionCard = () => {
       {data.map((item) => (
         <div
           key={item.id}
-          className='flex gap-[20px] px-8 py-6 rounded-xl bg-transparent-[20%]' 
-          style={{ backgroundColor: item.color, transparency: '80%' }}
+          className='flex gap-[20px] px-8 py-6 rounded-xl bg-transparent-[20%] justify-center' 
+          style={{ backgroundColor: item.color, opacity: '0.8' }}
         >
           <div className='flex items-center gap-3 flex-wrap'>
             <img src={item.icon} alt={item.title} className='w-12 h-12' />
