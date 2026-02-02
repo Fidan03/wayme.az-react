@@ -1,18 +1,40 @@
 .wave-container {
   position: relative;
   width: 100%;
-  height: 150px;
+  height: 190px;
   overflow: hidden;
-  box-shadow: 0 20px 30px rgba(59, 130, 246, 0.4);
+}
+
+.wave-container::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  width: 100%;
+  height: 120px;
+
+  pointer-events: none;
+  z-index: 20;
+
+  background: radial-gradient(
+    ellipse at bottom,
+    rgba(59, 130, 246, 0.45) 0%,
+    rgba(59, 130, 246, 0.25) 35%,
+    rgba(59, 130, 246, 0.1) 55%,
+    rgba(59, 130, 246, 0) 75%
+  );
 }
 
 .wave-wrapper {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
+
   display: flex;
   width: 200%;
   height: 100%;
+
+  will-change: transform;
 }
 
 .wave-img {
@@ -22,18 +44,38 @@
 }
 
 @keyframes slideWave {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-wave1 {
   animation: slideWave 10s linear infinite;
+
+  opacity: 1;
+  z-index: 3;
+
+  transform-origin: bottom;
 }
 
 .animate-wave2 {
-  animation: slideWave 13s linear infinite;
+  animation: slideWave 14s linear infinite;
+
+  opacity: 0.7;
+  z-index: 2;
+
+  transform-origin: bottom;
 }
 
 .animate-wave3 {
-  animation: slideWave 16s linear infinite;
+  animation: slideWave 18s linear infinite;
+
+  opacity: 0.45;
+  z-index: 1;
+
+  transform-origin: bottom;
 }
