@@ -1,4 +1,5 @@
 import data from '../../data/directionsData'
+import downArrow from '../../assets/arrowDown.png'
 
 const DirectionCard = () => {
   return (
@@ -15,6 +16,9 @@ const DirectionCard = () => {
           <div>
             <h3 className='text-white font-semibold text-lg'>{item.title}</h3>
             <p className='text-[#A2A8B2] mt-2'>{item.description}</p>
+          </div>
+          <div className="rounded-full p-2" style={{ backgroundColor: item.arrowColor }}>
+            <img src={downArrow} alt="downArrow" />
           </div>
         </div>
       ))}

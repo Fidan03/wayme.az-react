@@ -14,56 +14,64 @@ const DirectionsData = [
         icon: programming,
         title: "IT/Proqramlaştırma",
         description: "Frontend, Backend...",
-        color: '#357CFF33'
+        color: '#357CFF33',
+        arrowColor:'#3379FB',
     },
     {
         id: 1,
         icon: design,
-        title: "UI/UX Designer",
+        title: "Designer",
         description: "UX/UI, Motion, Grafik...",
-        color: '#B656FF33'
+        color: '#B656FF33',
+        arrowColor:'#AB4DF4',
     },
     {
         id: 2,
         icon: data,
         title: "Data Analyst",
         description: "SQL, Python, Power BI",
-        color: '#10BCE333'
+        color: '#10BCE333',
+        arrowColor:'#10AED2',
     },
     {
         id: 3,
         icon: marketing,
         title: "Digital Marketoloq",
         description: "SEO, SMM, Google Ads",
-        color: '#00CD5033'
+        color: '#00CD5033',
+        arrowColor:'#02BD4B',
     },
     {
         id: 4,
         icon: prod,
         title: "Product Manager",
         description: "Agile, Scrum, Jira",
-        color: '#FF803533'
+        color: '#FF803533',
+        arrowColor:'#F3762C',
     },
     {
         id: 5,
         icon: devops,
         title: "DevOps Engineer",
         description: "Docker, Kubernetes, AWS",
-        color: '#FF2B3533'
+        color: '#FF2B3533',
+        arrowColor:'#EF222C',
     },
     {
         id: 6,
         icon: hr,
         title: "HR Mütəxəssisi",
         description: "Recruitment, Training",
-        color: '#FF5CB133'
+        color: '#FF5CB133',
+        arrowColor:'#F34EA4',
     },
     {
         id: 7,
         icon: content,
         title: "Content Creator",
         description: "Video, Photo, Copywriting",
-        color: '#FBBE2A33'
+        color: '#FBBE2A33',
+        arrowColor:'#ECB123',
     }
 ]
 
