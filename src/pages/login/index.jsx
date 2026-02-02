@@ -1,37 +1,107 @@
-import Header from '../../layout/header'
-import { Progress, Flex } from 'antd';
+import React from 'react';
+import Header from '../../layout/header';
+import { Progress, Flex, DatePicker, Form, Input } from 'antd';
+import dayjs from 'dayjs';
+import './main.css';
+
+const onFinish = (values) => {
+  console.log('Success:', values);
+};
+
 
 const Login = () => {
+  const [form] = Form.useForm();
+
   return (
-    <div className="bg-background">
-      <div>
-          <Header/>
-      </div>
-      <div className='w-[994px] h-[822px] flex justify-center items-center'>
-        <div className='bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 w-full'>
-          <div>
-            <p className='text-white'>İş istiqamətinin müəyyən edilməsi</p>
-            <p className='text-white'>Addım 1/5</p>
+    <div className="bg-background min-h-screen flex flex-col">
+
+      <Header />
+
+      <div className="flex-1 flex justify-center items-center">
+
+        <div className="w-[994px] flex flex-col justify-center items-center">
+
+          <div className="w-full inline-block p-[2px] rounded-[10px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+
+            <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 w-full rounded-t-[10px] p-5">
+
+              <div className="flex justify-between items-center mb-3">
+                <div>
+                  <p className="text-white font-semibold">
+                    İş istiqamətinin müəyyən edilməsi
+                  </p>
+                  <p className="text-white text-sm">Addım 1/5</p>
+                </div>
+              </div>
+
+              <Flex vertical>
+                <Progress percent={30} />
+              </Flex>
+
+            </div>
+
+            <div className="bg-background rounded-b-[10px] p-8">
+
+              <div className="mb-6 text-center flex items-start flex-col">
+                <p className="text-white font-semibold text-lg">
+                  Şəxsi məlumatlar
+                </p>
+                <p className="text-[#A2A8B2]">
+                  Zəhmət olmasa məlumatlarınızı düzgün daxil edin
+                </p>
+              </div>
+
+              <Form
+                name="loginForm"
+                form={form}
+                layout="vertical"
+                initialValues={{
+                  date: dayjs('2024-01-01'),
+                }}
+                onFinish={onFinish}
+                autoComplete="off"
+              >
+
+                <Form.Item
+                  name="name"
+                  label={<span className="text-white text-[15px] font-medium">Ad</span>}
+                  rules={[{ required: true, message: 'Zəhmət olmasa adınızı daxil edin' }]}
+                >
+                  <Input
+                    placeholder="Adınızı daxil edin"
+                    className="text-white bg-[#2F4A73]"
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  name="surname"
+                  label={<span className="text-white text-[15px] font-medium">Soyad</span>}
+                  rules={[{ required: true, message: 'Zəhmət olmasa soyadınızı daxil edin' }]}
+                  
+                >
+                  <Input placeholder="Soyadınızı daxil edin" className="text-white bg-[#2F4A73]"/>
+                </Form.Item>
+
+                <Form.Item
+                  label={<span className="text-white text-[15px] font-medium">Doğum tarixi</span>}
+                  name="date"
+                  rules={[{ required: true, message: 'Zəhmət olmasa tarixi seçin' }]}
+                >
+                  <DatePicker className="w-full bg-[#2F4A73]" placeholder="00.00.0000"/>
+                </Form.Item>
+
+              </Form>
+
+            </div>
+
           </div>
-          <div>
-            <Flex gap="small" vertical>
-              <Progress percent={30} />
-            </Flex>
-          </div>
+
         </div>
 
-        <div>
-          <div>
-            <p>Şəxsi məlumatlar</p>
-            <p>Zəhmət olmasa məlumatlarınızı düzgün daxil edin</p>
-          </div>
-          <div>
-            
-          </div>
-        </div>
       </div>
+
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

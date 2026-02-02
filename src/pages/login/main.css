@@ -1,0 +1,15 @@
+.ant-input {
+  background-color: #2F4A73 !important;
+  color: white !important;
+  border-color: #445f8f !important;
+}
+
+.ant-picker {
+  background-color: #2F4A73 !important;
+  color: white !important;
+  border-color: #445f8f !important;
+}
+
+.ant-input::placeholder {
+  color: #9ca3af !important;
+}
