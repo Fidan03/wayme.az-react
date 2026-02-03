@@ -3,6 +3,7 @@
 :root {
   --color-gradient: linear-gradient(90deg,rgba(43, 127, 255, 1) 0%, rgba(173, 70, 255, 1) 50%, rgba(246, 51, 154, 1) 100%);
 }
+
 @theme {
   --color-background: #091e3e;
 }
