@@ -10,7 +10,7 @@ const DirectionCard = () => {
       {data.map((item) => (
         <div
           key={item.id}
-          className='flex gap-5 px-8 py-6 rounded-xl bg-transparent-[20%] justify-between items-center w-[380px]'
+          className='flex gap-5 px-8 py-6 rounded-xl bg-transparent-[20%] justify-between items-center w-95'
           style={{ backgroundColor: item.color, opacity: '0.8' }}
           onMouseEnter={() => setHovered(item.id)}
           onMouseLeave={() => setHovered(null)}
