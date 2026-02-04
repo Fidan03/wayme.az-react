@@ -10,7 +10,7 @@ const DirectionCard = () => {
       {data.map((item) => (
         <div
           key={item.id}
-          className={`${hovered === item.id ? 'bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500' : ''}`}
+          className={`${hovered === item.id ? '' : ''}`}
           onMouseEnter={() => setHovered(item.id)}
           onMouseLeave={() => setHovered(null)}
         >

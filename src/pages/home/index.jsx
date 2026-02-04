@@ -32,8 +32,8 @@ const Home = () => {
                         <Button/>
                     </div>
                 </div>
-                <div className='mt-[35px]'>
-                    <Wave/>
+                <div className='mt-[35px] mb-10 drop-shadow-2xl drop-shadow-[#214CA4]'>
+                    <Wave />
                 </div>
             </div>
         </section>

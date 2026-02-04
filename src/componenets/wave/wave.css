@@ -1,42 +1,34 @@
 .wave-container {
   position: relative;
   width: 100%;
-  height: 190px;
+  height: 150px;
   overflow: hidden;
-
-  
 }
 
 .wave-container::after {
   content: '';
   position: absolute;
-  bottom: -20px;
+  bottom: 0;
   left: 0;
   width: 100%;
-  /* height: 120px; */
-
+  height: 50px;
   pointer-events: none;
-  z-index: 20;
-
-  background: radial-gradient(
-    ellipse at bottom,
-    rgba(59, 130, 246, 0.45) 0%,
-    rgba(59, 130, 246, 0.25) 35%,
-    rgba(59, 130, 246, 0.1) 55%,
-    rgba(59, 130, 246, 0) 75%
+  z-index: 10;
+  background: linear-gradient(
+    to bottom,
+    #1E4598 0%,     
+    rgba(59, 130, 246, 0.3) 100% 
   );
 }
 
 .wave-wrapper {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
-
   display: flex;
   width: 200%;
   height: 100%;
-
-  will-change: transform;
+  z-index: 1;
 }
 
 .wave-img {
@@ -46,38 +38,10 @@
 }
 
 @keyframes slideWave {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
-.animate-wave1 {
-  animation: slideWave 10s linear infinite;
-
-  opacity: 1;
-  z-index: 3;
-
-  transform-origin: bottom;
-}
-
-.animate-wave2 {
-  animation: slideWave 14s linear infinite;
-
-  opacity: 0.7;
-  z-index: 2;
-
-  transform-origin: bottom;
-}
-
-.animate-wave3 {
-  animation: slideWave 18s linear infinite;
-
-  opacity: 0.45;
-  z-index: 1;
-
-  transform-origin: bottom;
-}
+.animate-wave1 { animation: slideWave 9s linear infinite; }
+.animate-wave2 { animation: slideWave 12s linear infinite; }
+.animate-wave3 { animation: slideWave 17s linear infinite; }
