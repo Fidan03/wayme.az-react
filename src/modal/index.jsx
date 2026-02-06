@@ -4,10 +4,8 @@ const Modal = ({ item, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
       
-      {/* Modal Box */}
       <div className="bg-white rounded-xl p-6 w-[400px] relative">
 
-        {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold">{item.title}</h1>
 
@@ -16,12 +14,12 @@ const Modal = ({ item, onClose }) => {
           </button>
         </div>
 
-        {/* Content */}
         <p className="font-medium mb-2">Sahələr:</p>
 
-        <p>{item.description}</p>
+        <p>{item.directions}</p>
 
       </div>
+
     </div>
   );
 };

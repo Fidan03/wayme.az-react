@@ -5,7 +5,7 @@ import Modal from '../../modal/index';
 
 const DirectionCard = () => {
   const [hovered, setHovered] = useState(null);
-  const [activeModal, setActiveModal] = useState(null); // <-- which modal is open
+  const [activeModal, setActiveModal] = useState(null);
 
   return (
     <>
@@ -55,11 +55,10 @@ const DirectionCard = () => {
               </div>
             </div>
 
-            {/* OPEN MODAL BUTTON */}
             <div
               className="rounded-[10px] size-6 flex justify-center items-center cursor-pointer"
               style={{ backgroundColor: item.arrowColor }}
-              onClick={() => setActiveModal(item)} // <-- open modal
+              onClick={() => setActiveModal(item)}
             >
               <img
                 src={downArrow}
@@ -71,7 +70,6 @@ const DirectionCard = () => {
         </div>
       ))}
 
-      {/* MODAL */}
       {activeModal && (
         <Modal
           item={activeModal}
