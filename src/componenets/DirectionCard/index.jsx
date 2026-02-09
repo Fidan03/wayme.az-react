@@ -16,11 +16,11 @@ const DirectionCard = () => {
           onMouseLeave={() => setHovered(null)}
         >
           <div
-            className="flex gap-5 px-8 py-6 rounded-xl justify-between items-center w-95"
+            className="flex gap-5 px-8 py-6 rounded-xl justify-between items-center w-96"
             style={{ backgroundColor: item.color }}
           >
             <div className="flex justify-start gap-4">
-              <div className="flex items-center gap-3 flex-wrap">
+              <div className="flex items-center gap-3 flex-wrap flex-shrink-0">
                 <img
                   src={item.icon}
                   alt={item.title}
@@ -28,14 +28,14 @@ const DirectionCard = () => {
                 />
               </div>
 
-              <div>
-                <h3 className="text-white font-semibold text-lg text-start">
+              <div className="flex flex-col">
+                <h3 className="text-white font-semibold text-lg text-start truncate w-60">
                   {item.title}
                 </h3>
 
                 <p className="relative mt-2 h-6">
                   <span
-                    className={`absolute transition-opacity duration-300 ${
+                    className={`absolute transition-opacity duration-300 w-full ${
                       hovered === item.id ? 'opacity-100' : 'opacity-0'
                     }`}
                     style={{ color: item.textColor }}
@@ -44,7 +44,7 @@ const DirectionCard = () => {
                   </span>
 
                   <span
-                    className={`absolute transition-opacity duration-300 ${
+                    className={`absolute transition-opacity duration-300 w-full ${
                       hovered === item.id ? 'opacity-0' : 'opacity-100'
                     }`}
                     style={{ color: item.textColor }}
