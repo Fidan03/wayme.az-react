@@ -1,15 +1,15 @@
 import LoginForm from '../../componenets/LoginForm/index';
 
-const LoginCardBody = () => {
+const LoginCardBody = ({title, desc}) => {
   return (
     <div className="flex flex-col w-full">
 
       <div className="mb-6">
         <p className="text-white font-semibold text-[25px]">
-          Şəxsi məlumatlar
+          {title}
         </p>
-        <p className="text-[#A2A8B2] text-[20px] font-medium mt-1">
-          Zəhmət olmasa məlumatlarınızı düzgün daxil edin
+        <p className="text-[#A2A8B2] text-[18px] font-medium mt-1">
+          {desc}
         </p>
       </div>
 

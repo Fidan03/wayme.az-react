@@ -1,0 +1,23 @@
+.animated-gradient {
+  background: linear-gradient(90deg, #2b7fff, #ad46ff, #f6339a, #ad46ff, #2b7fff);
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  transition: box-shadow 200ms ease, transform 120ms ease;
+  cursor: pointer;
+}
+
+.animated-gradient:hover,
+.animated-gradient:focus {
+  animation: gradientShift 1.8s ease-in-out forwards;
+  box-shadow: 0 8px 24px rgba(90, 40, 255, 0.18);
+  outline: none;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}

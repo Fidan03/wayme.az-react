@@ -32,7 +32,10 @@ const Login = () => {
             <div className="bg-background rounded-b-[10px] p-6">
 
               <div>
-                <LoginCardBody/>
+                <LoginCardBody
+                title='Şəxsi məlumatlar'
+                desc='Zəhmət olmasa məlumatlarınızı düzgün daxil edin'
+                />
               </div>
 
               <div>

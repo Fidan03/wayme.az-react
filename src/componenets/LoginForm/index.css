@@ -5,6 +5,7 @@
   background-color: #2F4A73 !important;
   color: white !important;
   border-color: #445f8f !important;
+  font-size: 18px !important;
 }
 
 .ant-picker {
@@ -19,6 +20,7 @@
 .ant-picker-input input::placeholder {
   color: #9CA3AF !important;
   opacity: 1;
+  font-size: 18px !important;
 }
 
 .ant-input:focus,
