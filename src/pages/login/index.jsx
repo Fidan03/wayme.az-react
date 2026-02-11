@@ -1,8 +1,9 @@
 import Header from '../../layout/header';
-import { Progress, Flex, DatePicker, Form, Input } from 'antd';
+import {  DatePicker, Form, Input } from 'antd';
 import './main.css';
 import Wave from '../../componenets/wave/index';
 import NextButton  from '../../componenets/nextButton/index';
+import LoginCardHeader from '../../componenets/LoginCardHeader';
 
 const onFinish = (values) => {
   console.log('Success:', values);
@@ -26,31 +27,12 @@ const Login = () => {
 
           <div className="w-full inline-block p-0.5 rounded-[10px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500">
 
-            <div className="bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 w-full rounded-t-[10px] p-5">
-
-              <div className="flex justify-between items-center mb-3">
-                <div className="flex justify-between w-full items-center">
-                  <p className="text-white font-semibold text-[27px]">
-                    İş istiqamətinin müəyyən edilməsi
-                  </p>
-                  <p className="text-white text-sm text-[25px] font-600">
-                    Addım 1/5
-                  </p>
-                </div>
-              </div>
-
-              <Flex vertical>
-                <Progress
-                  percent={20}
-                  showInfo={false}
-                  className="bg-background rounded"
-                  strokeColor="#ffffff"
-                />
-              </Flex>
-
+            <div>
+              <LoginCardHeader/>
             </div>
 
-            <div className="bg-background rounded-b-[10px] p-8">
+
+            <div className="bg-background rounded-b-[10px] p-6">
 
               <div className="mb-4 text-center flex items-start flex-col">
                 <p className="text-white font-semibold text-lg text-[25px]">
