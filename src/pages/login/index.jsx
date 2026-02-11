@@ -1,12 +1,12 @@
 import Header from '../../layout/header';
 import { Progress, Flex, DatePicker, Form, Input } from 'antd';
-import dayjs from 'dayjs';
 import './main.css';
+import Wave from '../../componenets/wave/index';
+import NextButton  from '../../componenets/nextButton/index';
 
 const onFinish = (values) => {
   console.log('Success:', values);
 };
-
 
 const Login = () => {
   const [form] = Form.useForm();
@@ -16,36 +16,47 @@ const Login = () => {
 
       <Header />
 
-      <div className="flex-1 flex justify-center items-center">
+      <div className="flex-1 relative flex justify-center items-center overflow-hidden">
 
-        <div className="w-248.5 flex flex-col justify-center items-center">
+        <div className="absolute bottom-0 left-0 w-full z-0">
+          <Wave />
+        </div>
+
+        <div className="w-240 flex flex-col justify-center items-center relative z-10">
 
           <div className="w-full inline-block p-0.5 rounded-[10px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500">
 
             <div className="bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 w-full rounded-t-[10px] p-5">
 
               <div className="flex justify-between items-center mb-3">
-                <div className='flex justify-between w-full items-center'>
-                  <p className="text-white font-semibold text-[30px]">
+                <div className="flex justify-between w-full items-center">
+                  <p className="text-white font-semibold text-[27px]">
                     İş istiqamətinin müəyyən edilməsi
                   </p>
-                  <p className="text-white text-sm text-[25px] font-600">Addım 1/5</p>
+                  <p className="text-white text-sm text-[25px] font-600">
+                    Addım 1/5
+                  </p>
                 </div>
               </div>
 
               <Flex vertical>
-                <Progress percent={20} showInfo={false} className='bg-background rounded' strokeColor='#ffffff'/>
+                <Progress
+                  percent={20}
+                  showInfo={false}
+                  className="bg-background rounded"
+                  strokeColor="#ffffff"
+                />
               </Flex>
 
             </div>
 
             <div className="bg-background rounded-b-[10px] p-8">
 
-              <div className="mb-6 text-center flex items-start flex-col">
-                <p className="text-white font-semibold text-lg text-[28px]">
+              <div className="mb-4 text-center flex items-start flex-col">
+                <p className="text-white font-semibold text-lg text-[25px]">
                   Şəxsi məlumatlar
                 </p>
-                <p className="text-[#A2A8B2] text-[25px] font-semibold">
+                <p className="text-[#A2A8B2] text-[20px] font-semibold">
                   Zəhmət olmasa məlumatlarınızı düzgün daxil edin
                 </p>
               </div>
@@ -54,17 +65,24 @@ const Login = () => {
                 name="loginForm"
                 form={form}
                 layout="vertical"
-                initialValues={{
-                  date: dayjs('2024-01-01'),
-                }}
                 onFinish={onFinish}
                 autoComplete="off"
+                requiredMark={false}
               >
 
                 <Form.Item
                   name="name"
-                  label={<span className="text-white text-[15px] font-medium">Ad</span>}
-                  rules={[{ required: true, message: 'Zəhmət olmasa adınızı daxil edin' }]}
+                  label={
+                    <span className="text-white text-[15px] font-medium">
+                      Ad
+                    </span>
+                  }
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Zəhmət olmasa adınızı daxil edin',
+                    },
+                  ]}
                 >
                   <Input
                     placeholder="Adınızı daxil edin"
@@ -74,29 +92,51 @@ const Login = () => {
 
                 <Form.Item
                   name="surname"
-                  label={<span className="text-white text-[15px] font-medium">Soyad</span>}
-                  rules={[{ required: true, message: 'Zəhmət olmasa soyadınızı daxil edin' }]}
-                  
+                  label={
+                    <span className="text-white text-[15px] font-medium">
+                      Soyad
+                    </span>
+                  }
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Zəhmət olmasa soyadınızı daxil edin',
+                    },
+                  ]}
                 >
-                  <Input placeholder="Soyadınızı daxil edin" className="text-white bg-[#2F4A73]"/>
+                  <Input
+                    placeholder="Soyadınızı daxil edin"
+                    className="text-white bg-[#2F4A73]"
+                  />
                 </Form.Item>
 
                 <Form.Item
-                  label={<span className="text-white text-[15px] font-medium">Doğum tarixi</span>}
+                  label={
+                    <span className="text-white text-[15px] font-medium">
+                      Doğum tarixi
+                    </span>
+                  }
                   name="date"
-                  rules={[{ required: true, message: 'Zəhmət olmasa tarixi seçin' }]}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Zəhmət olmasa tarixi seçin',
+                    },
+                  ]}
                 >
-                  <DatePicker className="w-full bg-[#2F4A73]" placeholder="00.00.0000"/>
+                  <DatePicker
+                    className="w-full bg-[#2F4A73]"
+                    placeholder="00.00.0000"
+                  />
                 </Form.Item>
 
               </Form>
 
-                <div>
-                  <button className="bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold py-2 px-4 rounded w-full">Növbəti</button>
-                </div>
+              <div>
+                <NextButton />
+              </div>
 
             </div>
-
 
           </div>
 

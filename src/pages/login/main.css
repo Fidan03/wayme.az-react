@@ -13,3 +13,8 @@
 .ant-input::placeholder {
   color: #9ca3af !important;
 }
+
+.ant-picker-input > input::placeholder {
+  color: #9CA3AF !important;
+  opacity: 1;
+}
