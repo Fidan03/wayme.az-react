@@ -6,7 +6,7 @@ import LoginCardBody from '../../components/LoginCardBody';
 
 
 
-const Login = () => {
+const Skills = () => {
   
 
   return (
@@ -54,4 +54,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Skills;

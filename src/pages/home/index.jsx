@@ -1,14 +1,14 @@
 import frame from '../../assets/Frame 74.png'
 import blur from '../../assets/blur.png'
-import EducationCard from '../../componenets/EducationCard/index.jsx'
-import DirectionCard from '../../componenets/DirectionCard/index.jsx'
-import ProcessCard from '../../componenets/processCard/index.jsx'
-import ResultsCard from '../../componenets/resultsCard/index.jsx'
-import CountableCard from '../../componenets/conutableCard/index.jsx'
+import EducationCard from '../../components/EducationCard/index.jsx'
+import DirectionCard from '../../components/DirectionCard/index.jsx'
+import ProcessCard from '../../components/processCard/index.jsx'
+import ResultsCard from '../../components/resultsCard/index.jsx'
+import CountableCard from '../../components/ConutableCard/index.jsx'
 import human from '../../assets/human.png'
-import Wave from '../../componenets/wave/index.jsx'
+import Wave from '../../components/Wave/index.jsx'
 import Header from '../../layout/header/index.jsx'
-import Button from '../../componenets/startButton/index.jsx'
+import Button from '../../components/startButton/index.jsx'
 
 const Home = () => {
   return (
