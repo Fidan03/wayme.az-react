@@ -33,8 +33,8 @@ const Skills = () => {
 
               <div>
                 <LoginCardBody
-                title='Şəxsi məlumatlar'
-                desc='Zəhmət olmasa məlumatlarınızı düzgün daxil edin'
+                title='Bacarıqlarınız'
+                desc='Hansı bacarıqlara sahibsiniz? (Minimum 3 bacarıq)'
                 />
               </div>
 
