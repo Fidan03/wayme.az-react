@@ -2,8 +2,8 @@ import Header from '../../layout/header';
 import Wave from '../../components/Wave/index';
 import NextButton  from '../../components/NextButton/index';
 import LoginCardHeader from '../../components/LoginCardHeader';
-import LoginCardBody from '../../components/LoginCardBody';
-
+import { Input } from 'antd';
+import Button from '../../components/Button'
 
 
 const Skills = () => {
@@ -43,7 +43,17 @@ const Skills = () => {
                 </div>
 
                 <div>
-                  
+                  <div>
+                    <p className='text-[#A2A8B2] text-[23px] font-medium mt-1'>Öz bacarıqlarınızı əlavə edin</p>
+                    <div className='flex gap-2'>
+                      <Input placeholder="Məsələn: Figma" />
+                      <Button/>
+                    </div>
+                  </div>
+                  <div>
+                    <p>Asan seçimlər</p>
+                    <div></div>
+                  </div>
                 </div>
 
               </div>
