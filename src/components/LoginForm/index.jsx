@@ -1,97 +1,115 @@
-import { DatePicker, Form, Input, message } from "antd";
+import { DatePicker, Form, Input } from "antd";
 import "./index.css";
 import calendar from "../../assets/calendar.png";
 import person from "../../assets/person.png";
-import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
-const LoginForm = () => {
-  const [form] = Form.useForm();
-  const navigate = useNavigate();
+const LoginForm = ({ form }) => {
+  const nameRules = [
+    {
+      required: true,
+      message: "Zəhmət olmasa adınızı daxil edin",
+    },
+    {
+      max: 30,
+      message: "Maksimum 30 simvol",
+    },
+    {
+      pattern: /^[A-Za-zÇƏĞİÖŞÜçəğiöşü]+(-[A-Za-zÇƏĞİÖŞÜçəğiöşü]+)?$/,
+      message: "Yalnız hərflər və maksimum bir '-' icazəlidir",
+    },
+  ];
 
-  const onFinish = (values) => {
-    // If form is valid, navigate
-    navigate("/next-page"); // change to your next route
+  const surnameRules = [...nameRules];
+
+  const formatInput = (value) => {
+    let val = value.replace(/[^A-Za-zÇƏĞİÖŞÜçəğiöşü-]/g, "");
+
+    const parts = val.split("-");
+    if (parts.length > 2) {
+      val = parts[0] + "-" + parts[1];
+    }
+
+    val = val.slice(0, 30);
+
+    if (val.length > 0) {
+      val = val.charAt(0).toUpperCase() + val.slice(1);
+    }
+
+    return val;
   };
 
-  const nameRules = [
-    { required: true, message: "Zəhmət olmasa adınızı daxil edin" },
-    {
-      max: 30,
-      message: "Ad maksimum 30 simvol ola bilər",
-    },
-    {
-      pattern: /^[A-ZÇƏĞİÖŞÜ][a-zçəğiöşü]*(?:-[A-ZÇƏĞİÖŞÜ][a-zçəğiöşü]*)?$/,
-      message:
-        "Ad yalnız hərflər ola bilər və yalnız bir '-' işarəsi istifadə edilə bilər",
-    },
-  ];
-
-  const surnameRules = [
-    { required: true, message: "Zəhmət olmasa soyadınızı daxil edin" },
-    {
-      max: 30,
-      message: "Soyad maksimum 30 simvol ola bilər",
-    },
-    {
-      pattern: /^[A-ZÇƏĞİÖŞÜ][a-zçəğiöşü]*(?:-[A-ZÇƏĞİÖŞÜ][a-zçəğiöşü]*)?$/,
-      message:
-        "Soyad yalnız hərflər ola bilər və yalnız bir '-' işarəsi istifadə edilə bilər",
-    },
-  ];
-
-  // Automatically capitalize first letter
-  const handleInputChange = (e, field) => {
-    const value = e.target.value;
-    const capitalized =
-      value.charAt(0).toUpperCase() + value.slice(1); // capitalize first letter
-    form.setFieldsValue({ [field]: capitalized });
+  const handleChange = (e, field) => {
+    const formatted = formatInput(e.target.value);
+    form.setFieldsValue({ [field]: formatted });
   };
 
   return (
     <div className="w-full">
       <Form
-        name="loginForm"
         form={form}
         layout="vertical"
-        onFinish={onFinish}
         autoComplete="off"
         requiredMark={false}
-        labelCol={{ span: 24 }}
-        wrapperCol={{ span: 24 }}
       >
-        <Form.Item name="name" label={<span className="text-white text-[15px] font-medium">Ad</span>} rules={nameRules}>
+        <Form.Item
+          name="name"
+          label={
+            <span className="text-white text-[15px] font-medium">Ad</span>
+          }
+          rules={nameRules}
+        >
           <Input
+            maxLength={30}
             placeholder="Adınızı daxil edin"
             prefix={<img src={person} alt="person" className="w-5 h-5 mr-2" />}
-            onChange={(e) => handleInputChange(e, "name")}
+            onChange={(e) => handleChange(e, "name")}
           />
         </Form.Item>
 
         <Form.Item
           name="surname"
-          label={<span className="text-white text-[15px] font-medium">Soyad</span>}
+          label={
+            <span className="text-white text-[15px] font-medium">Soyad</span>
+          }
           rules={surnameRules}
         >
           <Input
+            maxLength={30}
             placeholder="Soyadınızı daxil edin"
             prefix={<img src={person} alt="person" className="w-5 h-5 mr-2" />}
-            onChange={(e) => handleInputChange(e, "surname")}
+            onChange={(e) => handleChange(e, "surname")}
           />
         </Form.Item>
 
         <Form.Item
           name="date"
-          label={<span className="text-white text-[15px] font-medium">Doğum tarixi</span>}
-          rules={[{ required: true, message: "Zəhmət olmasa tarixi seçin" }]}
+          label={
+            <span className="text-white text-[15px] font-medium">
+              Doğum tarixi
+            </span>
+          }
+          rules={[
+            {
+              required: true,
+              message: "Zəhmət olmasa tarixi seçin",
+            },
+          ]}
         >
           <DatePicker
             className="w-full custom-datepicker"
+            format="DD.MM.YYYY"
             placeholder="gün.ay.il"
-            suffixIcon={null}
             allowClear={false}
+            defaultValue={dayjs()}
+            suffixIcon={null}
             inputRender={(props, ref) => (
               <div className="flex items-center">
-                <img src={calendar} alt="calendar" className="w-5 h-5 mr-2" />
+                <img
+                  src={calendar}
+                  alt="calendar"
+                  className="w-5 h-5 mr-2"
+                />
                 <input
                   ref={ref}
                   {...props}

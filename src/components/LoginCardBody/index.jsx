@@ -1,6 +1,6 @@
 import LoginForm from '../LoginForm/index';
 
-const LoginCardBody = ({title, desc}) => {
+const LoginCardBody = ({title, desc, form}) => {
   return (
     <div className="flex flex-col w-full">
 
@@ -13,7 +13,7 @@ const LoginCardBody = ({title, desc}) => {
         </p>
       </div>
 
-      <LoginForm />
+      <LoginForm form={form}/>
 
     </div>
   );
