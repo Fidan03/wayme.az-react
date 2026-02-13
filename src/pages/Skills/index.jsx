@@ -18,6 +18,10 @@ const Skills = () => {
   }, []);
 
   const addSkill = (skill) => {
+    if (selectedSkills.length >= 10) {
+      alert("Maksimum 10 bacarıq əlavə edə bilərsiniz");
+      return;
+    }
     if (!selectedSkills.includes(skill)) {
       const newSkills = [...selectedSkills, skill];
       setSelectedSkills(newSkills);
@@ -26,6 +30,10 @@ const Skills = () => {
   };
 
   const addCustomSkill = () => {
+    if (selectedSkills.length >= 10) {
+      alert("Maksimum 10 bacarıq əlavə edə bilərsiniz");
+      return;
+    }
     const skill = customSkill.trim();
     if (skill && !selectedSkills.includes(skill)) {
       const newSkills = [...selectedSkills, skill];
@@ -60,7 +68,9 @@ const Skills = () => {
               <div className="flex flex-col w-full">
                 <div className="mb-6">
                   <p className="text-white font-semibold text-[25px]">Bacarıqlarınız</p>
-                  <p className="text-[#A2A8B2] text-[18px] font-medium mt-1">Hansı bacarıqlara sahibsiniz? (Minimum 3 bacarıq)</p>
+                  <p className="text-[#A2A8B2] text-[18px] font-medium mt-1">
+                    Hansı bacarıqlara sahibsiniz? (Minimum 3 bacarıq)
+                  </p>
                 </div>
 
                 <div>
