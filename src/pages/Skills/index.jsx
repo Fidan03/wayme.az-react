@@ -91,7 +91,7 @@ const Skills = () => {
                       {selectedSkills.map((skill, index) => (
                         <div
                           key={index}
-                          className="border-[#2F4A73] border-[2px] text-[#A2A8B2] px-5 py-3 rounded-[7px] text-[16px] cursor-pointer flex items-center gap-2 hover:bg-[#2F4A73] hover:text-white transition"
+                          className="border-[#2F4A73] border-2 text-[#A2A8B2] px-5 py-3 rounded-[7px] text-[16px] cursor-pointer flex items-center gap-2 hover:bg-[#2F4A73] hover:text-white transition"
                           onClick={() => removeSkill(skill)}
                         >
                           {skill} <span className="text-white font-bold">×</span>
