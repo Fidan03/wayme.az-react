@@ -25,7 +25,7 @@ const Login = () => {
           <div className="w-full inline-block p-0.5 rounded-[10px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500">
 
             <div>
-              <LoginCardHeader percent={20}/>
+              <LoginCardHeader percent={20} stage={1}/>
             </div>
 
 
@@ -38,8 +38,8 @@ const Login = () => {
                 />
               </div>
 
-              <div>
-                <NextButton to={'/skills'}/>
+              <div className="w-full mt-3">
+                <NextButton to="/skills" />
               </div>
 
             </div>

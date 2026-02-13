@@ -27,7 +27,7 @@ const Skills = () => {
           <div className="w-full inline-block p-0.5 rounded-[10px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500">
 
             <div>
-              <LoginCardHeader percent={40}/>
+              <LoginCardHeader percent={40} stage={2}/>
             </div>
 
 
@@ -62,10 +62,12 @@ const Skills = () => {
 
               </div>
 
-              <div className='flex gap-2 w-full'>
-                <PrevButton to={'/login'}/>
-                <NextButton />
-              </div>
+                <div className="flex gap-2 w-full">
+                  <PrevButton to="/login" />
+                  <div className="flex-1">
+                    <NextButton to="" />
+                  </div>
+                </div>
 
             </div>
 

@@ -1,6 +1,6 @@
 import ProgressBar from '../ProgressBar/index'
 
-const LoginCardHeader = ({percent}) => {
+const LoginCardHeader = ({percent, stage}) => {
   return (
     <div className="w-full rounded-t-[10px] p-5 bg-[#2F4A73]">
 
@@ -11,7 +11,7 @@ const LoginCardHeader = ({percent}) => {
         </p>
 
         <p className="text-white font-medium text-[18px]">
-          Addım 1/5
+          Addım {stage}/5
         </p>
 
         </div>
