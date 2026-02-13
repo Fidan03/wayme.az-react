@@ -22,11 +22,14 @@ const Login = () => {
           <div className="w-full inline-block p-0.5 rounded-[10px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500">
 
             <div>
-              <LoginCardHeader percent={20} stage={1} />
+              <LoginCardHeader percent={25} stage={1} />
             </div>
 
             <div className="bg-background rounded-b-[10px] p-6">
-
+              <div className="mb">
+                <p className="text-white font-semibold text-[25px]">Şəxsi məlumatlar</p>
+                <p className="text-[#A2A8B2] text-[18px] font-medium mt-1">Zəhmət olmasa məlumatlarınızı düzgün daxil edin</p>
+              </div>
               <LoginCardBody form={form} />
 
               <div className="w-full mt-3">

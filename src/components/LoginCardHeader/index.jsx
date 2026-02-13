@@ -11,7 +11,7 @@ const LoginCardHeader = ({percent, stage}) => {
         </p>
 
         <p className="text-white font-medium text-[18px]">
-          Addım {stage}/5
+          Addım {stage}/4
         </p>
 
         </div>
