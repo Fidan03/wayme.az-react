@@ -1,13 +1,13 @@
 import { Progress, Flex } from 'antd';
 
 
-const ProgressBar = () => {
+const ProgressBar = ({percent}) => {
   return (
     <div>
 
       <Flex vertical className="w-full">
         <Progress
-          percent={20}
+          percent={percent}
           showInfo={false}
           className="bg-background rounded h-[6px]"
           strokeColor="#ffffff"

@@ -1,6 +1,6 @@
 import ProgressBar from '../ProgressBar/index'
 
-const LoginCardHeader = () => {
+const LoginCardHeader = ({percent}) => {
   return (
     <div className="w-full rounded-t-[10px] p-5 bg-[#2F4A73]">
 
@@ -17,7 +17,7 @@ const LoginCardHeader = () => {
         </div>
 
         <div>
-            <ProgressBar/>
+            <ProgressBar percent={percent}/>
         </div>
     </div>
   );

@@ -25,7 +25,7 @@ const Login = () => {
           <div className="w-full inline-block p-0.5 rounded-[10px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500">
 
             <div>
-              <LoginCardHeader/>
+              <LoginCardHeader percent={20}/>
             </div>
 
 
