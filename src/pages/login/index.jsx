@@ -39,7 +39,7 @@ const Login = () => {
               </div>
 
               <div>
-                <NextButton />
+                <NextButton to={'/skills'}/>
               </div>
 
             </div>
