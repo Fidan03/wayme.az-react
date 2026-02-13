@@ -1,9 +1,13 @@
 import choice from "../../data/easyChoices";
 
-const ChoicesCard = ({ onSelect }) => {
+const ChoicesCard = ({ onSelect, selectedSkills }) => {
+  const filteredChoices = choice.filter(
+    (item) => !selectedSkills.includes(item.title)
+  );
+
   return (
     <div className="flex flex-wrap gap-3 my-5 justify-center">
-      {choice.map((item) => (
+      {filteredChoices.map((item) => (
         <div
           key={item.id}
           onClick={() => onSelect(item.title)}

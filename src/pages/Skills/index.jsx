@@ -20,6 +20,7 @@ const Skills = () => {
 
   const addCustomSkill = () => {
     const skill = customSkill.trim();
+
     if (skill && !selectedSkills.includes(skill)) {
       setSelectedSkills([...selectedSkills, skill]);
       setCustomSkill("");
@@ -41,12 +42,14 @@ const Skills = () => {
 
         <div className="w-240 flex flex-col justify-center items-center relative z-10">
           <div className="w-full inline-block p-0.5 rounded-[10px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500">
+
             <div>
               <LoginCardHeader percent={40} stage={2} />
             </div>
 
             <div className="bg-background rounded-b-[10px] p-6">
               <div className="flex flex-col w-full">
+
                 <div className="mb-6">
                   <p className="text-white font-semibold text-[25px]">
                     Bacarıqlarınız
@@ -68,6 +71,7 @@ const Skills = () => {
                       onChange={(e) => setCustomSkill(e.target.value)}
                       onPressEnter={addCustomSkill}
                     />
+
                     <Button onClick={addCustomSkill} />
                   </div>
 
@@ -79,7 +83,8 @@ const Skills = () => {
                           className="border-[#2F4A73] border-[2px] text-[#A2A8B2] px-5 py-3 rounded-[7px] text-[16px] cursor-pointer flex items-center gap-2 hover:bg-[#2F4A73] hover:text-white transition"
                           onClick={() => removeSkill(skill)}
                         >
-                          {skill} <span className="text-white font-bold">×</span>
+                          {skill}
+                          <span className="text-white font-bold">×</span>
                         </div>
                       ))}
                     </div>
@@ -88,17 +93,22 @@ const Skills = () => {
                   <div className="text-[#A2A8B2] text-[20px] font-medium mt-5">
                     <p>Asan seçimlər</p>
 
-                    <ChoicesCard onSelect={addSkill} />
+                    <ChoicesCard
+                      onSelect={addSkill}
+                      selectedSkills={selectedSkills}
+                    />
                   </div>
                 </div>
               </div>
 
               <div className="flex gap-2 w-full mt-6">
                 <PrevButton to="/login" />
+
                 <div className="flex-1">
                   <NextButton to="" />
                 </div>
               </div>
+
             </div>
           </div>
         </div>
