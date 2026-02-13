@@ -4,6 +4,8 @@ import NextButton  from '../../components/NextButton/index';
 import LoginCardHeader from '../../components/LoginCardHeader';
 import { Input } from 'antd';
 import Button from '../../components/Button'
+import ChoicesCard from '../../components/ChoicesCard';
+import PrevButton from '../../components/PrevButton';
 
 
 const Skills = () => {
@@ -44,21 +46,24 @@ const Skills = () => {
 
                 <div>
                   <div>
-                    <p className='text-[#A2A8B2] text-[23px] font-medium mt-1'>Öz bacarıqlarınızı əlavə edin</p>
-                    <div className='flex gap-2'>
+                    <p className='text-[#A2A8B2] text-[20px] font-medium mt-1'>Öz bacarıqlarınızı əlavə edin</p>
+                    <div className='flex gap-2 mt-3'>
                       <Input placeholder="Məsələn: Figma" />
                       <Button/>
                     </div>
                   </div>
-                  <div>
+                  <div className='text-[#A2A8B2] text-[20px] font-medium mt-5'>
                     <p>Asan seçimlər</p>
-                    <div></div>
+                    <div>
+                      <ChoicesCard/>
+                    </div>
                   </div>
                 </div>
 
               </div>
 
-              <div>
+              <div className='flex gap-2 w-full'>
+                <PrevButton/>
                 <NextButton />
               </div>
 
