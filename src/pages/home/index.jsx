@@ -1,6 +1,6 @@
 import frame from '../../assets/Frame 74.png'
 import blur from '../../assets/blur.png'
-import EducationCard from '../../components/EducationCard/index.jsx'
+import EducationCard from '../../components/educationCard/index.jsx'
 import DirectionCard from '../../components/DirectionCard/index.jsx'
 import ProcessCard from '../../components/processCard/index.jsx'
 import ResultsCard from '../../components/resultsCard/index.jsx'
