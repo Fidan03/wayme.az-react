@@ -110,7 +110,7 @@ const Skills = () => {
               <div className="flex gap-2 w-full mt-6">
                 <PrevButton to="/login" />
                 <div className="flex-1">
-                  <NextButton to="" />
+                  <NextButton to="/choiceSelection" />
                 </div>
               </div>
             </div>
