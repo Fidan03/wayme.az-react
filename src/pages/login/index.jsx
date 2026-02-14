@@ -1,7 +1,7 @@
 import { Form } from "antd";
 
 import Header from "../../layout/header";
-import Wave from "../../components/wave/index";
+import Wave from "../../components/Wave/index";
 import NextButton from "../../components/NextButton/index";
 import LoginCardHeader from "../../components/LoginCardHeader";
 import LoginCardBody from "../../components/LoginCardBody";
