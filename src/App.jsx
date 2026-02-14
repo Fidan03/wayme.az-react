@@ -4,6 +4,7 @@ import Login from "./pages/login";
 import Skills from "./pages/Skills";
 import ChoiceSelection from "./pages/ChoiceSelection";
 import Test from "./pages/Test";
+import Results from "./pages/results";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/skills" element={<Skills />} />
         <Route path="/choiceSelection" element={<ChoiceSelection />} />
         <Route path="/test" element={<Test />} />
+        <Route path="/results" element={<Results />} />
       </Routes>
     </Router>
   )
