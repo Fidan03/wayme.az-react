@@ -1,12 +1,11 @@
-import { Form } from "antd";
 import Header from "../../layout/header";
-import Wave from "../../components/wave/index";
+import Wave from "../../components/Wave/index";
 import NextButton from "../../components/NextButton/index";
 import LoginCardHeader from "../../components/LoginCardHeader";
+import PrevButton from "../../components/PrevButton";
+import DirectionsData from "../../data/directionsData";
 
 const ChoiceSelection = () => {
-  const [form] = Form.useForm();
-
   return (
     <div className="bg-background min-h-screen flex flex-col">
       <Header />
@@ -25,11 +24,24 @@ const ChoiceSelection = () => {
 
             <div className="bg-background rounded-b-[10px] p-6">
               <div className="mb">
-                <p className="text-white font-semibold text-[25px]">İstiqaməti seçin (məcburi deyil)</p>
-                <p className="text-[#A2A8B2] text-[18px] font-medium mt-1">Sizi maraqlandıran iş istiqamətini seçə bilərsiniz vəya keçə bilərsiniz</p>
+                <p className="text-white font-semibold text-[25px]">
+                  İstiqaməti seçin (məcburi deyil)
+                </p>
+                <p className="text-[#A2A8B2] text-[18px] font-medium mt-1">
+                  Sizi maraqlandıran iş istiqamətini seçə bilərsiniz vəya keçə bilərsiniz
+                </p>
               </div>
-              <div>
 
+              <div className="cards grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                {DirectionsData.map((item) => (
+                  <div
+                    key={item.id}
+                    className="border-[2px] border-[#2F4A73] rounded-[10px] p-4 flex items-center gap-4 cursor-pointer hover:bg-[#2F4A73] transition"
+                  >
+                    <img src={item.icon} alt={item.title} className="w-10 h-10" />
+                    <span className="text-white font-medium">{item.title}</span>
+                  </div>
+                ))}
               </div>
 
               <div className="flex gap-2 w-full mt-6">
