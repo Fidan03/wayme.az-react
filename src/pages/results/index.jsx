@@ -4,6 +4,7 @@ import NextButton from "../../components/NextButton/index";
 import PrevButton from "../../components/PrevButton";
 import medal from '../../assets/medal.png'
 import ResultCard from '../../components/resultCard'
+import SuitabilityCard from '../../components/suitabilityCard'
 
 const Results = () => {
   return (
@@ -29,7 +30,12 @@ const Results = () => {
               </div>
 
               <div className="flex flex-col gap-4 mt-4">
-                <ResultCard />
+                <div>
+                    <ResultCard />
+                </div>
+                <div>
+                    <SuitabilityCard />
+                </div>
               </div>
 
               <div className="flex gap-2 w-full mt-6">
