@@ -5,6 +5,7 @@ import PrevButton from "../../components/PrevButton";
 import medal from '../../assets/medal.png'
 import ResultCard from '../../components/resultCard'
 import SuitabilityCard from '../../components/suitabilityCard'
+import AdviceCard from "../../components/adviceCard";
 
 const Results = () => {
   return (
@@ -35,6 +36,9 @@ const Results = () => {
                 </div>
                 <div>
                     <SuitabilityCard />
+                </div>
+                <div>
+                    <AdviceCard />
                 </div>
               </div>
 
