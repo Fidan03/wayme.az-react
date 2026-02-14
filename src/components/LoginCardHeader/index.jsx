@@ -1,4 +1,4 @@
-import ProgressBar from '../progressBar/index'
+import ProgressBar from '../ProgressBar/index'
 
 const LoginCardHeader = ({percent, stage}) => {
   return (

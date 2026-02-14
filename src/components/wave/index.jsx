@@ -1,7 +1,7 @@
 import wave1 from '../../assets/wave1.png';
 import wave2 from '../../assets/wave2.png';
 import wave3 from '../../assets/wave3.png';
-import './Wave.css';
+import './wave.css';
 
 const Wave = () => {
   return (

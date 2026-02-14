@@ -1,4 +1,4 @@
-import LoginForm from '../loginForm/index';
+import LoginForm from '../LoginForm/index';
 
 const LoginCardBody = ({title, desc, form}) => {
   return (

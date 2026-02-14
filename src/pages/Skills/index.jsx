@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Header from "../../layout/header";
-import Wave from "../../components/Wave/index";
-import NextButton from "../../components/NextButton/index";
+import Wave from "../../components/wave/index";
+import NextButton from "../../components/nextButton/index";
 import LoginCardHeader from "../../components/LoginCardHeader";
 import { Input } from "antd";
 import Button from "../../components/Button";
