@@ -6,7 +6,9 @@ const NextButton = ({ to, form }) => {
 
   const handleClick = async () => {
     try {
-      await form.validateFields();
+      if (form) {
+        await form.validateFields();
+      }
 
       navigate(to);
     } catch (error) {
