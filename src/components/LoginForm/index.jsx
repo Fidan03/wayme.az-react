@@ -3,8 +3,11 @@ import "./index.css";
 import calendar from "../../assets/calendar.png";
 import person from "../../assets/person.png";
 import dayjs from "dayjs";
+import { useState } from "react";
 
 const LoginForm = ({ form }) => {
+  const [touchedFields, setTouchedFields] = useState({});
+
   const nameRules = [
     { required: true, message: "Zəhmət olmasa adınızı daxil edin" },
     { max: 30, message: "Maksimum 30 simvol" },
@@ -28,6 +31,7 @@ const LoginForm = ({ form }) => {
   const handleChange = (e, field) => {
     const formatted = formatInput(e.target.value);
     form.setFieldsValue({ [field]: formatted });
+    setTouchedFields((prev) => ({ ...prev, [field]: true }));
     const currentData = JSON.parse(localStorage.getItem("loginData") || "{}");
     localStorage.setItem(
       "loginData",
@@ -40,6 +44,7 @@ const LoginForm = ({ form }) => {
     if (val.length > 2) val = val.slice(0, 2) + "." + val.slice(2);
     if (val.length > 5) val = val.slice(0, 5) + "." + val.slice(5);
     form.setFieldsValue({ date: val });
+    setTouchedFields((prev) => ({ ...prev, date: true }));
     const currentData = JSON.parse(localStorage.getItem("loginData") || "{}");
     localStorage.setItem(
       "loginData",
@@ -49,6 +54,7 @@ const LoginForm = ({ form }) => {
 
   const handleDateChange = (date, dateString) => {
     form.setFieldsValue({ date: dateString });
+    setTouchedFields((prev) => ({ ...prev, date: true }));
     const currentData = JSON.parse(localStorage.getItem("loginData") || "{}");
     localStorage.setItem(
       "loginData",
@@ -59,12 +65,15 @@ const LoginForm = ({ form }) => {
   const savedData = JSON.parse(localStorage.getItem("loginData") || "{}");
 
   const hasError = (field) => {
+    if (!touchedFields[field]) return form.getFieldError(field).length > 0;
     const value = form.getFieldValue(field);
     if (field === "date") {
       return !value || value.length < 10 || !dayjs(value, "DD.MM.YYYY", true).isValid();
     }
     return form.getFieldError(field).length > 0;
   };
+
+  const defaultDate = savedData.date && dayjs(savedData.date, "DD.MM.YYYY");
 
   return (
     <div className="w-full">
@@ -121,6 +130,7 @@ const LoginForm = ({ form }) => {
               placeholder="gg.aa.iiii"
               allowClear={false}
               onChange={handleDateChange}
+              value={defaultDate || null}
               suffixIcon={null}
               inputRender={(props, ref) => (
                 <div className="flex items-center w-full h-full px-3">
