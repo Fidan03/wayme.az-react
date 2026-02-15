@@ -37,8 +37,8 @@ const LoginForm = ({ form }) => {
 
   const handleDateInput = (e) => {
     let val = e.target.value.replace(/\D/g, "").slice(0, 8);
-    if (val.length >= 3) val = val.slice(0, 2) + "." + val.slice(2);
-    if (val.length >= 6) val = val.slice(0, 5) + "." + val.slice(5);
+    if (val.length > 2) val = val.slice(0, 2) + "." + val.slice(2);
+    if (val.length > 5) val = val.slice(0, 5) + "." + val.slice(5);
     form.setFieldsValue({ date: val });
     const currentData = JSON.parse(localStorage.getItem("loginData") || "{}");
     localStorage.setItem(
@@ -57,7 +57,14 @@ const LoginForm = ({ form }) => {
   };
 
   const savedData = JSON.parse(localStorage.getItem("loginData") || "{}");
-  const hasError = (field) => form.getFieldError(field).length > 0;
+
+  const hasError = (field) => {
+    const value = form.getFieldValue(field);
+    if (field === "date") {
+      return !value || value.length < 10 || !dayjs(value, "DD.MM.YYYY", true).isValid();
+    }
+    return form.getFieldError(field).length > 0;
+  };
 
   return (
     <div className="w-full">
@@ -124,6 +131,7 @@ const LoginForm = ({ form }) => {
                     className="datepicker-input"
                     value={form.getFieldValue("date")}
                     onChange={handleDateInput}
+                    maxLength={10}
                   />
                 </div>
               )}
