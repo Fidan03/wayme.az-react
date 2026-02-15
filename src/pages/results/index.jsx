@@ -43,7 +43,7 @@ const Results = () => {
               </div>
 
               <div className="flex gap-2 w-full mt-6">
-                <PrevButton to="/skills" />
+                <PrevButton to="/test" />
                 <div className="flex-1">
                   <NextButton to="/pdf" label="PDF hesabat almaq"/>
                 </div>

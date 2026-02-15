@@ -95,7 +95,7 @@ const Test = () => {
                 <PrevButton to="/choiceSelection" />
                 <div className="flex-1">
                   <NextButton
-                    to={isAllAnswered ? "/next-page" : ""}
+                    to={isAllAnswered ? "/results" : ""}
                     onClick={() => {
                       if (!isAllAnswered) alert("Hər suala cavab verin!");
                     }}

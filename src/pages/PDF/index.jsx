@@ -73,7 +73,7 @@ const PDF = () => {
 
               <div className="flex gap-3 w-full pt-2">
 
-                <PrevButton to="/skills" />
+                <PrevButton to="/results" />
 
                 <div className="flex-1">
                   <NextButton label="Mailə göndər" />
