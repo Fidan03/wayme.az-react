@@ -6,6 +6,7 @@ import medal from '../../assets/medal.png'
 import ResultCard from '../../components/resultCard'
 import SuitabilityCard from '../../components/suitabilityCard'
 import AdviceCard from "../../components/adviceCard";
+import SuggestionCard from "../../components/suggestionCard";
 
 const Results = () => {
   return (
@@ -33,6 +34,9 @@ const Results = () => {
               <div className="flex flex-col gap-4 mt-4">
                 <div>
                     <ResultCard />
+                </div>
+                <div>
+                  <SuggestionCard/>
                 </div>
                 <div>
                     <SuitabilityCard />
