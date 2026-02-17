@@ -21,7 +21,7 @@ const About = () => {
           <Wave />
         </div>
 
-        <div className="w-240 flex justify-center items-center relative z-10 px-4 flex-col space-y-12 mb-40">
+        <div className="w-240 flex justify-center items-center relative z-10 px-4 flex-col space-y-12">
 
           <div className="flex flex-col text-center space-y-2">
             <p className="font-bold text-[36px] bg-gradient-to-r from-[#00B4FF] via-[#7C3AED] to-[#FF49A0] bg-clip-text text-transparent">
@@ -97,7 +97,7 @@ const About = () => {
                 }].map((item, index) => (
                   <div key={index} className="bg-[#132746] rounded-2xl p-6 space-y-4">
                     <div className="flex items-center gap-4">
-                      <img src={item.icon} alt="" className="w-10 h-10" />
+                      <img src={item.icon} alt="" className="w-8 h-8" />
                       <p className="font-medium text-[18px] text-white">
                         {item.title}
                       </p>
@@ -136,7 +136,7 @@ const About = () => {
                 }].map((item, index) => (
                   <div key={index} className="bg-[#132746] rounded-2xl p-6 space-y-4">
                     <div className="flex items-center gap-4">
-                      <img src={item.icon} alt="" className="w-9 h-9" />
+                      <img src={item.icon} alt="" className="w-8 h-8" />
                       <p className="font-medium text-[18px] text-white">
                         {item.title}
                       </p>
@@ -150,7 +150,7 @@ const About = () => {
             </div>
           </div>
 
-          <div className="p-0.5 rounded-2xl bg-gradient-to-r from-[#00B4FF] via-[#7C3AED] to-[#FF49A0]">
+          <div className="p-1 rounded-2xl bg-gradient-to-r from-[#00B4FF] via-[#7C3AED] to-[#FF49A0]">
 
             <div className="bg-[#132746] rounded-2xl p-6 space-y-4 flex flex-col items-center">
 
