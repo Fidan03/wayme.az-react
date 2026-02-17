@@ -45,9 +45,8 @@ const LoginForm = ({ form }) => {
   };
 
   const handleDateChange = (date) => {
-    if (!date || !dayjs.isDayjs(date)) return;
-    form.setFieldsValue({ date });
-    const formatted = date.format("DD.MM.YYYY");
+    const formatted = date ? date.format("DD.MM.YYYY") : "";
+    form.setFieldsValue({ date }); // ensures the value appears in the input
     const currentData = JSON.parse(localStorage.getItem("loginData") || "{}");
     localStorage.setItem(
       "loginData",
@@ -65,7 +64,7 @@ const LoginForm = ({ form }) => {
         initialValues={{
           name: savedData.name || "",
           surname: savedData.surname || "",
-          date: null,
+          date: savedData.date ? dayjs(savedData.date, "DD.MM.YYYY") : null,
         }}
       >
         <Form.Item
@@ -98,9 +97,7 @@ const LoginForm = ({ form }) => {
           name="date"
           label={<span className="text-white text-[15px] font-medium">Doğum tarixi</span>}
           validateTrigger="onChange"
-          rules={[
-            { required: true, message: "Zəhmət olmasa tarixi seçin" }
-          ]}
+          rules={[{ required: true, message: "Zəhmət olmasa tarixi seçin" }]}
         >
           <DatePicker
             className="w-full datepicker-clean custom-datepicker"
@@ -109,7 +106,6 @@ const LoginForm = ({ form }) => {
             allowClear={false}
             onChange={handleDateChange}
             prefix={<img src={calendar} alt="calendar" className="w-5 h-5" />}
-            suffixIcon={null}
             disabledDate={(current) => current && current > dayjs().endOf("day")}
             classNames={{
               popup: { root: "custom-calendar-popup" },
