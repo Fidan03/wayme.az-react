@@ -4,7 +4,7 @@
   border-radius: 15px !important;
   background-color: #2f4a73 !important;
   color: white !important;
-  border-color: #445f8f !important;
+  border: none !important;
   font-size: 18px !important;
   display: flex;
   align-items: center;
@@ -18,63 +18,102 @@
 .ant-input:focus,
 .ant-input-focused {
   background-color: #2f4a73 !important;
-  border-color: #445f8f !important;
+  border: none !important;
   box-shadow: none !important;
 }
 
-.ant-form-item-label {
-  padding-bottom: 4px !important;
-}
-
-.ant-form-item {
-  margin-bottom: 18px !important;
-}
-
-.error-box {
-  border-radius: 15px;
-  padding: 2px;
-}
-
-.error-box-active {
-  border: 2px solid #ef4444;
-}
-
-.datepicker-clean {
+.custom-datepicker.ant-picker {
+  width: 100% !important;
   height: 50px !important;
   background-color: #2f4a73 !important;
   border-radius: 15px !important;
-  border: 1px solid #445f8f !important;
-  padding: 0 !important;
+  border: none !important;
+  padding: 0 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  box-shadow: none !important;
+}
+
+.custom-datepicker .ant-picker-input {
+  height: 100% !important;
   display: flex !important;
   align-items: center !important;
 }
 
-.datepicker-clean .ant-picker-input {
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.datepicker-clean input {
+.custom-datepicker .ant-picker-input > input {
+  background: transparent !important;
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
-  background: transparent !important;
+  color: white !important;
+  font-size: 18px !important;
+  height: 100% !important;
 }
 
-.datepicker-input {
-  width: 100%;
-  height: 50px;
-  border: none;
-  outline: none;
-  background-color: #2f4a73;
-  color: white;
-  font-size: 18px;
-  border-radius: 15px;
-  padding: 0 8px;
-}
-
-.ant-picker-input > input::placeholder {
+.custom-datepicker .ant-picker-input > input::placeholder {
   color: #9ca3af !important;
   font-size: 18px !important;
+}
+
+.custom-datepicker .ant-picker-prefix {
+  display: flex !important;
+  align-items: center !important;
+  margin-right: 10px !important;
+}
+
+.custom-datepicker .ant-picker-suffix {
+  display: none !important;
+}
+
+.custom-datepicker.ant-picker-focused {
+  background-color: #2f4a73 !important;
+  box-shadow: none !important;
+}
+
+.ant-form-item-has-error .custom-datepicker {
+  border: none !important;
+}
+
+.custom-calendar-popup .ant-picker-panel {
+  background: #2f4a73 !important;
+  border-radius: 12px;
+  border: none;
+}
+
+.custom-calendar-popup .ant-picker-header {
+  color: white;
+  border-bottom: 1px solid #374151;
+}
+
+.custom-calendar-popup .ant-picker-content th {
+  color: white;
+}
+
+.custom-calendar-popup .ant-picker-cell-inner {
+  color: white;
+  border-radius: 8px;
+}
+
+.custom-calendar-popup .ant-picker-cell-inner:hover {
+  background: #2563eb;
+  color: white;
+}
+
+.custom-calendar-popup
+  .ant-picker-cell-selected
+  .ant-picker-cell-inner {
+  background: #3b82f6;
+  color: white;
+}
+
+.custom-calendar-popup
+  .ant-picker-cell-today
+  .ant-picker-cell-inner::before {
+  border-color: #3b82f6;
+}
+
+.custom-calendar-popup
+  .ant-picker-cell-disabled
+  .ant-picker-cell-inner {
+  color: #6b7280;
 }

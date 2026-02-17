@@ -14,7 +14,16 @@ const LoginForm = ({ form }) => {
     },
   ];
 
-  const surnameRules = [...nameRules];
+  const surnameRules = [
+    { required: true, message: "Zəhmət olmasa soyadınızı daxil edin" },
+    { max: 30, message: "Maksimum 30 simvol" },
+    {
+      pattern: /^[A-Za-zÇƏĞİÖŞÜçəğiöşü]+(-[A-Za-zÇƏĞİÖŞÜçəğiöşü]+)?$/,
+      message: "Yalnız hərflər və maksimum bir '-' icazəlidir",
+    },
+  ];
+
+  const savedData = JSON.parse(localStorage.getItem("loginData") || "{}");
 
   const formatInput = (value) => {
     let val = value.replace(/[^A-Za-zÇƏĞİÖŞÜçəğiöşü-]/g, "");
@@ -35,35 +44,15 @@ const LoginForm = ({ form }) => {
     );
   };
 
-  const handleDateInput = (e) => {
-    let val = e.target.value.replace(/\D/g, "").slice(0, 8);
-    if (val.length > 2) val = val.slice(0, 2) + "." + val.slice(2);
-    if (val.length > 5) val = val.slice(0, 5) + "." + val.slice(5);
-    form.setFieldsValue({ date: val });
+  const handleDateChange = (date) => {
+    if (!date || !dayjs.isDayjs(date)) return;
+    form.setFieldsValue({ date });
+    const formatted = date.format("DD.MM.YYYY");
     const currentData = JSON.parse(localStorage.getItem("loginData") || "{}");
     localStorage.setItem(
       "loginData",
-      JSON.stringify({ ...currentData, date: val })
+      JSON.stringify({ ...currentData, date: formatted })
     );
-  };
-
-  const handleDateChange = (date, dateString) => {
-    form.setFieldsValue({ date: dateString });
-    const currentData = JSON.parse(localStorage.getItem("loginData") || "{}");
-    localStorage.setItem(
-      "loginData",
-      JSON.stringify({ ...currentData, date: dateString })
-    );
-  };
-
-  const savedData = JSON.parse(localStorage.getItem("loginData") || "{}");
-
-  const hasError = (field) => {
-    const value = form.getFieldValue(field);
-    if (field === "date") {
-      return !value || value.length < 10 || !dayjs(value, "DD.MM.YYYY", true).isValid();
-    }
-    return form.getFieldError(field).length > 0;
   };
 
   return (
@@ -76,7 +65,7 @@ const LoginForm = ({ form }) => {
         initialValues={{
           name: savedData.name || "",
           surname: savedData.surname || "",
-          date: savedData.date || "",
+          date: null,
         }}
       >
         <Form.Item
@@ -84,14 +73,12 @@ const LoginForm = ({ form }) => {
           label={<span className="text-white text-[15px] font-medium">Ad</span>}
           rules={nameRules}
         >
-          <div className={`error-box ${hasError("name") ? "error-box-active" : ""}`}>
-            <Input
-              maxLength={30}
-              placeholder="Adınızı daxil edin"
-              prefix={<img src={person} alt="person" className="w-5 h-5 mr-2" />}
-              onChange={(e) => handleChange(e, "name")}
-            />
-          </div>
+          <Input
+            maxLength={30}
+            placeholder="Adınızı daxil edin"
+            prefix={<img src={person} alt="person" className="w-5 h-5 mr-2" />}
+            onChange={(e) => handleChange(e, "name")}
+          />
         </Form.Item>
 
         <Form.Item
@@ -99,44 +86,35 @@ const LoginForm = ({ form }) => {
           label={<span className="text-white text-[15px] font-medium">Soyad</span>}
           rules={surnameRules}
         >
-          <div className={`error-box ${hasError("surname") ? "error-box-active" : ""}`}>
-            <Input
-              maxLength={30}
-              placeholder="Soyadınızı daxil edin"
-              prefix={<img src={person} alt="person" className="w-5 h-5 mr-2" />}
-              onChange={(e) => handleChange(e, "surname")}
-            />
-          </div>
+          <Input
+            maxLength={30}
+            placeholder="Soyadınızı daxil edin"
+            prefix={<img src={person} alt="person" className="w-5 h-5 mr-2" />}
+            onChange={(e) => handleChange(e, "surname")}
+          />
         </Form.Item>
 
         <Form.Item
           name="date"
           label={<span className="text-white text-[15px] font-medium">Doğum tarixi</span>}
-          rules={[{ required: true, message: "Zəhmət olmasa tarixi seçin" }]}
+          validateTrigger="onChange"
+          rules={[
+            { required: true, message: "Zəhmət olmasa tarixi seçin" }
+          ]}
         >
-          <div className={`error-box ${hasError("date") ? "error-box-active" : ""}`}>
-            <DatePicker
-              className="w-full datepicker-clean"
-              format="DD.MM.YYYY"
-              placeholder="gg.aa.iiii"
-              allowClear={false}
-              onChange={handleDateChange}
-              suffixIcon={null}
-              inputRender={(props, ref) => (
-                <div className="flex items-center w-full h-full px-3">
-                  <img src={calendar} alt="calendar" className="w-5 h-5 mr-2" />
-                  <input
-                    ref={ref}
-                    {...props}
-                    className="datepicker-input"
-                    value={form.getFieldValue("date")}
-                    onChange={handleDateInput}
-                    maxLength={10}
-                  />
-                </div>
-              )}
-            />
-          </div>
+          <DatePicker
+            className="w-full datepicker-clean custom-datepicker"
+            format="DD.MM.YYYY"
+            placeholder="gg.aa.iiii"
+            allowClear={false}
+            onChange={handleDateChange}
+            prefix={<img src={calendar} alt="calendar" className="w-5 h-5" />}
+            suffixIcon={null}
+            disabledDate={(current) => current && current > dayjs().endOf("day")}
+            classNames={{
+              popup: { root: "custom-calendar-popup" },
+            }}
+          />
         </Form.Item>
       </Form>
     </div>
