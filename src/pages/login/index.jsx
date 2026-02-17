@@ -1,5 +1,4 @@
 import { Form } from "antd";
-
 import Header from "../../layout/header";
 import Wave from "../../components/Wave/index";
 import NextButton from "../../components/NextButton/index";

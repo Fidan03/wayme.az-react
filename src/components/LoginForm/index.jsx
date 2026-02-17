@@ -46,7 +46,7 @@ const LoginForm = ({ form }) => {
 
   const handleDateChange = (date) => {
     const formatted = date ? date.format("DD.MM.YYYY") : "";
-    form.setFieldsValue({ date }); // ensures the value appears in the input
+    form.setFieldsValue({ date });
     const currentData = JSON.parse(localStorage.getItem("loginData") || "{}");
     localStorage.setItem(
       "loginData",
