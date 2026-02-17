@@ -17,16 +17,14 @@ const About = () => {
       <Header />
 
       <div className="flex-1 relative flex justify-center items-center overflow-hidden">
-        {/* Wave */}
         <div className="absolute bottom-0 left-0 w-full z-0">
           <Wave />
         </div>
 
-        {/* Main Container */}
         <div className="w-240 flex justify-center items-center relative z-10 px-4 flex-col">
 
-              <div>
-                <p className="font-semibold text-[26px] ">
+              <div className="flex flex-col">
+                <p className="font-semibold text-[26px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent text-center">
                   Haqqımızda
                 </p>
 
@@ -35,17 +33,15 @@ const About = () => {
                 </p>
               </div>
 
-              {/* Mission & Vision */}
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="flex gap-6">
 
-                {/* Mission */}
-                <div className="bg-[#2F4A73] rounded-xl p-5 space-y-3">
+                <div className="rounded-xl p-5 space-y-3 bg-[#132746]">
                   <div className="flex items-center gap-3">
                     <img src={mission} alt="mission" className="w-7 h-7" />
-                    <p className="font-semibold text-lg ">Missiyamız</p>
+                    <p className="font-semibold text-lg text-white">Missiyamız</p>
                   </div>
 
-                  <p className="text-[#D1D5DB] leading-relaxed">
+                  <p className="text-[#A2A8B2] leading-relaxed">
                     Hər kəsə ən uyğun karyera yolunu tapmaqda kömək etmək üçün
                     innovativ və obyektiv qiymətləndirmə sistemi təqdim edirik.
                     Biz inanırıq ki, doğru istiqamətin seçilməsi uğurlu və
@@ -53,14 +49,13 @@ const About = () => {
                   </p>
                 </div>
 
-                {/* Vision */}
-                <div className="bg-[#2F4A73] rounded-xl p-5 space-y-3">
+                <div className="bg-[#132746] rounded-xl p-5 space-y-3">
                   <div className="flex items-center gap-3">
                     <img src={vision} alt="vision" className="w-7 h-7" />
-                    <p className="font-semibold text-lg">Vizyonumuz</p>
+                    <p className="font-semibold text-lg text-white">Vizyonumuz</p>
                   </div>
 
-                  <p className="text-[#D1D5DB] leading-relaxed">
+                  <p className="text-[#A2A8B2] leading-relaxed">
                     Azərbaycanda və regionda ən etibarlı karyera yönləndirmə
                     platforması olmaq, hər bir insanın potensialını tam şəkildə
                     reallaşdırmasına kömək etmək.
@@ -68,10 +63,13 @@ const About = () => {
                 </div>
               </div>
 
-              {/* Services */}
-              <div className="space-y-4">
 
-                <p className="font-semibold text-xl">
+
+
+
+              <div className="space-y-4 mt-10">
+
+                <p className="font-semibold text-xl bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent text-center">
                   Nə təklif edirik
                 </p>
 
@@ -101,14 +99,14 @@ const About = () => {
                   ].map((item, index) => (
                     <div
                       key={index}
-                      className="bg-[#2F4A73] rounded-xl p-4 space-y-2"
+                      className="bg-[#132746] rounded-xl p-4 space-y-2"
                     >
                       <div className="flex items-center gap-2">
                         <img src={item.icon} alt="" className="w-6 h-6" />
-                        <p className="font-medium">{item.title}</p>
+                        <p className="font-medium text-white">{item.title}</p>
                       </div>
 
-                      <p className="text-[#D1D5DB] text-sm">
+                      <p className="text-[#A2A8B2] text-sm">
                         {item.text}
                       </p>
                     </div>
@@ -116,10 +114,13 @@ const About = () => {
                 </div>
               </div>
 
-              {/* Values */}
-              <div className="space-y-4">
 
-                <p className="font-semibold text-xl">
+
+
+
+              <div className="space-y-4 mt-10">
+
+                <p className="font-semibold text-xl bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent text-center">
                   Dəyərlərimiz
                 </p>
 
@@ -144,14 +145,14 @@ const About = () => {
                   ].map((item, index) => (
                     <div
                       key={index}
-                      className="bg-[#2F4A73] rounded-xl p-4 space-y-2"
+                      className="bg-[#132746] rounded-xl p-4 space-y-2"
                     >
                       <div className="flex items-center gap-2">
                         <img src={item.icon} alt="" className="w-6 h-6" />
-                        <p className="font-medium">{item.title}</p>
+                        <p className="font-medium text-white">{item.title}</p>
                       </div>
 
-                      <p className="text-[#D1D5DB] text-sm">
+                      <p className="text-[#A2A8B2] text-sm">
                         {item.text}
                       </p>
                     </div>
@@ -159,12 +160,15 @@ const About = () => {
                 </div>
               </div>
 
-              {/* Contact */}
-              <div className="p-0.5 rounded-xl bg-linear-to-r from-blue-500 via-purple-500 to-pink-500">
 
-                <div className="bg-background rounded-xl p-5 space-y-2">
 
-                  <p className="font-semibold text-lg">
+
+
+              <div className="p-0.5 rounded-xl bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 mt-10">
+
+                <div className="bg-[#132746] rounded-xl p-5 space-y-2 flex flex-col items-center">
+
+                  <p className="font-semibold text-lg text-white">
                     Əlaqə
                   </p>
 
@@ -173,7 +177,7 @@ const About = () => {
                     bizimlə əlaqə saxlayın:
                   </p>
 
-                  <p className="font-medium">
+                  <p className="font-medium text-[#2AA6FF]">
                     Email: email@gmail.com
                   </p>
 
