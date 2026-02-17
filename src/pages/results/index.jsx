@@ -22,7 +22,7 @@ const Results = () => {
             <div className="bg-background rounded-b-[10px] p-6">
               <div className="mb">
                 <div className="flex gap-2 items-center">
-                    <img src={medal} alt="medal" className="w-[30px] h-[30px]"/>
+                    <img src={medal} alt="medal" className="w-7.5 h-7.5"/>
                     <p className="text-white font-semibold text-[25px]">Nəticələriniz</p>
                 </div>
                 <p className="text-[#A2A8B2] text-[18px] font-medium mt-1">

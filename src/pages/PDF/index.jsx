@@ -41,7 +41,7 @@ const PDF = () => {
                 <img
                   src={about}
                   alt="about"
-                  className="w-[20px] h-[20px]"
+                  className="w-5 h-5"
                 />
 
               </div>
