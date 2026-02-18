@@ -1,30 +1,12 @@
-import { DatePicker, Form, Input } from "antd";
-import "./index.css";
-import calendar from "../../assets/calendar.png";
-import person from "../../assets/person.png";
+import { useState, useRef, useEffect } from "react";
 import dayjs from "dayjs";
+import person from "../../assets/person.png";
+import calendar from "../../assets/calendar.png";
 
 const LoginForm = ({ form }) => {
-  const nameRules = [
-    { required: true, message: "Zəhmət olmasa adınızı daxil edin" },
-    { max: 30, message: "Maksimum 30 simvol" },
-    {
-      pattern: /^[A-Za-zÇƏĞİÖŞÜçəğiöşü]+(-[A-Za-zÇƏĞİÖŞÜçəğiöşü]+)?$/,
-      message: "Yalnız hərflər və maksimum bir '-' icazəlidir",
-    },
-  ];
-
-  const surnameRules = [
-    { required: true, message: "Zəhmət olmasa soyadınızı daxil edin" },
-    { max: 30, message: "Maksimum 30 simvol" },
-    {
-      pattern: /^[A-Za-zÇƏĞİÖŞÜçəğiöşü]+(-[A-Za-zÇƏĞİÖŞÜçəğiöşü]+)?$/,
-      message: "Yalnız hərflər və maksimum bir '-' icazəlidir",
-    },
-  ];
-
   const savedData = JSON.parse(localStorage.getItem("loginData") || "{}");
 
+  // ---------------------- Name & Surname ----------------------
   const formatInput = (value) => {
     let val = value.replace(/[^A-Za-zÇƏĞİÖŞÜçəğiöşü-]/g, "");
     const parts = val.split("-");
@@ -36,83 +18,267 @@ const LoginForm = ({ form }) => {
 
   const handleChange = (e, field) => {
     const formatted = formatInput(e.target.value);
+
     form.setFieldsValue({ [field]: formatted });
+
     const currentData = JSON.parse(localStorage.getItem("loginData") || "{}");
+
     localStorage.setItem(
       "loginData",
       JSON.stringify({ ...currentData, [field]: formatted })
     );
   };
 
-  const handleDateChange = (date) => {
-    const formatted = date ? date.format("DD.MM.YYYY") : "";
-    form.setFieldsValue({ date });
-    const currentData = JSON.parse(localStorage.getItem("loginData") || "{}");
+  // ---------------------- Date Picker ----------------------
+  const [selectedDate, setSelectedDate] = useState(savedData.date || "");
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState(
+    selectedDate ? dayjs(savedData.date, "DD.MM.YYYY") : dayjs()
+  );
+
+  const calendarRef = useRef();
+
+  // Close on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!calendarRef.current?.contains(e.target)) {
+        setShowCalendar(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // ---------------------- Calendar Logic ----------------------
+  const startOfMonth = currentMonth.startOf("month");
+  const endOfMonth = currentMonth.endOf("month");
+  const startDay = startOfMonth.day();
+  const totalDays = endOfMonth.date();
+
+  const prevMonth = () =>
+    setCurrentMonth(currentMonth.subtract(1, "month"));
+
+  const nextMonth = () =>
+    setCurrentMonth(currentMonth.add(1, "month"));
+
+  const handleDateSelect = (day) => {
+    const date = currentMonth.date(day);
+    const formatted = date.format("DD.MM.YYYY");
+
+    setSelectedDate(formatted);
+    form.setFieldsValue({ date: formatted });
+
     localStorage.setItem(
       "loginData",
-      JSON.stringify({ ...currentData, date: formatted })
+      JSON.stringify({
+        ...JSON.parse(localStorage.getItem("loginData") || "{}"),
+        date: formatted,
+      })
+    );
+
+    setShowCalendar(false);
+  };
+
+  // ---------------------- AUTO DOT FORMAT ----------------------
+  const formatDateInput = (value) => {
+    // Remove everything except numbers
+    let numbers = value.replace(/\D/g, "").slice(0, 8);
+
+    let result = "";
+
+    if (numbers.length >= 1) {
+      result = numbers.slice(0, 2);
+    }
+
+    if (numbers.length >= 3) {
+      result += "." + numbers.slice(2, 4);
+    }
+
+    if (numbers.length >= 5) {
+      result += "." + numbers.slice(4, 8);
+    }
+
+    return result;
+  };
+
+  const handleInputChange = (e) => {
+    const rawValue = e.target.value;
+
+    const formatted = formatDateInput(rawValue);
+
+    setSelectedDate(formatted);
+    form.setFieldsValue({ date: formatted });
+
+    // If full date and valid → update calendar
+    if (
+      formatted.length === 10 &&
+      dayjs(formatted, "DD.MM.YYYY", true).isValid()
+    ) {
+      setCurrentMonth(dayjs(formatted, "DD.MM.YYYY"));
+    }
+
+    localStorage.setItem(
+      "loginData",
+      JSON.stringify({
+        ...JSON.parse(localStorage.getItem("loginData") || "{}"),
+        date: formatted,
+      })
     );
   };
 
+  const isFutureDate = (day) => {
+    return currentMonth.date(day).isAfter(dayjs(), "day");
+  };
+
+  const renderDays = () => {
+    const blanks = Array.from({ length: startDay }, (_, i) => (
+      <div key={`blank-${i}`} />
+    ));
+
+    const days = Array.from({ length: totalDays }, (_, i) => {
+      const dayNum = i + 1;
+      const dateObj = currentMonth.date(dayNum);
+
+      const isDisabled = isFutureDate(dayNum);
+
+      const isSelected =
+        selectedDate === dateObj.format("DD.MM.YYYY");
+
+      return (
+        <button
+          key={dayNum}
+          type="button"
+          onClick={() =>
+            !isDisabled && handleDateSelect(dayNum)
+          }
+          className={`
+            w-10 h-10 flex items-center justify-center rounded-lg
+            transition-colors duration-200
+            ${isSelected ? "bg-blue-500 text-white" : ""}
+            ${
+              !isSelected && !isDisabled
+                ? "hover:bg-blue-600 hover:text-white"
+                : ""
+            }
+            ${
+              isDisabled
+                ? "text-gray-500 cursor-not-allowed"
+                : "text-white"
+            }
+          `}
+        >
+          {dayNum}
+        </button>
+      );
+    });
+
+    return [...blanks, ...days];
+  };
+
+  // ---------------------- Render ----------------------
   return (
     <div className="w-full">
-      <Form
-        form={form}
-        layout="vertical"
-        autoComplete="off"
-        requiredMark={false}
-        initialValues={{
-          name: savedData.name || "",
-          surname: savedData.surname || "",
-          date: savedData.date ? dayjs(savedData.date, "DD.MM.YYYY") : null,
-        }}
-      >
-        <Form.Item
-          name="name"
-          label={<span className="text-white text-[15px] font-medium">Ad</span>}
-          rules={nameRules}
-        >
-          <Input
-            maxLength={30}
-            placeholder="Adınızı daxil edin"
-            prefix={<img src={person} alt="person" className="w-5 h-5 mr-2" />}
-            onChange={(e) => handleChange(e, "name")}
-          />
-        </Form.Item>
+      <form autoComplete="off">
 
-        <Form.Item
-          name="surname"
-          label={<span className="text-white text-[15px] font-medium">Soyad</span>}
-          rules={surnameRules}
-        >
-          <Input
-            maxLength={30}
-            placeholder="Soyadınızı daxil edin"
-            prefix={<img src={person} alt="person" className="w-5 h-5 mr-2" />}
-            onChange={(e) => handleChange(e, "surname")}
-          />
-        </Form.Item>
+        {/* Name */}
+        <div className="mb-4">
+          <label className="text-white text-[15px] font-medium">
+            Ad
+          </label>
 
-        <Form.Item
-          name="date"
-          label={<span className="text-white text-[15px] font-medium">Doğum tarixi</span>}
-          validateTrigger="onChange"
-          rules={[{ required: true, message: "Zəhmət olmasa tarixi seçin" }]}
-        >
-          <DatePicker
-            className="w-full datepicker-clean custom-datepicker"
-            format="DD.MM.YYYY"
-            placeholder="gg.aa.iiii"
-            allowClear={false}
-            onChange={handleDateChange}
-            prefix={<img src={calendar} alt="calendar" className="w-5 h-5" />}
-            disabledDate={(current) => current && current > dayjs().endOf("day")}
-            classNames={{
-              popup: { root: "custom-calendar-popup" },
-            }}
-          />
-        </Form.Item>
-      </Form>
+          <div className="flex items-center bg-[#2f4a73] rounded-lg h-12 px-2">
+            <img src={person} className="w-5 h-5 mr-2" />
+
+            <input
+              maxLength={30}
+              value={form.getFieldValue("name") || ""}
+              placeholder="Adınızı daxil edin"
+              onChange={(e) => handleChange(e, "name")}
+              className="flex-1 bg-transparent text-white text-[18px] outline-none"
+            />
+          </div>
+        </div>
+
+        {/* Surname */}
+        <div className="mb-4">
+          <label className="text-white text-[15px] font-medium">
+            Soyad
+          </label>
+
+          <div className="flex items-center bg-[#2f4a73] rounded-lg h-12 px-2">
+            <img src={person} className="w-5 h-5 mr-2" />
+
+            <input
+              maxLength={30}
+              value={form.getFieldValue("surname") || ""}
+              placeholder="Soyadınızı daxil edin"
+              onChange={(e) => handleChange(e, "surname")}
+              className="flex-1 bg-transparent text-white text-[18px] outline-none"
+            />
+          </div>
+        </div>
+
+        {/* Date */}
+        <div className="mb-4">
+          <label className="text-white text-[15px] font-medium">
+            Doğum tarixi
+          </label>
+
+          <div className="relative mt-1" ref={calendarRef}>
+
+            <div className="flex items-center bg-[#2f4a73] rounded-lg h-12 px-2">
+              <img
+                src={calendar}
+                className="w-5 h-5 mr-2 cursor-pointer"
+                onClick={() => setShowCalendar(!showCalendar)}
+              />
+
+              <input
+                value={selectedDate}
+                placeholder="gg.aa.iiii"
+                onChange={handleInputChange}
+                maxLength={10}
+                className="flex-1 bg-transparent text-white text-[18px] outline-none"
+              />
+            </div>
+
+            {/* Calendar */}
+            {showCalendar && (
+              <div className="absolute bottom-full left-0 mb-2 bg-[#2f4a73] rounded-lg p-4 shadow-lg z-50 w-64">
+
+                <div className="flex justify-between items-center mb-3 text-white font-semibold">
+                  <button type="button" onClick={prevMonth}>
+                    &lt;
+                  </button>
+
+                  <span>
+                    {currentMonth.format("MMMM YYYY")}
+                  </span>
+
+                  <button type="button" onClick={nextMonth}>
+                    &gt;
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-7 text-center text-gray-300 mb-2 text-sm">
+                  {["Su","Mo","Tu","We","Th","Fr","Sa"].map((d) => (
+                    <div key={d}>{d}</div>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-7 gap-1">
+                  {renderDays()}
+                </div>
+
+              </div>
+            )}
+          </div>
+        </div>
+
+      </form>
     </div>
   );
 };
