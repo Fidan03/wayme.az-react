@@ -1,7 +1,7 @@
-import "./main.css";
 import { useNavigate } from "react-router-dom";
+import "./main.css";
 
-const NextButton = ({ to, form, label = "Növbəti" }) => {
+const NextButton = ({ to, form, label = "Növbəti", onClick }) => {
   const navigate = useNavigate();
 
   const handleClick = async () => {
@@ -10,7 +10,13 @@ const NextButton = ({ to, form, label = "Növbəti" }) => {
         await form.validateFields();
       }
 
-      navigate(to);
+      if (onClick) {
+        await onClick(); // Call parent onClick (e.g., show modal, send PDF)
+      }
+
+      if (to) {
+        navigate(to);
+      }
     } catch (error) {
       console.log("Validation failed");
     }

@@ -10,6 +10,8 @@ import person from "../../assets/person.png";
 const PDF = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
 
   const validateEmail = (value) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,9 +30,17 @@ const PDF = () => {
 
   const handleChange = (e) => {
     const value = e.target.value.slice(0, 30);
-
     setEmail(value);
     validateEmail(value);
+  };
+
+  // Simulated PDF generation and email send
+  const handleSend = () => {
+    if (!email || error) return;
+
+    // Show modal for demonstration
+    setModalMessage("PDF uğurla yaradıldı və mailə göndərildi!");
+    setModalVisible(true);
   };
 
   return (
@@ -61,17 +71,11 @@ const PDF = () => {
                   fərdi öyrənmə planı olan PDF fayl göndərəcəyik.
                 </p>
 
-                <img
-                  src={about}
-                  alt="about"
-                  className="w-5 h-5"
-                />
+                <img src={about} alt="about" className="w-5 h-5" />
               </div>
 
               <div className="space-y-2">
-                <p className="text-white font-medium">
-                  Email ünvanı
-                </p>
+                <p className="text-white font-medium">Email ünvanı</p>
 
                 <Input
                   size="large"
@@ -82,19 +86,11 @@ const PDF = () => {
                     error ? "ring-2 ring-red-500" : ""
                   }`}
                   prefix={
-                    <img
-                      src={person}
-                      alt="person"
-                      className="w-5 h-5 mr-2"
-                    />
+                    <img src={person} alt="person" className="w-5 h-5 mr-2" />
                   }
                 />
 
-                {error && (
-                  <p className="text-red-500 text-sm">
-                    {error}
-                  </p>
-                )}
+                {error && <p className="text-red-500 text-sm">{error}</p>}
 
                 <p className="text-[#2AA6FF] text-sm cursor-pointer underline text-center">
                   PDF yüklə
@@ -108,6 +104,7 @@ const PDF = () => {
                   <NextButton
                     label="Mailə göndər"
                     disabled={!!error || !email}
+                    onClick={handleSend}
                   />
                 </div>
               </div>
@@ -115,6 +112,21 @@ const PDF = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      {modalVisible && (
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
+          <div className="bg-[#1E2F4D] p-6 rounded-lg shadow-lg w-80 text-center">
+            <p className="text-white font-medium">{modalMessage}</p>
+            <button
+              className="mt-4 px-4 py-2 bg-[#2AA6FF] text-white rounded-lg"
+              onClick={() => setModalVisible(false)}
+            >
+              Bağla
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
