@@ -10,6 +10,8 @@ const Header = () => {
   const handleGoHome = () => {
     // Clear all saved form data
     localStorage.removeItem("loginData");
+    localStorage.removeItem("skillsData");
+    localStorage.removeItem("choiceData");
 
     navigate("/");
   };
