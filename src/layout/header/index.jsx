@@ -8,8 +8,12 @@ const Header = () => {
   const currentPath = location.pathname;
 
   const handleGoHome = () => {
-    navigate('/');
+    // Clear all saved form data
+    localStorage.removeItem("loginData");
+
+    navigate("/");
   };
+
 
   const handleGoAbout = () => {
     navigate('/about');

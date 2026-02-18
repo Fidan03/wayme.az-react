@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { message } from "antd";
 import "./main.css";
 
 const NextButton = ({ to, form, label = "Növbəti", onClick }) => {
@@ -18,7 +19,7 @@ const NextButton = ({ to, form, label = "Növbəti", onClick }) => {
         navigate(to);
       }
     } catch (error) {
-      console.log("Validation failed");
+      message.error("Zəhmət olmasa bütün sahələri doldurun");
     }
   };
 
