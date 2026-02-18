@@ -12,10 +12,9 @@ const Header = () => {
     localStorage.removeItem("loginData");
     localStorage.removeItem("skillsData");
     localStorage.removeItem("choiceData");
-
+    localStorage.removeItem("answersData");
     navigate("/");
   };
-
 
   const handleGoAbout = () => {
     navigate('/about');
@@ -49,13 +48,14 @@ const Header = () => {
       );
     }
 
+    // For all other pages (including Results & PDF)
     return (
       <div className='bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer'>
         <button
           className="bg-background text-white font-semibold text-[20px] px-5 py-2.5 rounded-lg flex items-center gap-2 hover:bg-[#596E8F]"
           onClick={handleGoHome}
         >
-          Testi dayandır
+          Ana səhifə
         </button>
       </div>
     );
