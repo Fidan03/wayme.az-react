@@ -6,6 +6,8 @@ import PrevButton from "../../components/PrevButton";
 import about from "../../assets/about.png";
 import { Input } from "antd";
 import person from "../../assets/person.png";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const PDF = () => {
   const [email, setEmail] = useState("");
@@ -34,12 +36,30 @@ const PDF = () => {
     validateEmail(value);
   };
 
-  // Simulated PDF generation and email send
-  const handleSend = () => {
+  // PDF generation and download
+  const handleDownloadPDF = async () => {
+    const element = document.getElementById("results-pdf");
+    if (!element) return;
+
+    const canvas = await html2canvas(element, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("hesabat.pdf");
+
+    setModalMessage("PDF uğurla yaradıldı!");
+    setModalVisible(true);
+  };
+
+  // Simulated email send (or can integrate EmailJS)
+  const handleSendEmail = () => {
     if (!email || error) return;
 
-    // Show modal for demonstration
-    setModalMessage("PDF uğurla yaradıldı və mailə göndərildi!");
+    setModalMessage(`PDF mailə göndərildi: ${email}`);
     setModalVisible(true);
   };
 
@@ -92,7 +112,10 @@ const PDF = () => {
 
                 {error && <p className="text-red-500 text-sm">{error}</p>}
 
-                <p className="text-[#2AA6FF] text-sm cursor-pointer underline text-center">
+                <p
+                  className="text-[#2AA6FF] text-sm cursor-pointer underline text-center"
+                  onClick={handleDownloadPDF}
+                >
                   PDF yüklə
                 </p>
               </div>
@@ -104,9 +127,15 @@ const PDF = () => {
                   <NextButton
                     label="Mailə göndər"
                     disabled={!!error || !email}
-                    onClick={handleSend}
+                    onClick={handleSendEmail}
                   />
                 </div>
+              </div>
+
+              {/* Example results to capture in PDF */}
+              <div id="results-pdf" className="hidden">
+                <h1 className="text-black">Sizin nəticələriniz</h1>
+                <p className="text-black">Burada hesabatın məzmunu olacaq.</p>
               </div>
             </div>
           </div>
