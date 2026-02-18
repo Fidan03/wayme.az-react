@@ -7,7 +7,6 @@ import ResultsCard from '../../components/benefitsCard/index.jsx'
 import CountableCard from '../../components/conutableCard/index.jsx'
 import human from '../../assets/human.png'
 import Wave from '../../components/wave/index.jsx'
-import Header from '../../layout/header/index.jsx'
 import Button from '../../components/startButton/index.jsx'
 
 const Home = () => {
@@ -19,9 +18,6 @@ const Home = () => {
                 <div><img src={blur} alt="blur" className='relative top-50'/></div>
             </div>
             <div>
-                <div>
-                    <Header/>
-                </div>
                 <div className='flex flex-col justify-center items-center text-center mt-[100px]'>
                     <div>
                         <img src={frame} alt="frame" className='w-77.5'/>
@@ -44,7 +40,7 @@ const Home = () => {
 
         <div className='w-full max-w-7xl flex items-center flex-col bg-[#132746] p-10 mt-10 rounded-3xl'>
             <p className='font-bold text-[36px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent'>
-            Mövcud İstiqamətlər
+            Mövcud istiqamətlər
             </p>
             <p className='text-[#A2A8B2] text-[20px] mb-10'>
             Ən çox tələb olunan və perspektivli ixtisaslar

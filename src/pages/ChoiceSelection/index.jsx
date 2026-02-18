@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Header from "../../layout/header";
-import Wave from "../../components/Wave/index";
+import Wave from "../../components/wave/index";
 import NextButton from "../../components/NextButton/index";
 import LoginCardHeader from "../../components/LoginCardHeader";
 import PrevButton from "../../components/PrevButton";

@@ -1,6 +1,4 @@
-import Header from "../../layout/header";
-import Wave from "../../components/Wave/index";
-
+import Wave from "../../components/wave/index";
 import mission from "../../assets/mission.png";
 import vision from "../../assets/vision.png";
 import icon3 from "../../assets/icon3.png";
@@ -14,7 +12,6 @@ import medal from "../../assets/medal.png";
 const About = () => {
   return (
     <div className="bg-background min-h-screen flex flex-col">
-      <Header />
 
       <div className="flex-1 relative flex justify-center items-center overflow-hidden">
         <div className="absolute bottom-0 left-0 w-full z-0">

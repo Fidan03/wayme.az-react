@@ -11,7 +11,7 @@ const NextButton = ({ to, form, label = "Növbəti", onClick }) => {
       }
 
       if (onClick) {
-        await onClick(); // Call parent onClick (e.g., show modal, send PDF)
+        await onClick();
       }
 
       if (to) {

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import Header from "../../layout/header";
-import Wave from "../../components/Wave/index";
+import Wave from "../../components/wave/index";
 import NextButton from "../../components/NextButton/index";
 import PrevButton from "../../components/PrevButton";
 import about from "../../assets/about.png";
@@ -36,7 +35,6 @@ const PDF = () => {
     validateEmail(value);
   };
 
-  // PDF generation and download
   const handleDownloadPDF = async () => {
     const element = document.getElementById("results-pdf");
     if (!element) return;
@@ -55,7 +53,6 @@ const PDF = () => {
     setModalVisible(true);
   };
 
-  // Simulated email send (or can integrate EmailJS)
   const handleSendEmail = () => {
     if (!email || error) return;
 
@@ -65,7 +62,6 @@ const PDF = () => {
 
   return (
     <div className="bg-background min-h-screen flex flex-col">
-      <Header />
 
       <div className="flex-1 relative flex justify-center items-center overflow-hidden">
         <div className="absolute bottom-0 left-0 w-full z-0">
