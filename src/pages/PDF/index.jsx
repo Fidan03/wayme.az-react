@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Wave from "../../components/wave/index";
 import NextButton from "../../components/NextButton/index";
-import { Input } from "antd";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import person from "../../assets/person.png";
@@ -21,7 +20,7 @@ const PDF = () => {
   };
 
   const handleChange = (e) => {
-    const value = e.target.value.slice(0, 30);
+    const value = e.target.value.slice(0, 30); // Max 30 characters
     setEmail(value);
     validateEmail(value);
   };
@@ -47,7 +46,6 @@ const PDF = () => {
   };
 
   const handleGoHome = () => {
-    // Clear all saved data
     localStorage.removeItem("loginData");
     localStorage.removeItem("skillsData");
     localStorage.removeItem("choiceData");
@@ -66,6 +64,7 @@ const PDF = () => {
           <div className="w-full inline-block p-0.5 rounded-[10px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500">
             <div className="bg-background rounded-b-[10px] p-6 space-y-6">
 
+              {/* Header */}
               <div>
                 <p className="text-white font-semibold text-[26px]">PDF hesabat alımı</p>
                 <p className="text-[#A2A8B2] text-[18px] font-medium mt-1">
@@ -73,40 +72,52 @@ const PDF = () => {
                 </p>
               </div>
 
+              {/* Info Box */}
               <div className="bg-[#008CFF63] border border-[#008CFF63] rounded-xl p-4 flex items-center justify-between gap-4">
                 <p className="text-white text-[15px] leading-relaxed">
                   Sizə nəticələrinizin ətraflı təhlili, inkişaf tövsiyyələri və fərdi öyrənmə planı olan PDF fayl göndərəcəyik.
                 </p>
               </div>
 
+              {/* Custom Email Input */}
               <div className="space-y-2">
                 <p className="text-white font-medium">Email ünvanı</p>
-                <Input
-                  size="large"
-                  value={email}
-                  onChange={handleChange}
-                  placeholder="user@email.com"
-                  className={`bg-[#1E2F4D] border-none text-white rounded-lg ${
-                    error ? "ring-2 ring-red-500" : ""
-                  }`}
-                  prefix={<img src={person} alt="person" className="w-5 h-5 mr-2" />}
-                />
+
+                <div className={`flex items-center bg-[#2f4a73] rounded-lg h-12 px-3 gap-2`}>
+                  <img src={person} alt="person" className="w-5 h-5" />
+                  <input
+                    type="email"
+                    placeholder="user@email.com"
+                    value={email}
+                    onChange={handleChange}
+                    className="flex-1 h-full bg-transparent text-white text-[18px] border-none outline-none placeholder-white"
+                    onKeyDown={(e) => e.key === "Enter" && handleSendEmail()}
+                  />
+                </div>
+
                 {error && <p className="text-red-500 text-sm">{error}</p>}
-                <p className="text-[#2AA6FF] text-sm cursor-pointer underline text-center" onClick={handleDownloadPDF}>
+
+                <p
+                  className="text-[#2AA6FF] text-sm cursor-pointer underline text-center"
+                  onClick={handleDownloadPDF}
+                >
                   PDF yüklə
                 </p>
               </div>
 
+              {/* Buttons */}
               <div className="flex gap-3 w-full pt-2">
                 <div className="flex-1">
                   <NextButton label="Mailə göndər" disabled={!!error || !email} onClick={handleSendEmail} />
                 </div>
               </div>
 
+              {/* Hidden PDF content */}
               <div id="results-pdf" className="hidden">
                 <h1 className="text-black">Sizin nəticələriniz</h1>
                 <p className="text-black">Burada hesabatın məzmunu olacaq.</p>
               </div>
+
             </div>
           </div>
         </div>
