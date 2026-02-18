@@ -1,23 +1,30 @@
 import { useState } from "react";
 import Wave from "../../components/wave/index";
-import NextButton from "../../components/NextButton/index";
 import LoginCardHeader from "../../components/LoginCardHeader";
 import PrevButton from "../../components/PrevButton";
 import DirectionsData from "../../data/directionsData";
+import { useNavigate } from "react-router-dom";
 
 const ChoiceSelection = () => {
+  const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
+  const [selectedSub, setSelectedSub] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const cardsToShow = selectedCard ? selectedCard.directions : DirectionsData;
 
-  const handleSelect = (item) => {
-    if (selectedCard) return;
+  const handleSelect = (item, isSub = false) => {
+    if (isTransitioning) return;
 
     setIsTransitioning(true);
 
     setTimeout(() => {
-      setSelectedCard(item);
+      if (isSub) {
+        setSelectedSub(item); // subdirection selected only when clicked
+      } else {
+        setSelectedCard(item);
+        setSelectedSub(null); // reset subdirection selection when choosing a new direction
+      }
       setIsTransitioning(false);
     }, 200);
   };
@@ -30,13 +37,23 @@ const ChoiceSelection = () => {
 
     setTimeout(() => {
       setSelectedCard(null);
+      setSelectedSub(null); // clear subselection when going back
       setIsTransitioning(false);
     }, 200);
   };
 
+  const handleStartTest = () => {
+    // Save choice only if user selected something
+    if (selectedSub) {
+      localStorage.setItem("choiceData", JSON.stringify(selectedSub));
+    } else if (selectedCard) {
+      localStorage.setItem("choiceData", JSON.stringify(selectedCard));
+    }
+    navigate("/test");
+  };
+
   return (
     <div className="bg-background min-h-screen flex flex-col">
-
       <div className="flex-1 relative flex justify-center items-center overflow-hidden">
         <div className="absolute bottom-0 left-0 w-full z-0">
           <Wave />
@@ -51,7 +68,6 @@ const ChoiceSelection = () => {
                 <p className="text-white font-semibold text-[25px]">
                   İstiqaməti seçin (məcburi deyil)
                 </p>
-
                 <p className="text-[#A2A8B2] text-[18px] font-medium mt-1">
                   Seçdiyiniz istiqamətə uyğun alt istiqamətlər
                 </p>
@@ -65,27 +81,25 @@ const ChoiceSelection = () => {
                 }`}
               >
                 {cardsToShow.map((item) => {
-                  const icon = selectedCard
-                    ? selectedCard.icon
-                    : item.icon;
+                  // Only highlight if user clicked it
+                  const isSelected = selectedSub && selectedSub.id === item.id;
 
                   return (
                     <div
                       key={item.id}
-                      className="rounded-[10px] p-4 flex items-center gap-4 cursor-pointer bg-background border-[#2F4A73] border-2 hover:bg-[#2F4A73] transition"
-                      onClick={() => handleSelect(item)}
+                      className={`rounded-[10px] p-4 flex items-center gap-4 cursor-pointer border-2 transition
+                        ${isSelected ? "bg-[#2F4A73] border-[#2F4A73]" : "bg-background border-[#2F4A73]"}
+                        hover:bg-[#2F4A73]`}
+                      onClick={() =>
+                        selectedCard
+                          ? handleSelect(item, true)
+                          : handleSelect(item)
+                      }
                     >
-                      {icon && (
-                        <img
-                          src={icon}
-                          alt={item.title}
-                          className="w-10 h-10"
-                        />
+                      {item.icon && (
+                        <img src={item.icon} alt={item.title} className="w-10 h-10" />
                       )}
-
-                      <span className="text-white font-medium">
-                        {item.title}
-                      </span>
+                      <span className="text-white font-medium">{item.title}</span>
                     </div>
                   );
                 })}
@@ -98,9 +112,15 @@ const ChoiceSelection = () => {
                 />
 
                 <div className="flex-1">
-                  <NextButton to="/test" />
+                  <button
+                    onClick={handleStartTest}
+                    className="w-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold py-2 px-4 rounded-[15px] h-[50px] text-[20px] cursor-pointer animated-gradient"
+                  >
+                    {selectedCard ? "Testə başla" : "Seçmədən testə başla"}
+                  </button>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
