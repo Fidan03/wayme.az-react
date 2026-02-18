@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import Wave from "../../components/wave/index";
 import LoginCardHeader from "../../components/LoginCardHeader";
-import { Input, message } from "antd";
+import {  message } from "antd";
 import Button from "../../components/Button";
 import ChoicesCard from "../../components/ChoicesCard";
 import PrevButton from "../../components/PrevButton";
 import { useNavigate } from "react-router-dom";
-import './main.css'
 
 const Skills = () => {
   const navigate = useNavigate();

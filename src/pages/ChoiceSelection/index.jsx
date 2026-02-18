@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Header from "../../layout/header";
 import Wave from "../../components/wave/index";
 import NextButton from "../../components/NextButton/index";
 import LoginCardHeader from "../../components/LoginCardHeader";
@@ -37,7 +36,6 @@ const ChoiceSelection = () => {
 
   return (
     <div className="bg-background min-h-screen flex flex-col">
-      <Header />
 
       <div className="flex-1 relative flex justify-center items-center overflow-hidden">
         <div className="absolute bottom-0 left-0 w-full z-0">
