@@ -1,5 +1,5 @@
 import Header from "../../layout/header";
-import Wave from "../../components/Wave/index";
+import Wave from "../../components/wave/index";
 
 import mission from "../../assets/mission.png";
 import vision from "../../assets/vision.png";

@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Home from "./pages/home";
+import Login from "./pages/login";
 import Skills from "./pages/Skills";
 import ChoiceSelection from "./pages/ChoiceSelection";
 import Test from "./pages/Test";
-import Results from "./pages/Results";
+import Results from "./pages/results";
 import PDF from "./pages/PDF";
 import About from "./pages/About";
 
