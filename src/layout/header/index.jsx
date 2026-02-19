@@ -2,15 +2,12 @@ import logo from '../../assets/logo.png';
 import about from '../../assets/about.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-
-
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
 
   const handleGoHome = () => {
-    // Clear all saved form data
     localStorage.removeItem("loginData");
     localStorage.removeItem("skillsData");
     localStorage.removeItem("choiceData");
@@ -24,6 +21,7 @@ const Header = () => {
 
   const renderButton = () => {
     if (currentPath === '/') {
+      // Home page → Haqqımızda
       return (
         <div className='bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer'>
           <button
@@ -38,6 +36,7 @@ const Header = () => {
     }
 
     if (currentPath === '/about') {
+      // About page → Geri
       return (
         <div className='bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer'>
           <button
@@ -50,14 +49,28 @@ const Header = () => {
       );
     }
 
-    // For all other pages (including Results & PDF)
+    if (currentPath === '/results' || currentPath === '/pdf') {
+      // Results & PDF → Ana səhifə
+      return (
+        <div className='bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer'>
+          <button
+            className="bg-background text-white font-semibold text-[20px] px-5 py-2.5 rounded-lg flex items-center gap-2 hover:bg-[#596E8F]"
+            onClick={handleGoHome}
+          >
+            Ana səhifə
+          </button>
+        </div>
+      );
+    }
+
+    // All other pages → Testi dayandır
     return (
       <div className='bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer'>
         <button
           className="bg-background text-white font-semibold text-[20px] px-5 py-2.5 rounded-lg flex items-center gap-2 hover:bg-[#596E8F]"
           onClick={handleGoHome}
         >
-          Ana səhifə
+          Testi dayandır
         </button>
       </div>
     );
