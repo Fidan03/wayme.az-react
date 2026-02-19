@@ -9,6 +9,8 @@ import human from '../../assets/human.png'
 import Wave from '../../components/wave/index.jsx'
 import Button from '../../components/startButton/index.jsx'
 
+
+
 const Home = () => {
   return (
     <div className='bg-background w-full pt-[20px]'>

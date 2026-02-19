@@ -7,6 +7,8 @@ import ChoicesCard from "../../components/ChoicesCard";
 import PrevButton from "../../components/PrevButton";
 import { useNavigate } from "react-router-dom";
 
+
+
 const Skills = () => {
   const navigate = useNavigate();
 

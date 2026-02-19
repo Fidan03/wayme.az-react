@@ -2,6 +2,8 @@ import logo from '../../assets/logo.png';
 import about from '../../assets/about.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+
+
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();

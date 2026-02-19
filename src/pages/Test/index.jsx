@@ -4,6 +4,8 @@ import NextButton from "../../components/NextButton/index";
 import LoginCardHeader from "../../components/LoginCardHeader";
 import PrevButton from "../../components/PrevButton";
 
+
+
 const questions = [
   {
     id: 1,

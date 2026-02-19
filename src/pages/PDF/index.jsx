@@ -6,6 +6,8 @@ import jsPDF from "jspdf";
 import person from "../../assets/person.png";
 import { useNavigate } from "react-router-dom";
 
+
+
 const PDF = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");

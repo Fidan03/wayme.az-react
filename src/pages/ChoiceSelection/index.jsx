@@ -5,6 +5,8 @@ import PrevButton from "../../components/PrevButton";
 import DirectionsData from "../../data/directionsData";
 import { useNavigate } from "react-router-dom";
 
+
+
 const ChoiceSelection = () => {
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);

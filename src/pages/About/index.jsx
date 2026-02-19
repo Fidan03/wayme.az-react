@@ -9,6 +9,8 @@ import growth from "../../assets/growth.png";
 import heart from "../../assets/heart.png";
 import medal from "../../assets/medal.png";
 
+
+
 const About = () => {
   return (
     <div className="bg-background min-h-screen flex flex-col">

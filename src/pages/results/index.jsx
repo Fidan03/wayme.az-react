@@ -7,6 +7,8 @@ import AdviceCard from "../../components/adviceCard";
 import SuggestionCard from "../../components/suggestionCard";
 import { useNavigate } from "react-router-dom";
 
+
+
 const Results = () => {
   const navigate = useNavigate();
 
