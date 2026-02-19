@@ -136,7 +136,7 @@ const Test = () => {
                               }`}
                           >
                             <span
-                              className={`w-5 h-5 border-2 rounded-full flex-shrink-0 flex justify-center items-center
+                              className={`w-5 h-5 border-2 rounded-full shrink-0 flex justify-center items-center
                                 ${isSelected ? "bg-white border-[#3379FB]" : "border-white"}`}
                             >
                               {isSelected && <span className="w-2 h-2 bg-[#3379FB] rounded-full" />}

@@ -34,7 +34,7 @@ const DirectionCard = () => {
           >
             {/* Left Side */}
             <div className="flex justify-start gap-4">
-              <div className="flex items-center gap-3 flex-wrap flex-shrink-0">
+              <div className="flex items-center gap-3 flex-wrap shrink-0">
                 <img
                   src={item.icon}
                   alt={item.title}
