@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import Skills from "./pages/Skills";
 import ChoiceSelection from "./pages/ChoiceSelection";
 import Test from "./pages/Test";
-import Results from "./pages/Results";
+import Results from "./pages/results";
 import PDF from "./pages/PDF";
 import About from "./pages/About";
 
