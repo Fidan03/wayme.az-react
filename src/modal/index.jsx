@@ -23,18 +23,29 @@ const Modal = ({ item, onClose }) => {
       >
         <div className="bg-background rounded-[20px] p-6 w-full h-full overflow-hidden">
 
+          {/* Header */}
           <div className="flex justify-between items-center mb-5">
             <h1 className="text-[30px] font-semibold text-white">
               {item.title}
             </h1>
 
-            <button onClick={onClose} className='bg-[#26356B] rounded-full size-[40px] flex items-center justify-center'>
-              <img src={close} alt="close" className="w-6 h-6 cursor-pointer" /> 
+            <button
+              onClick={onClose}
+              className="bg-[#26356B] rounded-full size-[40px] flex items-center justify-center"
+            >
+              <img
+                src={close}
+                alt="close"
+                className="w-6 h-6 cursor-pointer"
+              />
             </button>
           </div>
 
-          <p className="font-medium mb-4 text-[#A2A8B2] text-[20px]">Sahələr:</p>
+          <p className="font-medium mb-4 text-[#A2A8B2] text-[20px]">
+            Sahələr:
+          </p>
 
+          {/* Cards */}
           <div className="flex flex-wrap justify-center gap-5 max-h-[60vh] pr-2 overflow-y-auto">
 
             {item.directions.map((direction) => {
@@ -43,31 +54,61 @@ const Modal = ({ item, onClose }) => {
               return (
                 <div
                   key={direction.id}
-                  className="flex flex-col items-start self-start border border-white/10 
-                             bg-[#357CFF33] rounded-[20px] px-3 py-2.5 w-[275px]"
+
+                  /* ✅ WHOLE CARD CLICKABLE */
+                  onClick={() => handleToggle(direction.id)}
+
+                  className="
+                    flex flex-col items-start self-start
+                    border border-white/10
+                    bg-[#357CFF33]
+                    rounded-[20px]
+                    px-3 py-2.5
+                    w-[275px]
+                    cursor-pointer
+
+                    transition-all duration-300 ease-in-out
+                    hover:scale-[1.03]
+                    hover:bg-[#357CFF55]
+                    active:scale-[0.97]
+                  "
                 >
-                  <div className="flex items-start mb-2.5">
-                    <img src={programming} alt="programming" className="w-[44px] h-[44px] mr-4" />
+                  {/* Top */}
+                  <div className="flex items-start mb-2.5 w-full">
+                    <img
+                      src={programming}
+                      alt="programming"
+                      className="w-[44px] h-[44px] mr-4"
+                    />
+
                     <div>
-                      <h3 className="font-semibold text-sm text-white">{direction.title}</h3>
-                      <p className="text-xs text-[#A2A8B2]">React, Vue, Angular</p>
+                      <h3 className="font-semibold text-sm text-white">
+                        {direction.title}
+                      </h3>
+
+                      <p className="text-xs text-[#A2A8B2]">
+                        React, Vue, Angular
+                      </p>
                     </div>
                   </div>
 
-                  <div className="flex justify-center w-full">
+                  {/* Arrow */}
+                  <div className="flex justify-center w-full pointer-events-none">
                     <img
                       src={downArrow}
                       alt="downArrow"
-                      className={`w-[18px] my-1.5 cursor-pointer transition-transform duration-300 ease-in-out ${
+                      className={`w-[18px] my-1.5 transition-transform duration-300 ease-in-out ${
                         isOpen ? 'rotate-180' : ''
                       }`}
-                      onClick={() => handleToggle(direction.id)}
                     />
                   </div>
 
+                  {/* Content */}
                   <div
-                    ref={(el) => (contentRefs.current[direction.id] = el)}
-                    className="overflow-hidden transition-all duration-500 ease-in-out"
+                    ref={(el) =>
+                      (contentRefs.current[direction.id] = el)
+                    }
+                    className="overflow-hidden transition-all duration-500 ease-in-out w-full"
                     style={{
                       maxHeight: isOpen
                         ? `${contentRefs.current[direction.id]?.scrollHeight}px`

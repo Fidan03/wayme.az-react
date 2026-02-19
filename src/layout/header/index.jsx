@@ -1,14 +1,19 @@
 import logo from '../../assets/logo.png';
 import about from '../../assets/about.png';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Header = () => {
-  const [currentPath] = useState(window.location.pathname);
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const handleGoHome = () => {
-    navigate('/');
+    // Clear all saved form data
+    localStorage.removeItem("loginData");
+    localStorage.removeItem("skillsData");
+    localStorage.removeItem("choiceData");
+    localStorage.removeItem("answersData");
+    navigate("/");
   };
 
   const handleGoAbout = () => {
@@ -28,7 +33,9 @@ const Header = () => {
           </button>
         </div>
       );
-    } else if (currentPath === '/about') {
+    }
+
+    if (currentPath === '/about') {
       return (
         <div className='bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer'>
           <button
@@ -39,18 +46,19 @@ const Header = () => {
           </button>
         </div>
       );
-    } else {
-      return (
-        <div className='bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer'>
-          <button
-            className="bg-background text-white font-semibold text-[20px] px-5 py-2.5 rounded-lg flex items-center gap-2 hover:bg-[#596E8F]"
-            onClick={handleGoHome}
-          >
-            Testi dayandır
-          </button>
-        </div>
-      );
     }
+
+    // For all other pages (including Results & PDF)
+    return (
+      <div className='bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer'>
+        <button
+          className="bg-background text-white font-semibold text-[20px] px-5 py-2.5 rounded-lg flex items-center gap-2 hover:bg-[#596E8F]"
+          onClick={handleGoHome}
+        >
+          Ana səhifə
+        </button>
+      </div>
+    );
   };
 
   return (

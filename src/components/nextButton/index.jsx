@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { message } from "antd";
 import "./main.css";
 
 const NextButton = ({ to, form, label = "Növbəti", onClick }) => {
@@ -11,14 +12,14 @@ const NextButton = ({ to, form, label = "Növbəti", onClick }) => {
       }
 
       if (onClick) {
-        await onClick(); // Call parent onClick (e.g., show modal, send PDF)
+        await onClick();
       }
 
       if (to) {
         navigate(to);
       }
     } catch (error) {
-      console.log("Validation failed");
+      message.error("Zəhmət olmasa bütün sahələri doldurun");
     }
   };
 
