@@ -112,7 +112,7 @@ const ChoiceSelection = () => {
                 <div className="flex-1">
                   <button
                     onClick={handleStartTest}
-                    className="w-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold py-2 sm:py-3 px-4 rounded-[15px] text-[18px] sm:text-[20px] cursor-pointer animated-gradient"
+                    className="w-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold py-2 px-4 rounded-[15px] h-12.5 text-[20px] cursor-pointer animated-gradient"
                   >
                     {selectedSub ? "Testə başla" : "Seçmədən testə başla"}
                   </button>
