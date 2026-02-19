@@ -5,28 +5,29 @@ import PrevButton from "../../components/PrevButton";
 import DirectionsData from "../../data/directionsData";
 import { useNavigate } from "react-router-dom";
 
-
-
 const ChoiceSelection = () => {
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedSub, setSelectedSub] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
+  // Determine which cards to show
   const cardsToShow = selectedCard ? selectedCard.directions : DirectionsData;
 
   const handleSelect = (item, isSub = false) => {
-    if (isTransitioning) return;
+    if (isSub) {
+      // Subdirection selection: only color change, no transition
+      setSelectedSub(item);
+      return;
+    }
 
+    // Main direction selection: apply transition
+    if (isTransitioning) return;
     setIsTransitioning(true);
 
     setTimeout(() => {
-      if (isSub) {
-        setSelectedSub(item); // subdirection selected only when clicked
-      } else {
-        setSelectedCard(item);
-        setSelectedSub(null); // reset subdirection selection when choosing a new direction
-      }
+      setSelectedCard(item);
+      setSelectedSub(null); // reset subdirection
       setIsTransitioning(false);
     }, 200);
   };
@@ -39,13 +40,13 @@ const ChoiceSelection = () => {
 
     setTimeout(() => {
       setSelectedCard(null);
-      setSelectedSub(null); // clear subselection when going back
+      setSelectedSub(null);
       setIsTransitioning(false);
     }, 200);
   };
 
   const handleStartTest = () => {
-    // Save choice only if user selected something
+    // Save choice
     if (selectedSub) {
       localStorage.setItem("choiceData", JSON.stringify(selectedSub));
     } else if (selectedCard) {
@@ -75,27 +76,26 @@ const ChoiceSelection = () => {
                 </p>
               </div>
 
+              {/* Cards grid */}
               <div
                 className={`grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 transition-all duration-200 ${
-                  isTransitioning
-                    ? "opacity-0 translate-y-2"
-                    : "opacity-100 translate-y-0"
+                  // Only apply transition when changing main directions
+                  selectedSub ? "" : isTransitioning ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
                 }`}
               >
                 {cardsToShow.map((item) => {
-                  // Only highlight if user clicked it
                   const isSelected = selectedSub && selectedSub.id === item.id;
 
                   return (
                     <div
                       key={item.id}
-                      className={`rounded-[10px] p-4 flex items-center gap-4 cursor-pointer border-2 transition
+                      className={`rounded-[10px] p-4 flex items-center gap-4 cursor-pointer border-2 transition-colors
                         ${isSelected ? "bg-[#2F4A73] border-[#2F4A73]" : "bg-background border-[#2F4A73]"}
                         hover:bg-[#2F4A73]`}
                       onClick={() =>
                         selectedCard
-                          ? handleSelect(item, true)
-                          : handleSelect(item)
+                          ? handleSelect(item, true) // Subdirection selection
+                          : handleSelect(item) // Main direction selection
                       }
                     >
                       {item.icon && (
@@ -107,6 +107,7 @@ const ChoiceSelection = () => {
                 })}
               </div>
 
+              {/* Navigation buttons */}
               <div className="flex gap-2 w-full mt-6">
                 <PrevButton
                   to={selectedCard ? "#" : "/skills"}
@@ -118,11 +119,10 @@ const ChoiceSelection = () => {
                     onClick={handleStartTest}
                     className="w-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold py-2 px-4 rounded-[15px] h-[50px] text-[20px] cursor-pointer animated-gradient"
                   >
-                    {selectedCard ? "Testə başla" : "Seçmədən testə başla"}
+                    {selectedSub ? "Testə başla" : "Seçmədən testə başla"}
                   </button>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
