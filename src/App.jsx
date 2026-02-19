@@ -1,13 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./layout/header";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Skills from "./pages/Skills";
-import ChoiceSelection from "./pages/ChoiceSelection";
-import Test from "./pages/Test";
-import Results from "./pages/results";
-import PDF from "./pages/PDF";
-import About from "./pages/About";
+import {Home, PDF, Skills, Test, About, Results, ChoiceSelection, Login} from './pages/index'
 
 function App() {
   return (
