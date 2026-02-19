@@ -47,7 +47,10 @@ const Test = () => {
 
   const totalPages = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
 
+  const totalPages = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
+
   const startIndex = currentPage * QUESTIONS_PER_PAGE;
+  const endIndex = Math.min(startIndex + QUESTIONS_PER_PAGE, questions.length);
   const endIndex = Math.min(startIndex + QUESTIONS_PER_PAGE, questions.length);
   const currentQuestions = questions.slice(startIndex, endIndex);
 
@@ -60,7 +63,6 @@ const Test = () => {
     const unanswered = currentQuestions
       .filter((q) => selectedAnswers[q.id] === undefined)
       .map((q) => q.id);
-
     if (unanswered.length > 0) {
       setShowError(unanswered);
       return;
@@ -73,19 +75,17 @@ const Test = () => {
     const unanswered = currentQuestions
       .filter((q) => selectedAnswers[q.id] === undefined)
       .map((q) => q.id);
-
     if (unanswered.length > 0) {
       setShowError(unanswered);
       return;
     }
-
     setLoadingResults(true);
 
     localStorage.setItem("testAnswers", JSON.stringify(selectedAnswers));
-
     setTimeout(() => {
       setLoadingResults(false);
       window.location.href = "/results";
+    }, 2000);
     }, 2000);
   };
 
@@ -218,6 +218,7 @@ const Test = () => {
                 </div>
 
               </div>
+
 
             </div>
 
