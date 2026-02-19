@@ -1,12 +1,11 @@
 import { useState } from "react";
 import Wave from "../../components/wave/index";
 import NextButton from "../../components/NextButton/index";
+import PrevButton from "../../components/PrevButton/index";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import person from "../../assets/person.png";
 import { useNavigate } from "react-router-dom";
-
-
 
 const PDF = () => {
   const [email, setEmail] = useState("");
@@ -22,7 +21,7 @@ const PDF = () => {
   };
 
   const handleChange = (e) => {
-    const value = e.target.value.slice(0, 30); // Max 30 characters
+    const value = e.target.value.slice(0, 30);
     setEmail(value);
     validateEmail(value);
   };
@@ -45,14 +44,6 @@ const PDF = () => {
     if (!email || error) return;
     setModalMessage(`PDF mailə göndərildi: ${email}`);
     setModalVisible(true);
-  };
-
-  const handleGoHome = () => {
-    localStorage.removeItem("loginData");
-    localStorage.removeItem("skillsData");
-    localStorage.removeItem("choiceData");
-    localStorage.removeItem("answersData");
-    navigate("/");
   };
 
   return (
@@ -84,8 +75,7 @@ const PDF = () => {
               {/* Custom Email Input */}
               <div className="space-y-2">
                 <p className="text-white font-medium">Email ünvanı</p>
-
-                <div className={`flex items-center bg-[#2f4a73] rounded-lg h-12 px-3 gap-2`}>
+                <div className="flex items-center bg-[#2f4a73] rounded-lg h-12 px-3 gap-2">
                   <img src={person} alt="person" className="w-5 h-5" />
                   <input
                     type="email"
@@ -107,8 +97,11 @@ const PDF = () => {
                 </p>
               </div>
 
-              {/* Buttons */}
-              <div className="flex gap-3 w-full pt-2">
+              {/* Navigation Buttons */}
+              <div className="flex gap-2 w-full pt-2">
+                {/* PrevButton goes to /results */}
+                <PrevButton to="/results" />
+
                 <div className="flex-1">
                   <NextButton label="Mailə göndər" disabled={!!error || !email} onClick={handleSendEmail} />
                 </div>
