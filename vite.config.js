@@ -9,7 +9,7 @@ export default defineConfig({
     '/api': {
       target: 'http://141.98.48.20:8080',
       changeOrigin: true,
-      rewrite: path => path.replace(/^\/api/, '') // removes /api prefix
+      rewrite: path => path.replace(/^\/api/, '')
     }
   }
   }

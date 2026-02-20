@@ -14,7 +14,7 @@ const CountableCard = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await fetch('/api/WayMe/stats'); // proxy handles it
+        const response = await fetch('/api/WayMe/stats');
         if (!response.ok) throw new Error('Failed to fetch stats');
         const data = await response.json();
         setStats({
