@@ -46,11 +46,7 @@ const Test = () => {
   const [loadingResults, setLoadingResults] = useState(false);
 
   const totalPages = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
-
-  const totalPages = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
-
   const startIndex = currentPage * QUESTIONS_PER_PAGE;
-  const endIndex = Math.min(startIndex + QUESTIONS_PER_PAGE, questions.length);
   const endIndex = Math.min(startIndex + QUESTIONS_PER_PAGE, questions.length);
   const currentQuestions = questions.slice(startIndex, endIndex);
 
@@ -67,7 +63,6 @@ const Test = () => {
       setShowError(unanswered);
       return;
     }
-
     if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);
   };
 
@@ -80,77 +75,55 @@ const Test = () => {
       return;
     }
     setLoadingResults(true);
-
     localStorage.setItem("testAnswers", JSON.stringify(selectedAnswers));
     setTimeout(() => {
       setLoadingResults(false);
       window.location.href = "/results";
-    }, 2000);
     }, 2000);
   };
 
   return (
     <div className="bg-background min-h-screen flex flex-col">
       <div className="flex-1 relative flex justify-center items-center overflow-hidden px-3 sm:px-6">
-
         <div className="absolute bottom-0 left-0 w-full z-0">
           <Wave />
         </div>
-
         <div className="w-full max-w-[960px] flex flex-col relative z-10">
-
           <div className="w-full inline-block p-0.5 rounded-[10px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500">
-
             <LoginCardHeader
               percent={Math.round(((currentPage + 1) / totalPages) * 100)}
               stage={4}
             />
-
             <div className="bg-background rounded-b-[10px] p-4 sm:p-6">
-
               <div className="mb-6">
-
                 <div className="flex justify-between items-center">
-
                   <p className="text-white font-semibold text-[18px] sm:text-[25px]">
                     Karyera Testi (30 sual)
                   </p>
-
                   <p className="text-[#A2A8B2] text-[14px] sm:text-[18px]">
                     {currentPage + 1}/{totalPages}
                   </p>
-
                 </div>
-
                 <p className="text-[#A2A8B2] text-[14px] sm:text-[18px] mt-1">
                   Hər suala ən uyğun cavabı seçin
                 </p>
-
               </div>
 
               <div className="flex flex-col gap-4 sm:gap-6">
-
                 {currentQuestions.map((q) => (
-
                   <div
                     key={q.id}
                     className={`bg-[#2F4A73] border rounded-2xl p-4 sm:p-5 ${
                       showError.includes(q.id) ? "border-red-500" : "border-[#2F4A73]"
                     }`}
                   >
-
                     <p className="text-white text-[16px] sm:text-[22px] font-semibold mb-4">
                       {q.text}
                     </p>
-
                     <ul className="flex flex-col gap-3">
-
                       {q.options.map((option, index) => {
-
                         const isSelected = selectedAnswers[q.id] === index;
-
                         return (
-
                           <li
                             key={index}
                             onClick={() => handleSelect(q.id, index)}
@@ -161,7 +134,6 @@ const Test = () => {
                                   : "bg-[#132746] text-white hover:bg-[#1E3A60]"
                               }`}
                           >
-
                             <span
                               className={`w-5 h-5 border-2 rounded-full shrink-0 flex justify-center items-center
                                 ${isSelected ? "bg-white border-[#3379FB]" : "border-white"}`}
@@ -170,40 +142,27 @@ const Test = () => {
                                 <span className="w-2 h-2 bg-[#3379FB] rounded-full" />
                               )}
                             </span>
-
                             {option}
-
                           </li>
-
                         );
                       })}
-
                     </ul>
-
                   </div>
-
                 ))}
-
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 mt-6">
-
                 <PrevButton
                   to={currentPage === 0 ? "/choiceSelection" : "#"}
                   onClick={() => setCurrentPage(Math.max(currentPage - 1, 0))}
                 />
-
                 <div className="flex-1">
-
                   {currentPage < totalPages - 1 ? (
-
                     <NextButton
                       onClick={handleNext}
                       label={`Növbəti (${startIndex + 1}-${endIndex})`}
                     />
-
                   ) : (
-
                     <NextButton
                       onClick={handleFinish}
                       label={
@@ -212,20 +171,13 @@ const Test = () => {
                           : `Nəticəyə bax (${startIndex + 1}-${endIndex})`
                       }
                     />
-
                   )}
-
                 </div>
-
               </div>
 
-
             </div>
-
           </div>
-
         </div>
-
       </div>
     </div>
   );
