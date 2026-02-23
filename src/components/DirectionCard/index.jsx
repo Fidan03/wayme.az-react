@@ -12,13 +12,14 @@ const DirectionCard = () => {
       {data.map((item) => (
         <div
           key={item.id}
+          className="w-full max-w-[400px]"
           onMouseEnter={() => setHovered(item.id)}
           onMouseLeave={() => setHovered(null)}
         >
           {/* Main Card */}
           <div
             className="
-              flex gap-5 px-8 py-6 rounded-xl justify-between items-center w-full sm:w-96 cursor-pointer
+              flex gap-5 px-8 py-6 rounded-xl justify-between items-center w-full cursor-pointer
               
               transition-all duration-500 ease-in-out
               transform-gpu will-change-transform
@@ -50,7 +51,7 @@ const DirectionCard = () => {
                 <p className="relative mt-2 h-6">
                   {/* Hover Text */}
                   <span
-                    className={`absolute transition-opacity duration-400 ease-in-out w-full ${hovered === item.id ? 'opacity-100' : 'opacity-0'
+                    className={`absolute transition-opacity duration-400 ease-in-out w-full sm:w-60 truncate ${hovered === item.id ? 'opacity-100' : 'opacity-0'
                       }`}
                     style={{ color: item.textColor }}
                   >
@@ -59,7 +60,7 @@ const DirectionCard = () => {
 
                   {/* Default Text */}
                   <span
-                    className={`absolute transition-opacity duration-400 ease-in-out w-full ${hovered === item.id ? 'opacity-0' : 'opacity-100'
+                    className={`absolute transition-opacity duration-400 ease-in-out w-full sm:w-60 truncate ${hovered === item.id ? 'opacity-0' : 'opacity-100'
                       }`}
                     style={{ color: item.textColor }}
                   >

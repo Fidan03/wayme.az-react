@@ -2,11 +2,11 @@ import education from '../../data/educationMockData'
 
 const EducationCard = () => {
   return (
-    <div className='max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4'>
+    <div className='max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 justify-items-center'>
       {education.map((item) => (
         <div
           key={item.id}
-          className='flex gap-[20px] bg-[#132746] px-8 py-6 rounded-xl flex-col'
+          className='flex gap-[20px] bg-[#132746] px-8 py-6 rounded-xl flex-col w-full max-w-[400px]'
         >
           <div className='flex items-center gap-3'>
             <img src={item.icon} alt={item.title} className='w-12 h-12' />

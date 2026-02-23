@@ -15,14 +15,14 @@ const Home = () => {
 
       <section className='relative px-4 sm:px-[100px] flex flex-col items-center text-center'>
 
-        <div className='bgDesign flex gap-10 sm:gap-40 absolute w-full justify-center'>
+        {/* <div className='bgDesign flex gap-10 sm:gap-40 absolute w-full justify-center'>
           <div><img src={blur} alt="blur" className='relative -bottom-12 sm:bottom-50'/></div>
           <div><img src={blur} alt="blur" className='relative top-12 sm:top-50'/></div>
-        </div>
+        </div> */}
 
         <div className='flex flex-col justify-center items-center mt-[80px] sm:mt-[100px] z-10'>
           <div>
-            <img src={frame} alt="frame" className='w-48 sm:w-77.5 mx-auto'/>
+            <img src={frame} alt="frame" className='w-48 sm:w-77.5 mx-auto' />
           </div>
 
           <p className='text-[32px] sm:text-[80px] font-bold mt-5 sm:mt-[20px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent w-full sm:w-[762px] mx-auto'>
@@ -58,11 +58,11 @@ const Home = () => {
 
       <section className='w-full flex justify-center mt-10 sm:mt-10'>
         <div className='w-full max-w-7xl flex flex-col items-center bg-[#132746] p-5 sm:p-10 rounded-3xl'>
-          
+
           <p className='font-bold text-[24px] sm:text-[36px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent text-center'>
             Mövcud istiqamətlər
           </p>
-          
+
           <p className='text-[#A2A8B2] text-[14px] sm:text-[20px] mb-5 sm:mb-10 text-center'>
             Ən çox tələb olunan və perspektivli ixtisaslar
           </p>
@@ -93,7 +93,7 @@ const Home = () => {
 
       <section className='pb-10 flex justify-center items-center mt-10 px-4 sm:px-0'>
         <div className='flex items-center justify-center flex-col bg-[#132746] w-full sm:w-[875px] py-12 sm:py-20 px-6 sm:px-8 rounded-2xl text-center'>
-          <img src={human} alt="human" className='w-16 sm:w-[73px] mb-5 sm:mb-10'/>
+          <img src={human} alt="human" className='w-16 sm:w-[73px] mb-5 sm:mb-10' />
           <p className='font-bold text-[24px] sm:text-[36px] text-white mb-2 sm:mb-3'>Başlamağa hazırsınız?</p>
           <p className='text-[#A2A8B2] font-medium text-[14px] sm:text-[19px]'>
             İndi testdən keçin və hansı iş istiqamətinin sizə ən uyğun olduğunu öyrənin
