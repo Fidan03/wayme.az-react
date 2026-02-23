@@ -3,10 +3,10 @@ import { Progress } from 'antd';
 const SuitabilityCard = () => {
   return (
     <div className="bg-[#2F4A73] rounded-2xl p-6 flex flex-col gap-6 w-full">
-      
-      <div className="flex justify-between items-center">
-        <p className="text-white font-bold text-[22px]">UX/UI üçün bacarıq uyğunluğu</p>
-        <p className="text-white font-bold text-[22px]">40%</p>
+
+      <div className="flex justify-between items-center flex-wrap gap-2">
+        <p className="text-white font-bold text-[18px] sm:text-[22px]">UX/UI üçün bacarıq uyğunluğu</p>
+        <p className="text-white font-bold text-[18px] sm:text-[22px]">40%</p>
       </div>
 
       <Progress

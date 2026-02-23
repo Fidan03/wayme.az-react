@@ -25,10 +25,10 @@ const Header = () => {
       return (
         <div className='bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer'>
           <button
-            className="bg-background text-white font-semibold text-[20px] px-5 py-2.5 rounded-lg flex items-center gap-2 hover:bg-[#596E8F]"
+            className="bg-background text-white font-semibold text-[16px] sm:text-[20px] px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg flex items-center gap-2 hover:bg-[#596E8F]"
             onClick={handleGoAbout}
           >
-            <img src={about} alt="about" />
+            <img src={about} alt="about" className="w-5 h-5 sm:w-6 sm:h-6" />
             Haqqımızda
           </button>
         </div>
@@ -80,7 +80,7 @@ const Header = () => {
     <div className='bg-background w-full pt-5'>
       <div className="max-w-7xl mx-auto h-100% flex justify-between items-center px-4">
         <div className='logo flex items-center justify-center'>
-          <img src={logo} alt="logo" className='h-17 w-39.5'/>
+          <img src={logo} alt="logo" className='h-12 sm:h-17 w-28 sm:w-39.5' />
         </div>
         {renderButton()}
       </div>

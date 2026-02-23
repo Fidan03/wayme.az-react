@@ -3,7 +3,7 @@ import success from '../../assets/success.png'
 
 const ResultsCard = () => {
   return (
-    <div className='grid grid-cols-2 gap-x-15 gap-y-10 max-w-7xl mx-auto py-8'>
+    <div className='grid grid-cols-1 sm:grid-cols-2 gap-x-15 gap-y-10 max-w-7xl mx-auto py-8'>
       {resultsData.map((item) => (
         <div key={item.id} className='flex mt-10'>
           <img src={success} alt="success" className='size-[40px] mr-5'/>

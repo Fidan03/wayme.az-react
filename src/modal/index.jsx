@@ -18,30 +18,30 @@ const Modal = ({ item, onClose }) => {
     >
       <div
         className="bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 rounded-[20px] p-px 
-                   w-[1300px] max-w-[95vw] max-h-[85vh]"
+                   w-full md:w-[1300px] max-w-[95vw] max-h-[90vh] sm:max-h-[85vh] mx-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="bg-background rounded-[20px] p-6 w-full h-full overflow-hidden">
 
           {/* Header */}
           <div className="flex justify-between items-center mb-5">
-            <h1 className="text-[30px] font-semibold text-white">
+            <h1 className="text-[20px] sm:text-[24px] md:text-[30px] font-semibold text-white">
               {item.title}
             </h1>
 
             <button
               onClick={onClose}
-              className="bg-[#26356B] rounded-full size-[40px] flex items-center justify-center"
+              className="bg-[#26356B] rounded-full size-[32px] sm:size-[40px] flex items-center justify-center shrink-0"
             >
               <img
                 src={close}
                 alt="close"
-                className="w-6 h-6 cursor-pointer"
+                className="w-5 h-5 sm:w-6 sm:h-6 cursor-pointer"
               />
             </button>
           </div>
 
-          <p className="font-medium mb-4 text-[#A2A8B2] text-[20px]">
+          <p className="font-medium mb-4 text-[#A2A8B2] text-[16px] sm:text-[20px]">
             Sahələr:
           </p>
 
@@ -64,7 +64,7 @@ const Modal = ({ item, onClose }) => {
                     bg-[#357CFF33]
                     rounded-[20px]
                     px-3 py-2.5
-                    w-[275px]
+                    w-full sm:w-[275px]
                     cursor-pointer
 
                     transition-all duration-300 ease-in-out
@@ -97,9 +97,8 @@ const Modal = ({ item, onClose }) => {
                     <img
                       src={downArrow}
                       alt="downArrow"
-                      className={`w-[18px] my-1.5 transition-transform duration-300 ease-in-out ${
-                        isOpen ? 'rotate-180' : ''
-                      }`}
+                      className={`w-[18px] my-1.5 transition-transform duration-300 ease-in-out ${isOpen ? 'rotate-180' : ''
+                        }`}
                     />
                   </div>
 

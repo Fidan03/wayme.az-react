@@ -18,7 +18,7 @@ const DirectionCard = () => {
           {/* Main Card */}
           <div
             className="
-              flex gap-5 px-8 py-6 rounded-xl justify-between items-center w-96 cursor-pointer
+              flex gap-5 px-8 py-6 rounded-xl justify-between items-center w-full sm:w-96 cursor-pointer
               
               transition-all duration-500 ease-in-out
               transform-gpu will-change-transform
@@ -43,16 +43,15 @@ const DirectionCard = () => {
               </div>
 
               <div className="flex flex-col">
-                <h3 className="text-white font-semibold text-lg text-start truncate w-60">
+                <h3 className="text-white font-semibold text-lg text-start truncate w-full sm:w-60">
                   {item.title}
                 </h3>
 
                 <p className="relative mt-2 h-6">
                   {/* Hover Text */}
                   <span
-                    className={`absolute transition-opacity duration-400 ease-in-out w-full ${
-                      hovered === item.id ? 'opacity-100' : 'opacity-0'
-                    }`}
+                    className={`absolute transition-opacity duration-400 ease-in-out w-full ${hovered === item.id ? 'opacity-100' : 'opacity-0'
+                      }`}
                     style={{ color: item.textColor }}
                   >
                     Ətraflı bax
@@ -60,9 +59,8 @@ const DirectionCard = () => {
 
                   {/* Default Text */}
                   <span
-                    className={`absolute transition-opacity duration-400 ease-in-out w-full ${
-                      hovered === item.id ? 'opacity-0' : 'opacity-100'
-                    }`}
+                    className={`absolute transition-opacity duration-400 ease-in-out w-full ${hovered === item.id ? 'opacity-0' : 'opacity-100'
+                      }`}
                     style={{ color: item.textColor }}
                   >
                     {item.description}
