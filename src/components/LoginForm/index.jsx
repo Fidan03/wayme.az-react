@@ -1,12 +1,17 @@
 import { useState, useRef, useEffect } from "react";
 import { Form } from "antd";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 import person from "../../assets/person.png";
 import calendar from "../../assets/calendar.png";
 
 const LoginForm = ({ form }) => {
-  const savedData = JSON.parse(localStorage.getItem("loginData") || "{}");
+  const navigate = useNavigate();
+
+  const savedData = JSON.parse(
+    localStorage.getItem("loginData") || "{}"
+  );
 
   /* ---------------- Name & Surname Format ---------------- */
 
@@ -43,7 +48,7 @@ const LoginForm = ({ form }) => {
     );
   };
 
-  /* ---------------- Date Picker State ---------------- */
+  /* ---------------- Date Picker ---------------- */
 
   const [selectedDate, setSelectedDate] = useState(
     savedData.date || ""
@@ -59,7 +64,7 @@ const LoginForm = ({ form }) => {
 
   const calendarRef = useRef(null);
 
-  /* ---------------- Close Calendar On Outside Click ---------------- */
+  /* ---------------- Close Calendar ---------------- */
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -103,47 +108,29 @@ const LoginForm = ({ form }) => {
 
     form.setFieldsValue({ date: formatted });
 
-    const currentData = JSON.parse(
-      localStorage.getItem("loginData") || "{}"
-    );
-
-    localStorage.setItem(
-      "loginData",
-      JSON.stringify({
-        ...currentData,
-        date: formatted,
-      })
-    );
+    saveToStorage("date", formatted);
 
     setShowCalendar(false);
   };
 
-  /* ---------------- Auto Dot Format ---------------- */
+  /* ---------------- Date Input Format ---------------- */
 
   const formatDateInput = (value) => {
     let numbers = value.replace(/\D/g, "").slice(0, 8);
 
     let result = "";
 
-    if (numbers.length >= 1) {
-      result = numbers.slice(0, 2);
-    }
-
-    if (numbers.length >= 3) {
+    if (numbers.length >= 1) result = numbers.slice(0, 2);
+    if (numbers.length >= 3)
       result += "." + numbers.slice(2, 4);
-    }
-
-    if (numbers.length >= 5) {
+    if (numbers.length >= 5)
       result += "." + numbers.slice(4, 8);
-    }
 
     return result;
   };
 
   const handleInputChange = (e) => {
-    const rawValue = e.target.value;
-
-    const formatted = formatDateInput(rawValue);
+    const formatted = formatDateInput(e.target.value);
 
     setSelectedDate(formatted);
 
@@ -153,22 +140,10 @@ const LoginForm = ({ form }) => {
       formatted.length === 10 &&
       dayjs(formatted, "DD.MM.YYYY", true).isValid()
     ) {
-      setCurrentMonth(
-        dayjs(formatted, "DD.MM.YYYY")
-      );
+      setCurrentMonth(dayjs(formatted, "DD.MM.YYYY"));
     }
 
-    const currentData = JSON.parse(
-      localStorage.getItem("loginData") || "{}"
-    );
-
-    localStorage.setItem(
-      "loginData",
-      JSON.stringify({
-        ...currentData,
-        date: formatted,
-      })
-    );
+    saveToStorage("date", formatted);
   };
 
   const isFutureDate = (day) => {
@@ -177,7 +152,23 @@ const LoginForm = ({ form }) => {
       .isAfter(dayjs(), "day");
   };
 
-  /* ---------------- Render Days ---------------- */
+  /* ---------------- Storage Helper ---------------- */
+
+  const saveToStorage = (key, value) => {
+    const current = JSON.parse(
+      localStorage.getItem("loginData") || "{}"
+    );
+
+    localStorage.setItem(
+      "loginData",
+      JSON.stringify({
+        ...current,
+        [key]: value,
+      })
+    );
+  };
+
+  /* ---------------- Calendar Days ---------------- */
 
   const renderDays = () => {
     const blanks = Array.from(
@@ -204,8 +195,7 @@ const LoginForm = ({ form }) => {
             type="button"
             disabled={isDisabled}
             onClick={() =>
-              !isDisabled &&
-              handleDateSelect(dayNum)
+              !isDisabled && handleDateSelect(dayNum)
             }
             className={`
               w-10 h-10 flex items-center justify-center rounded-lg
@@ -235,7 +225,7 @@ const LoginForm = ({ form }) => {
     return [...blanks, ...days];
   };
 
-  /* ---------------- Autofill From Storage ---------------- */
+  /* ---------------- Autofill ---------------- */
 
   useEffect(() => {
     if (savedData.name) {
@@ -247,33 +237,82 @@ const LoginForm = ({ form }) => {
     }
   }, []);
 
+  /* ---------------- Submit To API ---------------- */
+
+  const submitPersonalInfo = async (values) => {
+    try {
+      const sessionId =
+        localStorage.getItem("sessionId");
+
+      if (!sessionId) {
+        alert("Session tapılmadı. Yenidən başlayın.");
+        navigate("/");
+        return;
+      }
+
+      // Convert date to backend format
+      const birthDate = dayjs(
+        values.date,
+        "DD.MM.YYYY"
+      ).format("YYYY-MM-DD");
+
+      const body = {
+        name: values.name,
+        surname: values.surname,
+        birthDate,
+      };
+
+      const response = await fetch(
+        `/api/WayMe/sessions/${sessionId}/personal-info`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (!response.ok) {
+        const err = await response.json();
+        console.error("Validation:", err);
+
+        alert("Məlumatlar düzgün deyil");
+        return;
+      }
+
+      navigate("/test");
+
+    } catch (err) {
+      console.error(err);
+      alert("Server xətası");
+    }
+  };
+
   /* ---------------- Render ---------------- */
 
   return (
     <div className="w-full">
-      <Form form={form} autoComplete="off">
+      <Form
+        form={form}
+        autoComplete="off"
+        onFinish={submitPersonalInfo}
+      >
 
         {/* Name */}
-
         <div className="mb-4">
           <label className="text-white text-[15px] font-medium">
             Ad
           </label>
 
           <div className="flex items-center bg-[#2f4a73] rounded-lg h-12 px-2">
-            <img
-              src={person}
-              className="w-5 h-5 mr-2"
-            />
+            <img src={person} className="w-5 h-5 mr-2" />
 
             <Form.Item
               name="name"
               noStyle
               rules={[
-                {
-                  required: true,
-                  message: "Ad daxil edin",
-                },
+                { required: true, message: "Ad daxil edin" },
               ]}
             >
               <input
@@ -289,17 +328,13 @@ const LoginForm = ({ form }) => {
         </div>
 
         {/* Surname */}
-
         <div className="mb-4">
           <label className="text-white text-[15px] font-medium">
             Soyad
           </label>
 
           <div className="flex items-center bg-[#2f4a73] rounded-lg h-12 px-2">
-            <img
-              src={person}
-              className="w-5 h-5 mr-2"
-            />
+            <img src={person} className="w-5 h-5 mr-2" />
 
             <Form.Item
               name="surname"
@@ -324,7 +359,6 @@ const LoginForm = ({ form }) => {
         </div>
 
         {/* Date */}
-
         <div className="mb-4">
           <label className="text-white text-[15px] font-medium">
             Doğum tarixi
@@ -363,45 +397,25 @@ const LoginForm = ({ form }) => {
               </Form.Item>
             </div>
 
-            {/* Calendar */}
-
             {showCalendar && (
               <div className="absolute bottom-full left-0 mb-2 bg-[#2f4a73] rounded-lg p-4 shadow-lg z-50 w-64">
 
                 <div className="flex justify-between items-center mb-3 text-white font-semibold">
-
-                  <button
-                    type="button"
-                    onClick={prevMonth}
-                  >
+                  <button type="button" onClick={prevMonth}>
                     &lt;
                   </button>
 
                   <span>
-                    {currentMonth.format(
-                      "MMMM YYYY"
-                    )}
+                    {currentMonth.format("MMMM YYYY")}
                   </span>
 
-                  <button
-                    type="button"
-                    onClick={nextMonth}
-                  >
+                  <button type="button" onClick={nextMonth}>
                     &gt;
                   </button>
-
                 </div>
 
                 <div className="grid grid-cols-7 text-center text-gray-300 mb-2 text-sm">
-                  {[
-                    "Su",
-                    "Mo",
-                    "Tu",
-                    "We",
-                    "Th",
-                    "Fr",
-                    "Sa",
-                  ].map((d) => (
+                  {["Su","Mo","Tu","We","Th","Fr","Sa"].map((d) => (
                     <div key={d}>{d}</div>
                   ))}
                 </div>
@@ -412,9 +426,16 @@ const LoginForm = ({ form }) => {
 
               </div>
             )}
-
           </div>
         </div>
+
+        {/* Submit */}
+        <button
+          type="submit"
+          className="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+        >
+          Davam et
+        </button>
 
       </Form>
     </div>
