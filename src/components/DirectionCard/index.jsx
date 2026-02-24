@@ -9,85 +9,84 @@ const DirectionCard = () => {
 
   return (
     <>
-      {data.map((item) => (
-        <div
-          key={item.id}
-          className="w-full max-w-100"
-          onMouseEnter={() => setHovered(item.id)}
-          onMouseLeave={() => setHovered(null)}
-        >
-          {/* Main Card */}
+      <div className="flex flex-wrap -mx-2">
+        {data.map((item) => (
           <div
-            className="
-              flex gap-5 px-8 py-6 rounded-xl justify-between items-center w-full cursor-pointer
-              
-              transition-all duration-500 ease-in-out
-              transform-gpu will-change-transform
-              
-              hover:scale-[1.04]
-              hover:shadow-2xl
-              hover:brightness-110
-              
-              active:scale-[0.97]
-            "
-            style={{ backgroundColor: item.color }}
-            onClick={() => setActiveModal(item)}
+            key={item.id}
+            className="w-full px-2 mb-4 lg:w-1/3"
+            onMouseEnter={() => setHovered(item.id)}
+            onMouseLeave={() => setHovered(null)}
           >
-            {/* Left Side */}
-            <div className="flex justify-start gap-4">
-              <div className="flex items-center gap-3 flex-wrap shrink-0">
-                <img
-                  src={item.icon}
-                  alt={item.title}
-                  className="w-12 h-12"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <h3 className="text-white font-semibold text-lg text-start truncate w-full sm:w-60">
-                  {item.title}
-                </h3>
-
-                <p className="relative mt-2 h-6">
-                  {/* Hover Text */}
-                  <span
-                    className={`absolute transition-opacity duration-400 ease-in-out w-full sm:w-60 truncate ${hovered === item.id ? 'opacity-100' : 'opacity-0'
-                      }`}
-                    style={{ color: item.textColor }}
-                  >
-                    Ətraflı bax
-                  </span>
-
-                  {/* Default Text */}
-                  <span
-                    className={`absolute transition-opacity duration-400 ease-in-out w-full sm:w-60 truncate ${hovered === item.id ? 'opacity-0' : 'opacity-100'
-                      }`}
-                    style={{ color: item.textColor }}
-                  >
-                    {item.description}
-                  </span>
-                </p>
-              </div>
-            </div>
-
-            {/* Arrow */}
+            {/* Main Card */}
             <div
               className="
-                rounded-[10px] size-6 flex justify-center items-center
-                transition-transform duration-500 ease-in-out
-                group-hover:rotate-180
+                flex gap-5 px-8 py-6 rounded-xl justify-between items-center w-full cursor-pointer
+                transition-all duration-500 ease-in-out
+                transform-gpu will-change-transform
+                hover:scale-[1.04]
+                hover:shadow-2xl
+                hover:brightness-110
+                active:scale-[0.97]
               "
-              style={{ backgroundColor: item.arrowColor }}
+              style={{ backgroundColor: item.color }}
+              onClick={() => setActiveModal(item)}
             >
-              <img
-                src={downArrow}
-                alt="downArrow"
-                className="w-6 h-6 object-contain"
-              />
+              {/* Left Side */}
+              <div className="flex justify-start gap-4">
+                <div className="flex items-center gap-3 flex-wrap shrink-0">
+                  <img
+                    src={item.icon}
+                    alt={item.title}
+                    className="w-12 h-12"
+                  />
+                </div>
+
+                <div className="flex flex-col">
+                  <h3 className="text-white font-semibold text-lg text-start truncate w-full sm:w-60">
+                    {item.title}
+                  </h3>
+
+                  <p className="relative mt-2 h-6">
+                    {/* Hover Text */}
+                    <span
+                      className={`absolute transition-opacity duration-400 ease-in-out w-full sm:w-60 truncate ${hovered === item.id ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      style={{ color: item.textColor }}
+                    >
+                      Ətraflı bax
+                    </span>
+
+                    {/* Default Text */}
+                    <span
+                      className={`absolute transition-opacity duration-400 ease-in-out w-full sm:w-60 truncate ${hovered === item.id ? 'opacity-0' : 'opacity-100'
+                        }`}
+                      style={{ color: item.textColor }}
+                    >
+                      {item.description}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Arrow */}
+              <div
+                className="
+                  rounded-[10px] size-6 flex justify-center items-center
+                  transition-transform duration-500 ease-in-out
+                  group-hover:rotate-180
+                "
+                style={{ backgroundColor: item.arrowColor }}
+              >
+                <img
+                  src={downArrow}
+                  alt="downArrow"
+                  className="w-6 h-6 object-contain"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
       {/* Modal */}
       {activeModal && (

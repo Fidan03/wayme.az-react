@@ -103,7 +103,7 @@ const ChoiceSelection = () => {
               </div>
 
               {/* Navigation buttons */}
-              <div className="flex flex-col sm:flex-row gap-2 w-full mt-6">
+              <div className="flex flex-row gap-2 w-full mt-6">
                 <PrevButton
                   to={selectedCard ? "#" : "/skills"}
                   onClick={handleBack}
