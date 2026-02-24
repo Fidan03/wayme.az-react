@@ -12,7 +12,7 @@ const DirectionCard = () => {
       {data.map((item) => (
         <div
           key={item.id}
-          className="w-full max-w-[400px]"
+          className="w-full max-w-100"
           onMouseEnter={() => setHovered(item.id)}
           onMouseLeave={() => setHovered(null)}
         >
