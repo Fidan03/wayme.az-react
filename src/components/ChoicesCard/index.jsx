@@ -1,21 +1,34 @@
-import choice from "../../data/easyChoices";
+const ChoicesCard = ({ onSelect, selectedSkills, choices = [] }) => {
 
-const ChoicesCard = ({ onSelect, selectedSkills }) => {
-  const filteredChoices = choice.filter(
-    (item) => !selectedSkills.includes(item.title)
+  // Filter selected ones
+  const filteredChoices = choices.filter(
+    (item) => !selectedSkills.includes(item.name)
   );
 
   return (
     <div className="flex flex-wrap gap-3 my-5 justify-center">
+
       {filteredChoices.map((item) => (
+
         <div
           key={item.id}
-          onClick={() => onSelect(item.title)}
-          className="border-[#2F4A73] border-[2px] text-[#A2A8B2] px-5 py-4 rounded-[7px] text-[16px] cursor-pointer hover:bg-[#2F4A73] hover:text-white transition"
+          onClick={() => onSelect(item.name)}
+          className="
+            border-[#2F4A73] border-2
+            text-[#A2A8B2]
+            px-5 py-4
+            rounded-[7px]
+            cursor-pointer
+            hover:bg-[#2F4A73]
+            hover:text-white
+            transition
+          "
         >
-          {item.title}
+          {item.name}
         </div>
+
       ))}
+
     </div>
   );
 };
