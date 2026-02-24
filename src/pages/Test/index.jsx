@@ -18,18 +18,12 @@ const Test = () => {
 
 
   useEffect(() => {
-    const fetchQuestions = async () => {
+    const fetchTests = async () => {
       try {
         setLoading(true);
 
-        const res = await fetch(
-          "/api/WayMe/tests?page=0&size=30"
-        );
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch questions");
-        }
-
+        const res = await fetch("/api/WayMe/tests?page=0&size=0"); // use Vite proxy
+        if (!res.ok) throw new Error("Network response was not ok");
         const data = await res.json();
 
         // Transform API data to UI format
@@ -40,15 +34,15 @@ const Test = () => {
         }));
 
         setQuestions(formatted);
-      } catch (err) {
-        console.error(err);
+      } catch (e) {
+        console.error("Failed to fetch tests:", e);
         setError("Suallar yüklənərkən xəta baş verdi");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchQuestions();
+    fetchTests();
   }, []);
 
 
