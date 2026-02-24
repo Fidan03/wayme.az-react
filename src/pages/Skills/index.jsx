@@ -209,7 +209,7 @@ const Skills = () => {
 
               {/* Navigation */}
 
-              <div className="flex flex-col sm:flex-row gap-3 w-full mt-6">
+              <div className="flex flex-row gap-3 w-full mt-6">
 
                 <PrevButton to="/login" />
 

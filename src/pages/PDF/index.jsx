@@ -103,7 +103,7 @@ const PDF = () => {
               </div>
 
               {/* Navigation Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 w-full pt-2">
+              <div className="flex flex-row gap-3 w-full pt-2">
                 <PrevButton to="/results" />
                 <div className="flex-1">
                   <NextButton
