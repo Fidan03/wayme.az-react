@@ -429,13 +429,6 @@ const LoginForm = ({ form }) => {
           </div>
         </div>
 
-        {/* Submit */}
-        <button
-          type="submit"
-          className="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-        >
-          Davam et
-        </button>
 
       </Form>
     </div>
