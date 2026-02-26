@@ -1,9 +1,11 @@
-import { defineConfig, loadEnv } from 'vite';
-import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
+// vite.config.js
+import { defineConfig, loadEnv } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
+  const env = loadEnv(mode, process.cwd())
+
   return {
     plugins: [react(), tailwindcss()],
     server: {
@@ -11,9 +13,11 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: env.VITE_API_BASE_URL || 'http://141.98.48.20:8080',
           changeOrigin: true,
-          rewrite: path => path.replace(/^\/api/, '')
-        }
-      }
-    }
-  };
-});
+          secure: false,
+          // /api/WayMe/sessions/start  ->  /WayMe/sessions/start
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+      },
+    },
+  }
+})

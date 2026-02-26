@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import arrow from "../../assets/maki_arrow.png";
 import "./button.css";
 
@@ -11,31 +11,26 @@ const Button = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify({}), // important
       });
 
       if (!response.ok) {
         const text = await response.text();
         console.error("Backend error:", text);
-        throw new Error("Server error");
+        throw new Error(`Server error: ${response.status}`);
       }
 
       let data = null;
-
-      // Try parsing JSON safely
-      const contentType = response.headers.get("content-type");
-
-      if (contentType?.includes("application/json")) {
+      if (response.headers.get("content-type")?.includes("application/json")) {
         data = await response.json();
       }
 
-      if (data?.userCount) {
-        localStorage.setItem("userCount", data.userCount);
+      if (data?.userCount !== undefined) {
+        localStorage.setItem("userCount", String(data.userCount));
       }
 
       navigate("/login");
-
     } catch (error) {
       console.error("Increment error:", error);
       alert("Server xətası. Zəhmət olmasa sonra yenidən cəhd edin.");
