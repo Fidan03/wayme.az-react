@@ -6,7 +6,6 @@ import PrevButton from "../../components/PrevButton";
 
 const QUESTIONS_PER_PAGE = 5;
 
-// helper: fetch one page
 async function fetchTestsPage(page, size = 50) {
   const res = await fetch(`/api/WayMe/tests?page=${page}&size=${size}`);
   if (!res.ok) {
@@ -16,21 +15,17 @@ async function fetchTestsPage(page, size = 50) {
   return res.json();
 }
 
-// helper: fetch all pages
 async function fetchAllTests(size = 50) {
-  // 1) first page to learn totalPages
   const first = await fetchTestsPage(0, size);
 
   const totalPages = Number(first.totalPages ?? 1);
   const all = [...(first.content ?? [])];
 
-  // 2) remaining pages
   for (let p = 1; p < totalPages; p++) {
     const data = await fetchTestsPage(p, size);
     all.push(...(data.content ?? []));
   }
 
-  // optional: sort by orderNo (backend has it)
   all.sort((a, b) => (a.orderNo ?? 0) - (b.orderNo ?? 0));
 
   return all;
@@ -54,14 +49,11 @@ const Test = () => {
         setLoading(true);
         setError(null);
 
-        // ✅ fetch all questions (all pages)
         const items = await fetchAllTests(50);
 
-        // Transform API data to UI format
         const formatted = items.map((item) => ({
           id: item.id,
           text: item.question,
-          // keep API option order if provided
           options: (item.options ?? [])
             .slice()
             .sort((a, b) => (a.orderNo ?? 0) - (b.orderNo ?? 0))
@@ -163,7 +155,6 @@ const Test = () => {
             />
 
             <div className="bg-background rounded-b-[10px] p-4 sm:p-6">
-              {/* Header */}
               <div className="mb-6">
                 <div className="flex justify-between items-center">
                   <p className="text-white font-semibold text-[18px] sm:text-[25px]">
@@ -180,7 +171,6 @@ const Test = () => {
                 </p>
               </div>
 
-              {/* Questions */}
               <div className="flex flex-col gap-4 sm:gap-6">
                 {currentQuestions.map((q) => (
                   <div
@@ -224,7 +214,6 @@ const Test = () => {
                 ))}
               </div>
 
-              {/* Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 mt-6">
                 <PrevButton
                   to={currentPage === 0 ? "/choiceSelection" : "#"}
