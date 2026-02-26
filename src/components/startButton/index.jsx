@@ -1,38 +1,25 @@
 import { useNavigate } from "react-router-dom";
 import arrow from "../../assets/maki_arrow.png";
 import "./button.css";
+import { WayMeAPI } from "../../api/waymeApi";
 
 const Button = () => {
   const navigate = useNavigate();
 
   const handleClick = async () => {
     try {
-      const response = await fetch("/api/WayMe/sessions/start", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
+      const data = await WayMeAPI.startSession();
 
-      if (!response.ok) {
-        const text = await response.text();
-        console.error("Backend error:", text);
-        throw new Error(`Server error: ${response.status}`);
+      if (!data?.sessionId) {
+        throw new Error("Session ID tapılmadı");
       }
 
-      let data = null;
-      if (response.headers.get("content-type")?.includes("application/json")) {
-        data = await response.json();
-      }
-
-      if (data?.userCount !== undefined) {
-        localStorage.setItem("userCount", String(data.userCount));
-      }
+      // ✅ VERY IMPORTANT
+      localStorage.setItem("sessionId", String(data.sessionId));
 
       navigate("/login");
     } catch (error) {
-      console.error("Increment error:", error);
+      console.error("Start session error:", error);
       alert("Server xətası. Zəhmət olmasa sonra yenidən cəhd edin.");
     }
   };
