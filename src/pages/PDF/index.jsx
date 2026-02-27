@@ -61,7 +61,6 @@ const PDF = () => {
 
             <div className="bg-background rounded-b-[10px] p-4 sm:p-6 space-y-4 sm:space-y-6">
 
-              {/* Header */}
               <div>
                 <p className="text-white font-semibold text-[22px] sm:text-[26px]">
                   PDF hesabat alımı
@@ -71,14 +70,12 @@ const PDF = () => {
                 </p>
               </div>
 
-              {/* Info Box */}
               <div className="bg-[#008CFF63] border border-[#008CFF63] rounded-xl p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <p className="text-white text-[13px] sm:text-[15px] leading-relaxed">
                   Sizə nəticələrinizin ətraflı təhlili, inkişaf tövsiyyələri və fərdi öyrənmə planı olan PDF fayl göndərəcəyik.
                 </p>
               </div>
 
-              {/* Custom Email Input */}
               <div className="space-y-2 w-full">
                 <p className="text-white font-medium text-[14px] sm:text-[16px]">Email ünvanı</p>
                 <div className="flex items-center bg-[#2f4a73] rounded-lg h-12 px-3 gap-2">
@@ -102,7 +99,6 @@ const PDF = () => {
                 </p>
               </div>
 
-              {/* Navigation Buttons */}
               <div className="flex flex-row gap-3 w-full pt-2">
                 <PrevButton to="/results" />
                 <div className="flex-1">
@@ -114,7 +110,6 @@ const PDF = () => {
                 </div>
               </div>
 
-              {/* Hidden PDF content */}
               <div id="results-pdf" className="hidden">
                 <h1 className="text-black">Sizin nəticələriniz</h1>
                 <p className="text-black">Burada hesabatın məzmunu olacaq.</p>
@@ -127,7 +122,6 @@ const PDF = () => {
 
       </div>
 
-      {/* Modal */}
       {modalVisible && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 px-3">
           <div className="bg-[#1E2F4D] p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-xs text-center">

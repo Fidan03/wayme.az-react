@@ -26,7 +26,6 @@ const Results = () => {
   const [apiError, setApiError] = useState("");
 
   const [bulkState, setBulkState] = useState(null);
-
   const [resultData, setResultData] = useState(null);
 
   const handleGoHome = () => {
@@ -36,6 +35,12 @@ const Results = () => {
     localStorage.removeItem("answersData");
     localStorage.removeItem("testAnswers");
     localStorage.removeItem("sessionId");
+
+    // ✅ results page stored data
+    localStorage.removeItem("results_bulkState");
+    localStorage.removeItem("results_resultData");
+    localStorage.removeItem("results_savedAt");
+
     navigate("/");
   };
 
@@ -53,9 +58,7 @@ const Results = () => {
         }
 
         const personal = JSON.parse(localStorage.getItem("loginData") || "{}");
-        const abilitiesArr = JSON.parse(
-          localStorage.getItem("skillsData") || "[]"
-        );
+        const abilitiesArr = JSON.parse(localStorage.getItem("skillsData") || "[]");
         const choice = JSON.parse(localStorage.getItem("choiceData") || "{}");
 
         const answersStored = JSON.parse(
@@ -104,6 +107,11 @@ const Results = () => {
 
         const resData = await WayMeAPI.getResult(sessionId, true);
         setResultData(resData);
+
+        // ✅ SAVE EVERYTHING RESULT PAGE PRODUCES INTO LOCALSTORAGE
+        localStorage.setItem("results_bulkState", JSON.stringify(bulkRes));
+        localStorage.setItem("results_resultData", JSON.stringify(resData));
+        localStorage.setItem("results_savedAt", new Date().toISOString());
       } catch (e) {
         console.error(e);
         setApiError(e.message || "Xəta baş verdi");
@@ -175,6 +183,11 @@ const Results = () => {
                   <NextButton to="/pdf" label="PDF hesabat almaq" />
                 </div>
               </div>
+
+              {/* optional debug */}
+              {/* <pre className="text-white text-xs bg-[#132746] p-3 rounded-xl overflow-auto mt-4">
+                {JSON.stringify({ bulkState, resultData }, null, 2)}
+              </pre> */}
             </div>
           </div>
         </div>

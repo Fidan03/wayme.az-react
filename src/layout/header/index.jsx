@@ -1,29 +1,39 @@
-import logo from '../../assets/logo.png';
-import about from '../../assets/about.png';
-import { useNavigate, useLocation } from 'react-router-dom';
+import logo from "../../assets/logo.png";
+import about from "../../assets/about.png";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const handleGoHome = () => {
+  const clearAllTestStorage = () => {
     localStorage.removeItem("loginData");
     localStorage.removeItem("skillsData");
     localStorage.removeItem("choiceData");
     localStorage.removeItem("answersData");
+    localStorage.removeItem("testAnswers");
+    localStorage.removeItem("sessionId");
+
+    // ✅ results page stored data
+    localStorage.removeItem("results_bulkState");
+    localStorage.removeItem("results_resultData");
+    localStorage.removeItem("results_savedAt");
+  };
+
+  const handleGoHome = () => {
+    clearAllTestStorage();
     navigate("/");
   };
 
   const handleGoAbout = () => {
-    navigate('/about');
+    navigate("/about");
   };
 
   const renderButton = () => {
-    if (currentPath === '/') {
-      // Home page → Haqqımızda
+    if (currentPath === "/") {
       return (
-        <div className='bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer'>
+        <div className="bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer">
           <button
             className="bg-background text-white font-semibold text-[16px] sm:text-[20px] px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg flex items-center gap-2 hover:bg-[#596E8F]"
             onClick={handleGoAbout}
@@ -35,10 +45,9 @@ const Header = () => {
       );
     }
 
-    if (currentPath === '/about') {
-      // About page → Geri
+    if (currentPath === "/about") {
       return (
-        <div className='bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer'>
+        <div className="bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer">
           <button
             className="bg-background text-white font-semibold text-[20px] px-5 py-2.5 rounded-lg flex items-center gap-2 hover:bg-[#596E8F]"
             onClick={handleGoHome}
@@ -49,10 +58,9 @@ const Header = () => {
       );
     }
 
-    if (currentPath === '/results' || currentPath === '/pdf') {
-      // Results & PDF → Ana səhifə
+    if (currentPath === "/results" || currentPath === "/pdf") {
       return (
-        <div className='bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer'>
+        <div className="bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer">
           <button
             className="bg-background text-white font-semibold text-[20px] px-5 py-2.5 rounded-lg flex items-center gap-2 hover:bg-[#596E8F]"
             onClick={handleGoHome}
@@ -63,9 +71,8 @@ const Header = () => {
       );
     }
 
-    // All other pages → Testi dayandır
     return (
-      <div className='bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer'>
+      <div className="bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 rounded-[10px] cursor-pointer">
         <button
           className="bg-background text-white font-semibold text-[20px] px-5 py-2.5 rounded-lg flex items-center gap-2 hover:bg-[#596E8F]"
           onClick={handleGoHome}
@@ -77,10 +84,10 @@ const Header = () => {
   };
 
   return (
-    <div className='bg-background w-full pt-5'>
+    <div className="bg-background w-full pt-5">
       <div className="max-w-7xl mx-auto h-100% flex justify-between items-center px-4">
-        <div className='logo flex items-center justify-center'>
-          <img src={logo} alt="logo" className='h-12 sm:h-17 w-28 sm:w-39.5' />
+        <div className="logo flex items-center justify-center">
+          <img src={logo} alt="logo" className="h-12 sm:h-17 w-28 sm:w-39.5" />
         </div>
         {renderButton()}
       </div>
