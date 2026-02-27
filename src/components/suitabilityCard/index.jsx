@@ -1,7 +1,27 @@
 import { Progress } from "antd";
 
+const normalizePercent = (value) => {
+  if (value === null || value === undefined) return 0;
+
+  // handle strings like "85%" or "85"
+  if (typeof value === "string") {
+    const cleaned = value.replace("%", "").trim().replace(",", ".");
+    const n = Number(cleaned);
+    if (!Number.isFinite(n)) return 0;
+    const p = n <= 1 ? n * 100 : n;
+    return Math.max(0, Math.min(100, Math.round(p)));
+  }
+
+  // handle numbers like 85 or 0.85
+  const n = Number(value);
+  if (!Number.isFinite(n)) return 0;
+
+  const p = n <= 1 ? n * 100 : n;
+  return Math.max(0, Math.min(100, Math.round(p)));
+};
+
 const SuitabilityCard = ({ data }) => {
-  const fitPercent = data?.abilityMatch?.fitPercent ?? 0;
+  const fitPercent = normalizePercent(data?.abilityMatch?.fitPercent);
   const missing = data?.abilityMatch?.missingAbilities ?? [];
 
   return (
@@ -15,12 +35,15 @@ const SuitabilityCard = ({ data }) => {
         </p>
       </div>
 
+      {/* ✅ FIX: force AntD to redraw + ensure line progress renders correctly */}
       <Progress
-        percent={fitPercent}
+        key={fitPercent}          // forces redraw when value changes
+        type="line"               // ensure it's line progress
+        percent={Number(fitPercent)}
         showInfo={false}
         strokeColor="#ffffff"
-        railColor="#091e3e" // ✅ was trailColor
-        size={6}            // ✅ was strokeWidth
+        trailColor="#091e3e"
+        strokeWidth={6}
         className="rounded-lg"
       />
 
@@ -28,6 +51,7 @@ const SuitabilityCard = ({ data }) => {
         <p className="text-white font-semibold text-[20px] mb-2">
           Çatışmayan bacarıqlar
         </p>
+
         <div className="flex flex-wrap gap-2">
           {missing.length ? (
             missing.map((m, idx) => (
@@ -39,7 +63,9 @@ const SuitabilityCard = ({ data }) => {
               </span>
             ))
           ) : (
-            <span className="text-[#A2A8B2] text-sm">Çatışmayan bacarıq yoxdur</span>
+            <span className="text-[#A2A8B2] text-sm">
+              Çatışmayan bacarıq yoxdur
+            </span>
           )}
         </div>
       </div>

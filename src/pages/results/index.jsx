@@ -185,9 +185,9 @@ const Results = () => {
                 <AdviceCard data={resultData} />
 
                 {/* Debug (optional) */}
-                <pre className="text-white text-xs bg-[#132746] p-3 rounded-xl overflow-auto">
+                {/* <pre className="text-white text-xs bg-[#132746] p-3 rounded-xl overflow-auto">
                   {JSON.stringify({ bulkState, resultData }, null, 2)}
-                </pre>
+                </pre> */}
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 w-full mt-6">
