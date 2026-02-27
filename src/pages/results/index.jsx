@@ -13,7 +13,6 @@ function toISODateOrFallback(value) {
   if (!value) return "2000-01-01";
   if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
 
-  // DD.MM.YYYY -> YYYY-MM-DD
   const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(value);
   if (m) return `${m[3]}-${m[2]}-${m[1]}`;
 
@@ -26,10 +25,8 @@ const Results = () => {
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState("");
 
-  // keep bulk if you still want it for debug
   const [bulkState, setBulkState] = useState(null);
 
-  // ✅ actual results payload
   const [resultData, setResultData] = useState(null);
 
   const handleGoHome = () => {
@@ -48,7 +45,6 @@ const Results = () => {
         setLoading(true);
         setApiError("");
 
-        // 1) Start session (or reuse if you already stored it)
         let sessionId = localStorage.getItem("sessionId");
         if (!sessionId) {
           const started = await WayMeAPI.startSession();
@@ -56,7 +52,6 @@ const Results = () => {
           localStorage.setItem("sessionId", sessionId);
         }
 
-        // 2) Read data from localStorage
         const personal = JSON.parse(localStorage.getItem("loginData") || "{}");
         const abilitiesArr = JSON.parse(
           localStorage.getItem("skillsData") || "[]"
@@ -69,22 +64,18 @@ const Results = () => {
             "[]"
         );
 
-        // Validate minimum required
         if (!personal?.name || !personal?.surname) {
           throw new Error("Personal məlumatlar tapılmadı (name/surname).");
         }
 
-        // keep your original logic (but backend often requires 3)
         if (!Array.isArray(abilitiesArr) || abilitiesArr.length === 0) {
           throw new Error("Bacarıqlar seçilməyib (skillsData boşdur).");
         }
 
-        // keep your original requirement (direction mandatory in your code)
         if (!choice?.subdirectionId) {
           throw new Error("İstiqamət seçilməyib (choiceData.subdirectionId yoxdur).");
         }
 
-        // answers must be [{testId, optionId}, ...]
         let answers = answersStored;
         if (!Array.isArray(answersStored)) {
           answers = Object.entries(answersStored).map(([testId, optionId]) => ({
@@ -96,7 +87,6 @@ const Results = () => {
           throw new Error("Cavablar tapılmadı.");
         }
 
-        // 3) Call APIs in correct order
         await WayMeAPI.personalInfo(sessionId, {
           name: personal.name,
           surname: personal.surname,
@@ -109,11 +99,9 @@ const Results = () => {
 
         await WayMeAPI.direction(sessionId, choice.subdirectionId);
 
-        // 4) Submit answers
         const bulkRes = await WayMeAPI.answersBulk(sessionId, answers);
         setBulkState(bulkRes);
 
-        // ✅ 5) Get real result data (based on answers)
         const resData = await WayMeAPI.getResult(sessionId, true);
         setResultData(resData);
       } catch (e) {
@@ -152,7 +140,6 @@ const Results = () => {
   return (
     <div className="bg-background min-h-screen flex flex-col">
       <div className="flex-1 relative flex justify-center items-center overflow-hidden px-3 sm:px-6">
-        {/* keep style, just make it not block clicks */}
         <div className="absolute bottom-0 left-0 w-full z-0 pointer-events-none">
           <Wave />
         </div>
@@ -160,7 +147,6 @@ const Results = () => {
         <div className="w-full max-w-[960px] flex flex-col relative z-10">
           <div className="w-full inline-block p-0.5 rounded-[10px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500">
             <div className="bg-background rounded-b-[10px] p-4 sm:p-6">
-              {/* Header (same style, now uses API title/subtitle if exists) */}
               <div className="mb-4 sm:mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
                   <img
@@ -177,17 +163,11 @@ const Results = () => {
                 </p>
               </div>
 
-              {/* Cards (same order + styles) */}
               <div className="flex flex-col gap-3 sm:gap-4 mt-3 sm:mt-4">
                 <ResultCard data={resultData} />
                 <SuggestionCard data={resultData} />
                 <SuitabilityCard data={resultData} />
                 <AdviceCard data={resultData} />
-
-                {/* Debug (optional) */}
-                {/* <pre className="text-white text-xs bg-[#132746] p-3 rounded-xl overflow-auto">
-                  {JSON.stringify({ bulkState, resultData }, null, 2)}
-                </pre> */}
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 w-full mt-6">

@@ -3,7 +3,6 @@ import { Progress } from "antd";
 const normalizePercent = (value) => {
   if (value === null || value === undefined) return 0;
 
-  // handle strings like "85%" or "85"
   if (typeof value === "string") {
     const cleaned = value.replace("%", "").trim().replace(",", ".");
     const n = Number(cleaned);
@@ -12,7 +11,6 @@ const normalizePercent = (value) => {
     return Math.max(0, Math.min(100, Math.round(p)));
   }
 
-  // handle numbers like 85 or 0.85
   const n = Number(value);
   if (!Number.isFinite(n)) return 0;
 
@@ -35,7 +33,6 @@ const SuitabilityCard = ({ data }) => {
         </p>
       </div>
 
-      {/* ✅ FIX: force AntD to redraw + ensure line progress renders correctly */}
       <Progress
         key={fitPercent}          // forces redraw when value changes
         type="line"               // ensure it's line progress
