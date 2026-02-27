@@ -17,7 +17,10 @@ async function apiFetch(path, options = {}) {
       ? await res.json().catch(() => null)
       : await res.text().catch(() => "");
     throw new Error(
-      errBody?.message || errBody?.error || (typeof errBody === "string" ? errBody : "") || `HTTP ${res.status}`
+      errBody?.message ||
+        errBody?.error ||
+        (typeof errBody === "string" ? errBody : "") ||
+        `HTTP ${res.status}`
     );
   }
 
@@ -57,11 +60,18 @@ export const WayMeAPI = {
 
   // POST /WayMe/sessions/{sessionId}/answers/bulk
   answersBulk(sessionId, answers) {
-    // answers: [{testId, optionId}, ...]
     return apiFetch(`/sessions/${sessionId}/answers/bulk`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ answers }),
     });
+  },
+
+  // ✅ GET /WayMe/sessions/{sessionId}/result?aiAnswer=true
+  getResult(sessionId, aiAnswer = true) {
+    return apiFetch(
+      `/sessions/${sessionId}/result?aiAnswer=${aiAnswer ? "true" : "false"}`,
+      { method: "GET" }
+    );
   },
 };
