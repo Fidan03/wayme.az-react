@@ -117,7 +117,7 @@ const Results = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex justify-center items-center text-white text-xl">
+      <div className="min-h-screen flex justify-center items-center text-white text-xl bg-background">
         Nəticələr yüklənir...
       </div>
     );
@@ -125,7 +125,7 @@ const Results = () => {
 
   if (apiError) {
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center gap-4 px-6">
+      <div className="min-h-screen flex flex-col justify-center items-center gap-4 px-6 bg-background">
         <p className="text-red-500 text-center">{apiError}</p>
         <button
           className="px-4 py-2 rounded-lg bg-white text-black"
