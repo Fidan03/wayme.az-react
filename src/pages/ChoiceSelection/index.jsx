@@ -19,7 +19,6 @@ const ChoiceSelection = () => {
 
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // ---- helpers
   async function fetchJson(url) {
     const res = await fetch(url, { headers: { Accept: "application/json" } });
     if (!res.ok) {
@@ -29,8 +28,31 @@ const ChoiceSelection = () => {
     return res.json();
   }
 
+  const isPlaceholderString = (obj) => {
+    const name = String(obj?.name ?? "").trim().toLowerCase();
+    const key = String(obj?.key ?? "").trim().toLowerCase();
+    return name === "string" || key === "string";
+  };
+
+  const isValidDirection = (d) =>
+    d &&
+    typeof d === "object" &&
+    typeof d.id === "number" &&
+    typeof d.name === "string" &&
+    d.name.trim().length > 0 &&
+    d.active === true &&
+    !isPlaceholderString(d);
+
+  const isValidSubdirection = (s) =>
+    s &&
+    typeof s === "object" &&
+    typeof s.id === "number" &&
+    typeof s.name === "string" &&
+    s.name.trim().length > 0 &&
+    s.active === true &&
+    !isPlaceholderString(s);
+
   async function fetchAllDirections() {
-    // first page to read totalPages
     const first = await fetchJson(`/api/WayMe/directions?page=0&size=50`);
     const totalPages = Number(first.totalPages ?? 1);
 
@@ -40,8 +62,7 @@ const ChoiceSelection = () => {
       all.push(...(page.content ?? []));
     }
 
-    // keep only active
-    return all.filter((d) => d.active);
+    return all.filter(isValidDirection);
   }
 
   async function fetchAllSubdirections(directionId) {
@@ -58,10 +79,9 @@ const ChoiceSelection = () => {
       all.push(...(page.content ?? []));
     }
 
-    return all.filter((s) => s.active);
+    return all.filter(isValidSubdirection);
   }
 
-  // ---- fetch directions on mount
   useEffect(() => {
     let cancelled = false;
 
@@ -132,7 +152,6 @@ const ChoiceSelection = () => {
   };
 
   const handleStartTest = () => {
-    // optional: keep your old "not required" logic
     if (selectedDirection && selectedSubdirection) {
       localStorage.setItem(
         "choiceData",
@@ -175,10 +194,7 @@ const ChoiceSelection = () => {
                 </p>
               </div>
 
-              {/* Status */}
-              {error && (
-                <div className="mb-4 text-red-400 text-sm">{error}</div>
-              )}
+              {error && <div className="mb-4 text-red-400 text-sm">{error}</div>}
 
               {loadingDirections && !selectedDirection && (
                 <div className="text-white">İstiqamətlər yüklənir...</div>
@@ -188,50 +204,56 @@ const ChoiceSelection = () => {
                 <div className="text-white">Alt istiqamətlər yüklənir...</div>
               )}
 
-              {/* Cards */}
               <div
                 className={`grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-4 transition-all duration-200 ${
-                  isTransitioning ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
+                  isTransitioning
+                    ? "opacity-0 translate-y-2"
+                    : "opacity-100 translate-y-0"
                 }`}
               >
-                {cardsToShow.map((item) => {
-                  const isSelected =
-                    selectedDirection && !selectedSubdirection
-                      ? selectedDirection.id === item.id
-                      : selectedSubdirection?.id === item.id;
+                {cardsToShow
+                  .filter((item) => !isPlaceholderString(item))
+                  .map((item) => {
+                    const isSelected =
+                      selectedDirection && !selectedSubdirection
+                        ? selectedDirection.id === item.id
+                        : selectedSubdirection?.id === item.id;
 
-                  const title = selectedDirection ? item.name : item.name;
-
-                  return (
-                    <div
-                      key={item.id}
-                      className={`rounded-[10px] p-3 sm:p-4 flex items-center gap-3 cursor-pointer border-2 transition-colors
-                        ${isSelected ? "bg-[#2F4A73] border-[#2F4A73]" : "bg-background border-[#2F4A73]"}
+                    return (
+                      <div
+                        key={item.id}
+                        className={`rounded-[10px] p-3 sm:p-4 flex items-center gap-3 cursor-pointer border-2 transition-colors
+                        ${
+                          isSelected
+                            ? "bg-[#2F4A73] border-[#2F4A73]"
+                            : "bg-background border-[#2F4A73]"
+                        }
                         hover:bg-[#2F4A73]`}
-                      onClick={() =>
-                        selectedDirection
-                          ? handleSelectSubdirection(item)
-                          : handleSelectDirection(item)
-                      }
-                    >
-                      <span className="text-white font-medium text-[16px] sm:text-[18px]">
-                        {title}
-                      </span>
-                    </div>
-                  );
-                })}
+                        onClick={() =>
+                          selectedDirection
+                            ? handleSelectSubdirection(item)
+                            : handleSelectDirection(item)
+                        }
+                      >
+                        <span className="text-white font-medium text-[16px] sm:text-[18px]">
+                          {item.name}
+                        </span>
+                      </div>
+                    );
+                  })}
               </div>
 
-              {/* Description (optional) */}
               {selectedSubdirection?.description && (
                 <div className="mt-4 p-3 rounded-xl bg-[#132746] text-[#A2A8B2] text-sm">
                   {selectedSubdirection.description}
                 </div>
               )}
 
-              {/* Buttons */}
               <div className="flex flex-row gap-2 w-full mt-6">
-                <PrevButton to={selectedDirection ? "#" : "/skills"} onClick={handleBack} />
+                <PrevButton
+                  to={selectedDirection ? "#" : "/skills"}
+                  onClick={handleBack}
+                />
 
                 <div className="flex-1">
                   <button
@@ -242,7 +264,6 @@ const ChoiceSelection = () => {
                   </button>
                 </div>
               </div>
-
             </div>
           </div>
         </div>

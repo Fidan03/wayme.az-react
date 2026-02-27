@@ -57,7 +57,10 @@ const Test = () => {
           options: (item.options ?? [])
             .slice()
             .sort((a, b) => (a.orderNo ?? 0) - (b.orderNo ?? 0))
-            .map((opt) => opt.optionAnswer),
+            .map((opt) => ({
+              id: opt.id,              // ✅ REAL optionId from API
+              text: opt.optionAnswer,
+            })),
         }));
 
         if (!cancelled) {
@@ -86,10 +89,10 @@ const Test = () => {
   const endIndex = Math.min(startIndex + QUESTIONS_PER_PAGE, questions.length);
   const currentQuestions = questions.slice(startIndex, endIndex);
 
-  const handleSelect = (questionId, optionIndex) => {
+  const handleSelect = (questionId, optionId) => {
     setSelectedAnswers((prev) => ({
       ...prev,
-      [questionId]: optionIndex,
+      [questionId]: optionId, // ✅ store optionId
     }));
 
     setShowError((prev) => prev.filter((id) => id !== questionId));
@@ -184,13 +187,13 @@ const Test = () => {
                     </p>
 
                     <ul className="flex flex-col gap-3">
-                      {q.options.map((option, index) => {
-                        const isSelected = selectedAnswers[q.id] === index;
+                      {q.options.map((option) => {
+                        const isSelected = selectedAnswers[q.id] === option.id;
 
                         return (
                           <li
-                            key={index}
-                            onClick={() => handleSelect(q.id, index)}
+                            key={option.id}
+                            onClick={() => handleSelect(q.id, option.id)}
                             className={`flex gap-3 p-3 rounded-xl cursor-pointer transition text-sm sm:text-base ${
                               isSelected
                                 ? "bg-[#3379FB] text-white"
@@ -205,7 +208,7 @@ const Test = () => {
                               {isSelected && <span className="w-2 h-2 bg-[#3379FB] rounded-full" />}
                             </span>
 
-                            {option}
+                            {option.text}
                           </li>
                         );
                       })}
