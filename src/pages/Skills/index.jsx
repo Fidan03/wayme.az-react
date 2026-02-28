@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Wave from "../../components/wave/index";
 import LoginCardHeader from "../../components/LoginCardHeader";
 import { message } from "antd";
@@ -12,7 +12,10 @@ const Skills = () => {
 
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [customSkill, setCustomSkill] = useState("");
-  const [apiSkills, setApiSkills] = useState([]); // ✅ API data
+  const [apiSkills, setApiSkills] = useState([]);
+  const [loadingSkills, setLoadingSkills] = useState(true);
+
+  const requestIdRef = useRef(0);
 
   /* ---------------- Load From Storage ---------------- */
   useEffect(() => {
@@ -22,26 +25,40 @@ const Skills = () => {
 
   /* ---------------- Fetch Skills From API ---------------- */
   useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const res = await fetch("/api/WayMe/abilities?page=0&size=20");
+    const controller = new AbortController();
+    const myRequestId = ++requestIdRef.current;
 
-        if (!res.ok) {
-          throw new Error("API Error");
-        }
+    const fetchSkills = async () => {
+      setLoadingSkills(true);
+
+      try {
+        const res = await fetch("/api/WayMe/abilities?page=0&size=20", {
+          signal: controller.signal,
+        });
+
+        if (!res.ok) throw new Error("API Error");
 
         const data = await res.json();
 
-        // API returns: { content: [...] }
-        setApiSkills(data.content || []);
+        if (myRequestId !== requestIdRef.current) return;
 
+        setApiSkills(data?.content || []);
       } catch (err) {
+        if (err?.name === "AbortError") return;
+
         console.error(err);
         message.error("Bacarıqlar yüklənə bilmədi");
+        setApiSkills([]);
+      } finally {
+        if (myRequestId === requestIdRef.current) {
+          setLoadingSkills(false);
+        }
       }
     };
 
     fetchSkills();
+
+    return () => controller.abort();
   }, []);
 
   /* ---------------- Save To Storage ---------------- */
@@ -70,7 +87,6 @@ const Skills = () => {
     }
 
     const skill = customSkill.trim();
-
     if (!skill) return;
 
     addSkill(skill);
@@ -88,31 +104,25 @@ const Skills = () => {
       message.error("Minimum 3 bacarıq seçməlisiniz");
       return;
     }
-
     navigate("/choiceSelection");
   };
 
-  /* ---------------- Render ---------------- */
+  const choices = useMemo(() => apiSkills, [apiSkills]);
+
   return (
     <div className="bg-background min-h-screen flex flex-col">
-
       <div className="flex-1 relative flex justify-center items-center overflow-hidden px-3 sm:px-6">
-
         <div className="absolute bottom-0 left-0 w-full z-0">
           <Wave />
         </div>
 
         <div className="w-full max-w-[960px] flex flex-col relative z-10">
-
           <div className="w-full inline-block p-0.5 rounded-[10px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500">
-
             <LoginCardHeader percent={50} stage={2} />
 
             <div className="bg-background rounded-b-[10px] p-4 sm:p-6">
-
               <div className="flex flex-col w-full">
 
-                {/* Title */}
                 <div className="mb-6">
                   <p className="text-white font-semibold text-[25px]">
                     Bacarıqlarınız
@@ -122,13 +132,11 @@ const Skills = () => {
                   </p>
                 </div>
 
-                {/* Custom Input */}
                 <p className="text-[#A2A8B2] text-[18px]">
                   Öz bacarığınızı əlavə edin
                 </p>
 
                 <div className="flex gap-2 mt-3">
-
                   <input
                     type="text"
                     placeholder="Məsələn: Figma"
@@ -139,15 +147,11 @@ const Skills = () => {
                   />
 
                   <Button onClick={addCustomSkill} />
-
                 </div>
 
-                {/* Selected Skills */}
                 {selectedSkills.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-4">
-
                     {selectedSkills.map((skill, index) => (
-
                       <div
                         key={index}
                         onClick={() => removeSkill(skill)}
@@ -155,32 +159,31 @@ const Skills = () => {
                       >
                         {skill} ×
                       </div>
-
                     ))}
-
                   </div>
                 )}
 
-                {/* API Skills */}
+                {/* ✅ API Skills Section */}
                 <div className="mt-5">
-
                   <p className="text-[#A2A8B2] text-[18px]">
                     Asan seçimlər
                   </p>
 
-                  <ChoicesCard
-                    onSelect={addSkill}
-                    selectedSkills={selectedSkills}
-                    choices={apiSkills}   // ✅ API DATA
-                  />
-
+                  {loadingSkills ? (
+                    <div className="text-[#A2A8B2] mt-4 text-center">
+                      Loading...
+                    </div>
+                  ) : (
+                    <ChoicesCard
+                      onSelect={addSkill}
+                      selectedSkills={selectedSkills}
+                      choices={choices}
+                    />
+                  )}
                 </div>
-
               </div>
 
-              {/* Navigation */}
               <div className="flex gap-3 mt-6">
-
                 <PrevButton to="/login" />
 
                 <button
@@ -189,7 +192,6 @@ const Skills = () => {
                 >
                   Növbəti
                 </button>
-
               </div>
 
             </div>

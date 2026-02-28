@@ -1,13 +1,13 @@
-import choice from "../../data/easyChoices";
-
 const ChoicesCard = ({ onSelect, selectedSkills, choices = [] }) => {
-  // Use API choices if available, otherwise local data
-  const dataSource = choices.length > 0 ? choices : choice;
-
   // Filter out already selected skills
-  const filteredChoices = dataSource.filter(
+  const filteredChoices = choices.filter(
     (item) => !selectedSkills.includes(item.name || item.title)
   );
+
+  // If no API data, render nothing
+  if (!choices || choices.length === 0) {
+    return null;
+  }
 
   return (
     <div className="flex flex-wrap gap-3 my-5 justify-center">
