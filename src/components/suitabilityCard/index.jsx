@@ -19,14 +19,21 @@ const normalizePercent = (value) => {
 };
 
 const SuitabilityCard = ({ data }) => {
+  const results = Array.isArray(data?.results) ? data.results : [];
+  const topJobName = results?.[0]?.name || "Seçilmiş peşə";
+
   const fitPercent = normalizePercent(data?.abilityMatch?.fitPercent);
-  const missing = data?.abilityMatch?.missingAbilities ?? [];
+
+  // ✅ Only missing abilities (required) will be shown
+  const missing = Array.isArray(data?.abilityMatch?.missingAbilities)
+    ? data.abilityMatch.missingAbilities
+    : [];
 
   return (
     <div className="bg-[#2F4A73] rounded-2xl p-6 flex flex-col gap-6 w-full">
       <div className="flex justify-between items-center flex-wrap gap-2">
         <p className="text-white font-bold text-[18px] sm:text-[22px]">
-          UX/UI üçün bacarıq uyğunluğu
+          {topJobName} üçün bacarıq uyğunluğu
         </p>
         <p className="text-white font-bold text-[18px] sm:text-[22px]">
           {fitPercent}%
@@ -34,8 +41,8 @@ const SuitabilityCard = ({ data }) => {
       </div>
 
       <Progress
-        key={fitPercent}          // forces redraw when value changes
-        type="line"               // ensure it's line progress
+        key={fitPercent}
+        type="line"
         percent={Number(fitPercent)}
         showInfo={false}
         strokeColor="#ffffff"
@@ -44,6 +51,7 @@ const SuitabilityCard = ({ data }) => {
         className="rounded-lg"
       />
 
+      {/* ✅ Show only missing abilities */}
       <div className="bg-background rounded-lg p-4 flex flex-col gap-2">
         <p className="text-white font-semibold text-[20px] mb-2">
           Çatışmayan bacarıqlar
@@ -51,12 +59,12 @@ const SuitabilityCard = ({ data }) => {
 
         <div className="flex flex-wrap gap-2">
           {missing.length ? (
-            missing.map((m, idx) => (
+            missing.map((skill, idx) => (
               <span
-                key={idx}
-                className="bg-[#2F4A73] text-white px-3 py-1 rounded-full text-sm"
+                key={`${skill}-${idx}`}
+                className="px-3 py-1 rounded-full text-sm bg-[#2F4A73] text-white"
               >
-                {m}
+                {skill}
               </span>
             ))
           ) : (
