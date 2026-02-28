@@ -5,7 +5,7 @@ import medal from "../../assets/medal.png";
 import ResultCard from "../../components/resultCard";
 import SuitabilityCard from "../../components/suitabilityCard";
 import AdviceCard from "../../components/adviceCard";
-import SuggestionCard from "../../components/suggestionCard";
+import SuggestionCard from "../../components/suggestioncard";
 import { useNavigate } from "react-router-dom";
 import { WayMeAPI } from "../../api/waymeApi";
 
@@ -36,7 +36,7 @@ const Results = () => {
     localStorage.removeItem("testAnswers");
     localStorage.removeItem("sessionId");
 
-    // ✅ results page stored data
+    // results page stored data
     localStorage.removeItem("results_bulkState");
     localStorage.removeItem("results_resultData");
     localStorage.removeItem("results_savedAt");
@@ -50,6 +50,21 @@ const Results = () => {
         setLoading(true);
         setApiError("");
 
+        // ✅ 1) Try to load from localStorage first
+        const savedResult = localStorage.getItem("results_resultData");
+        const savedBulk = localStorage.getItem("results_bulkState");
+
+        if (savedResult) {
+          const parsedResult = JSON.parse(savedResult);
+          const parsedBulk = savedBulk ? JSON.parse(savedBulk) : null;
+
+          setResultData(parsedResult);
+          setBulkState(parsedBulk);
+          setLoading(false);
+          return; // ✅ stop here, don't call API
+        }
+
+        // ✅ 2) If no saved data, call API and then save
         let sessionId = localStorage.getItem("sessionId");
         if (!sessionId) {
           const started = await WayMeAPI.startSession();
@@ -99,7 +114,6 @@ const Results = () => {
         });
 
         await WayMeAPI.abilities(sessionId, abilitiesArr);
-
         await WayMeAPI.direction(sessionId, choice.subdirectionId);
 
         const bulkRes = await WayMeAPI.answersBulk(sessionId, answers);
@@ -108,7 +122,7 @@ const Results = () => {
         const resData = await WayMeAPI.getResult(sessionId, true);
         setResultData(resData);
 
-        // ✅ SAVE EVERYTHING RESULT PAGE PRODUCES INTO LOCALSTORAGE
+        // ✅ SAVE for future visits
         localStorage.setItem("results_bulkState", JSON.stringify(bulkRes));
         localStorage.setItem("results_resultData", JSON.stringify(resData));
         localStorage.setItem("results_savedAt", new Date().toISOString());
@@ -157,11 +171,7 @@ const Results = () => {
             <div className="bg-background rounded-b-[10px] p-4 sm:p-6">
               <div className="mb-4 sm:mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                  <img
-                    src={medal}
-                    alt="medal"
-                    className="w-6 h-6 sm:w-7.5 sm:h-7.5"
-                  />
+                  <img src={medal} alt="medal" className="w-6 h-6 sm:w-7.5 sm:h-7.5" />
                   <p className="text-white font-semibold text-[20px] sm:text-[25px] mt-2 sm:mt-0">
                     {resultData?.title || "Nəticələriniz"}
                   </p>
@@ -184,10 +194,6 @@ const Results = () => {
                 </div>
               </div>
 
-              {/* optional debug */}
-              {/* <pre className="text-white text-xs bg-[#132746] p-3 rounded-xl overflow-auto mt-4">
-                {JSON.stringify({ bulkState, resultData }, null, 2)}
-              </pre> */}
             </div>
           </div>
         </div>
