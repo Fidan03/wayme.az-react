@@ -81,7 +81,8 @@ const LoginForm = ({ form }) => {
   const initialMonth = useMemo(() => {
     const saved = parseStrictDate(savedData.date || "");
     return saved ? saved : dayjs();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [currentMonth, setCurrentMonth] = useState(initialMonth);
 
@@ -122,6 +123,9 @@ const LoginForm = ({ form }) => {
     form.setFieldsValue({ date: formatted });
     saveToStorage("date", formatted);
 
+    // IMPORTANT: clear any date errors when a valid date is selected
+    form.setFields([{ name: "date", errors: [] }]);
+
     setShowCalendar(false);
   };
 
@@ -147,34 +151,29 @@ const LoginForm = ({ form }) => {
     form.setFieldsValue({ date: formatted });
     saveToStorage("date", formatted);
 
-    // Only when full length, validate strictly
-    if (formatted.length === 10) {
-      const d = parseStrictDate(formatted);
-
-      if (d && !d.isAfter(dayjs(), "day")) {
-        setCurrentMonth(d);
-        // keep valid value
-        form.setFields([
-          {
-            name: "date",
-            errors: [],
-          },
-        ]);
-      } else {
-        // mark field invalid
-        form.setFields([
-          {
-            name: "date",
-            errors: ["Yalnız düzgün və gələcək olmayan tarix daxil edin"],
-          },
-        ]);
-      }
-    } else {
-      // while typing, don't hard-error (optional); clear errors
+    // ✅ If user did NOT type all 8 digits (DDMMYYYY => 10 chars with dots),
+    // show error and block submission
+    if (formatted.length !== 10) {
       form.setFields([
         {
           name: "date",
-          errors: [],
+          errors: ["Tarixi tam daxil edin (gg.aa.iiii)"],
+        },
+      ]);
+      return;
+    }
+
+    // Full length => validate strictly
+    const d = parseStrictDate(formatted);
+
+    if (d && !d.isAfter(dayjs(), "day")) {
+      setCurrentMonth(d);
+      form.setFields([{ name: "date", errors: [] }]);
+    } else {
+      form.setFields([
+        {
+          name: "date",
+          errors: ["Yalnız düzgün və gələcək olmayan tarix daxil edin"],
         },
       ]);
     }
@@ -233,6 +232,7 @@ const LoginForm = ({ form }) => {
         surname: savedData.surname || "",
         date: savedData.date || "",
       });
+      setSelectedDate(savedData.date || "");
     }
 
     // ensure currentMonth matches saved valid date
@@ -252,6 +252,14 @@ const LoginForm = ({ form }) => {
       if (!sessionId) {
         alert("Session tapılmadı. Yenidən başlayın.");
         navigate("/");
+        return;
+      }
+
+      // ✅ HARD BLOCK: must be fully typed (8 digits => 10 chars with dots)
+      if (!values.date || String(values.date).length !== 10) {
+        form.setFields([
+          { name: "date", errors: ["Tarixi tam daxil edin (gg.aa.iiii)"] },
+        ]);
         return;
       }
 
@@ -312,19 +320,25 @@ const LoginForm = ({ form }) => {
 
   /* ---------------- Date Rule (AntD) ---------------- */
 
+  // ✅ UPDATED: validator REJECTS if date is not fully filled (10 chars)
   const dateRules = [
     { required: true, message: "Tarix seçin" },
     {
       validator: async (_, value) => {
-        if (!value) return Promise.resolve();
+        if (!value) return Promise.reject(new Error("Tarix seçin"));
 
-        // Allow partial typing without throwing
-        if (String(value).length !== 10) return Promise.resolve();
+        const v = String(value);
 
-        const d = parseStrictDate(value);
+        // Must be DD.MM.YYYY (8 digits)
+        if (v.length !== 10) {
+          return Promise.reject(new Error("Tarixi tam daxil edin (gg.aa.iiii)"));
+        }
+
+        const d = parseStrictDate(v);
         if (!d) return Promise.reject(new Error("Düzgün tarix daxil edin"));
-        if (d.isAfter(dayjs(), "day"))
+        if (d.isAfter(dayjs(), "day")) {
           return Promise.reject(new Error("Gələcək tarix seçmək olmaz"));
+        }
 
         return Promise.resolve();
       },
@@ -410,13 +424,13 @@ const LoginForm = ({ form }) => {
             {showCalendar && (
               <div className="absolute bottom-full left-0 mb-2 bg-[#2f4a73] rounded-lg p-4 shadow-lg z-50 w-64">
                 <div className="flex justify-between items-center mb-3 text-white font-semibold">
-                  <button type="button" onClick={prevMonth}>
+                  <button type="button" onClick={() => setCurrentMonth((m) => m.subtract(1, "month"))}>
                     &lt;
                   </button>
 
                   <span>{currentMonth.format("MMMM YYYY")}</span>
 
-                  <button type="button" onClick={nextMonth}>
+                  <button type="button" onClick={() => setCurrentMonth((m) => m.add(1, "month"))}>
                     &gt;
                   </button>
                 </div>
@@ -432,6 +446,11 @@ const LoginForm = ({ form }) => {
             )}
           </div>
         </div>
+
+        {/* If you have a submit button elsewhere, keep it.
+            Example:
+            <button type="submit" className="...">Davam et</button>
+        */}
       </Form>
     </div>
   );
