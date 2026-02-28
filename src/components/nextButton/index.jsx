@@ -19,7 +19,11 @@ const NextButton = ({ to, form, label = "Növbəti", onClick }) => {
         navigate(to);
       }
     } catch (error) {
-      message.error("Zəhmət olmasa bütün sahələri doldurun");
+      const firstFieldError =
+        error?.errorFields?.[0]?.errors?.[0] ||
+        error?.errorFields?.[0]?.errors?.[0];
+
+      message.error(firstFieldError || "Zəhmət olmasa bütün sahələri doldurun");
     }
   };
 
