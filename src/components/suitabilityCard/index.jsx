@@ -18,16 +18,56 @@ const normalizePercent = (value) => {
   return Math.max(0, Math.min(100, Math.round(p)));
 };
 
+const clampPercent = (n) => Math.max(0, Math.min(100, Math.round(n)));
+
 const SuitabilityCard = ({ data }) => {
   const results = Array.isArray(data?.results) ? data.results : [];
   const topJobName = results?.[0]?.name || "Seçilmiş peşə";
 
-  const fitPercent = normalizePercent(data?.abilityMatch?.fitPercent);
+  const abilityMatch = data?.abilityMatch || {};
 
-  // ✅ Only missing abilities (required) will be shown
-  const missing = Array.isArray(data?.abilityMatch?.missingAbilities)
-    ? data.abilityMatch.missingAbilities
+  // Missing abilities (you already show these)
+  const missing = Array.isArray(abilityMatch?.missingAbilities)
+    ? abilityMatch.missingAbilities
     : [];
+
+  // ---- Suitability % for "abilities user has" (use existing bar for this) ----
+  // Prefer backend fitPercent if it exists; otherwise calculate from counts if possible.
+  let suitabilityPercent = normalizePercent(abilityMatch?.fitPercent);
+
+  if (!suitabilityPercent) {
+    const requiredAbilities = Array.isArray(abilityMatch?.requiredAbilities)
+      ? abilityMatch.requiredAbilities
+      : null;
+
+    const matchedAbilities = Array.isArray(abilityMatch?.matchedAbilities)
+      ? abilityMatch.matchedAbilities
+      : Array.isArray(abilityMatch?.presentAbilities)
+        ? abilityMatch.presentAbilities
+        : null;
+
+    const totalFromNumber =
+      Number.isFinite(Number(abilityMatch?.totalRequiredAbilities))
+        ? Number(abilityMatch.totalRequiredAbilities)
+        : Number.isFinite(Number(abilityMatch?.totalAbilities))
+          ? Number(abilityMatch.totalAbilities)
+          : null;
+
+    const totalRequired =
+      requiredAbilities?.length ??
+      totalFromNumber ??
+      (matchedAbilities ? matchedAbilities.length + missing.length : null);
+
+    const haveCount =
+      matchedAbilities?.length ??
+      (typeof totalRequired === "number" ? totalRequired - missing.length : null);
+
+    if (typeof totalRequired === "number" && totalRequired > 0 && typeof haveCount === "number") {
+      suitabilityPercent = clampPercent((haveCount / totalRequired) * 100);
+    } else {
+      suitabilityPercent = 0;
+    }
+  }
 
   return (
     <div className="bg-[#2F4A73] rounded-2xl p-6 flex flex-col gap-6 w-full">
@@ -36,14 +76,15 @@ const SuitabilityCard = ({ data }) => {
           {topJobName} üçün bacarıq uyğunluğu
         </p>
         <p className="text-white font-bold text-[18px] sm:text-[22px]">
-          {fitPercent}%
+          {suitabilityPercent}%
         </p>
       </div>
 
+      {/* ✅ This ONE bar now shows "how many required abilities user has" */}
       <Progress
-        key={fitPercent}
+        key={suitabilityPercent}
         type="line"
-        percent={Number(fitPercent)}
+        percent={Number(suitabilityPercent)}
         showInfo={false}
         strokeColor="#ffffff"
         trailColor="#091e3e"
@@ -51,7 +92,7 @@ const SuitabilityCard = ({ data }) => {
         className="rounded-lg"
       />
 
-      {/* ✅ Show only missing abilities */}
+      {/* Missing abilities stays below */}
       <div className="bg-background rounded-lg p-4 flex flex-col gap-2">
         <p className="text-white font-semibold text-[20px] mb-2">
           Çatışmayan bacarıqlar
