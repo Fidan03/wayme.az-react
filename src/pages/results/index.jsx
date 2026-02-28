@@ -50,7 +50,7 @@ const Results = () => {
         setLoading(true);
         setApiError("");
 
-        // ✅ 1) Try to load from localStorage first
+        // 1) Try to load from localStorage first
         const savedResult = localStorage.getItem("results_resultData");
         const savedBulk = localStorage.getItem("results_bulkState");
 
@@ -61,10 +61,10 @@ const Results = () => {
           setResultData(parsedResult);
           setBulkState(parsedBulk);
           setLoading(false);
-          return; // ✅ stop here, don't call API
+          return; // stop here, don't call API
         }
 
-        // ✅ 2) If no saved data, call API and then save
+        // 2) If no saved data, call API and then save
         let sessionId = localStorage.getItem("sessionId");
         if (!sessionId) {
           const started = await WayMeAPI.startSession();
@@ -90,9 +90,8 @@ const Results = () => {
           throw new Error("Bacarıqlar seçilməyib (skillsData boşdur).");
         }
 
-        if (!choice?.subdirectionId) {
-          throw new Error("İstiqamət seçilməyib (choiceData.subdirectionId yoxdur).");
-        }
+        // ✅ subdirection is OPTIONAL now — do NOT throw error
+        const subdirectionId = choice?.subdirectionId || null;
 
         let answers = answersStored;
         if (!Array.isArray(answersStored)) {
@@ -114,7 +113,11 @@ const Results = () => {
         });
 
         await WayMeAPI.abilities(sessionId, abilitiesArr);
-        await WayMeAPI.direction(sessionId, choice.subdirectionId);
+
+        // ✅ Only call direction if user selected it
+        if (subdirectionId) {
+          await WayMeAPI.direction(sessionId, subdirectionId);
+        }
 
         const bulkRes = await WayMeAPI.answersBulk(sessionId, answers);
         setBulkState(bulkRes);
@@ -122,7 +125,7 @@ const Results = () => {
         const resData = await WayMeAPI.getResult(sessionId, true);
         setResultData(resData);
 
-        // ✅ SAVE for future visits
+        // SAVE for future visits
         localStorage.setItem("results_bulkState", JSON.stringify(bulkRes));
         localStorage.setItem("results_resultData", JSON.stringify(resData));
         localStorage.setItem("results_savedAt", new Date().toISOString());
@@ -171,13 +174,18 @@ const Results = () => {
             <div className="bg-background rounded-b-[10px] p-4 sm:p-6">
               <div className="mb-4 sm:mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                  <img src={medal} alt="medal" className="w-6 h-6 sm:w-7.5 sm:h-7.5" />
+                  <img
+                    src={medal}
+                    alt="medal"
+                    className="w-6 h-6 sm:w-7.5 sm:h-7.5"
+                  />
                   <p className="text-white font-semibold text-[20px] sm:text-[25px] mt-2 sm:mt-0">
                     {resultData?.title || "Nəticələriniz"}
                   </p>
                 </div>
                 <p className="text-[#A2A8B2] text-[14px] sm:text-[18px] font-medium mt-1">
-                  {resultData?.subtitle || "Sizin üçün ən uyğun karyera istiqamətləri"}
+                  {resultData?.subtitle ||
+                    "Sizin üçün ən uyğun karyera istiqamətləri"}
                 </p>
               </div>
 
@@ -193,7 +201,6 @@ const Results = () => {
                   <NextButton to="/pdf" label="PDF hesabat almaq" />
                 </div>
               </div>
-
             </div>
           </div>
         </div>
