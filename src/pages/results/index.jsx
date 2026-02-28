@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Wave from "../../components/wave/index";
 import NextButton from "../../components/NextButton/index";
 import medal from "../../assets/medal.png";
@@ -27,6 +27,12 @@ const Results = () => {
 
   const [bulkState, setBulkState] = useState(null);
   const [resultData, setResultData] = useState(null);
+
+  // ✅ Decide whether to show SuggestionCard
+  const shouldShowSuggestion = useMemo(() => {
+    const choice = JSON.parse(localStorage.getItem("choiceData") || "{}");
+    return Boolean(choice?.subdirectionId || choice?.directionId);
+  }, []);
 
   const handleGoHome = () => {
     localStorage.removeItem("loginData");
@@ -73,7 +79,9 @@ const Results = () => {
         }
 
         const personal = JSON.parse(localStorage.getItem("loginData") || "{}");
-        const abilitiesArr = JSON.parse(localStorage.getItem("skillsData") || "[]");
+        const abilitiesArr = JSON.parse(
+          localStorage.getItem("skillsData") || "[]"
+        );
         const choice = JSON.parse(localStorage.getItem("choiceData") || "{}");
 
         const answersStored = JSON.parse(
@@ -191,7 +199,10 @@ const Results = () => {
 
               <div className="flex flex-col gap-3 sm:gap-4 mt-3 sm:mt-4">
                 <ResultCard data={resultData} />
-                <SuggestionCard data={resultData} />
+
+                {/* ✅ Hide SuggestionCard if no direction/subdirection chosen */}
+                {shouldShowSuggestion && <SuggestionCard data={resultData} />}
+
                 <SuitabilityCard data={resultData} />
                 <AdviceCard data={resultData} />
               </div>
