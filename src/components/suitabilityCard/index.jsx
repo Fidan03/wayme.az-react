@@ -1,3 +1,4 @@
+// src/components/suitabilityCard/index.jsx
 import { Progress } from "antd";
 
 const normalizePercent = (value) => {
@@ -26,13 +27,10 @@ const SuitabilityCard = ({ data }) => {
 
   const abilityMatch = data?.abilityMatch || {};
 
-  // Missing abilities (you already show these)
   const missing = Array.isArray(abilityMatch?.missingAbilities)
     ? abilityMatch.missingAbilities
     : [];
 
-  // ---- Suitability % for "abilities user has" (use existing bar for this) ----
-  // Prefer backend fitPercent if it exists; otherwise calculate from counts if possible.
   let suitabilityPercent = normalizePercent(abilityMatch?.fitPercent);
 
   if (!suitabilityPercent) {
@@ -43,15 +41,14 @@ const SuitabilityCard = ({ data }) => {
     const matchedAbilities = Array.isArray(abilityMatch?.matchedAbilities)
       ? abilityMatch.matchedAbilities
       : Array.isArray(abilityMatch?.presentAbilities)
-        ? abilityMatch.presentAbilities
-        : null;
+      ? abilityMatch.presentAbilities
+      : null;
 
-    const totalFromNumber =
-      Number.isFinite(Number(abilityMatch?.totalRequiredAbilities))
-        ? Number(abilityMatch.totalRequiredAbilities)
-        : Number.isFinite(Number(abilityMatch?.totalAbilities))
-          ? Number(abilityMatch.totalAbilities)
-          : null;
+    const totalFromNumber = Number.isFinite(Number(abilityMatch?.totalRequiredAbilities))
+      ? Number(abilityMatch.totalRequiredAbilities)
+      : Number.isFinite(Number(abilityMatch?.totalAbilities))
+      ? Number(abilityMatch.totalAbilities)
+      : null;
 
     const totalRequired =
       requiredAbilities?.length ??
@@ -62,7 +59,11 @@ const SuitabilityCard = ({ data }) => {
       matchedAbilities?.length ??
       (typeof totalRequired === "number" ? totalRequired - missing.length : null);
 
-    if (typeof totalRequired === "number" && totalRequired > 0 && typeof haveCount === "number") {
+    if (
+      typeof totalRequired === "number" &&
+      totalRequired > 0 &&
+      typeof haveCount === "number"
+    ) {
       suitabilityPercent = clampPercent((haveCount / totalRequired) * 100);
     } else {
       suitabilityPercent = 0;
@@ -80,7 +81,6 @@ const SuitabilityCard = ({ data }) => {
         </p>
       </div>
 
-      {/* ✅ This ONE bar now shows "how many required abilities user has" */}
       <Progress
         key={suitabilityPercent}
         type="line"
@@ -92,7 +92,6 @@ const SuitabilityCard = ({ data }) => {
         className="rounded-lg"
       />
 
-      {/* Missing abilities stays below */}
       <div className="bg-background rounded-lg p-4 flex flex-col gap-2">
         <p className="text-white font-semibold text-[20px] mb-2">
           Çatışmayan bacarıqlar

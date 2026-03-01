@@ -1,3 +1,4 @@
+// src/pages/results/index.jsx (or wherever your Results component lives)
 import { useEffect, useState, useMemo } from "react";
 import Wave from "../../components/wave/index";
 import NextButton from "../../components/NextButton/index";

@@ -1,3 +1,4 @@
+// src/components/adviceCard/index.jsx
 const AdviceCard = ({ data }) => {
   const resources = data?.resources || {};
   const onlineCourses = resources?.onlineCourses || [];

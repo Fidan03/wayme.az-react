@@ -1,9 +1,15 @@
+// src/components/suggestioncard/index.jsx
 import designer from "../../assets/designer.png";
 import front from "../../assets/programming.png";
 
 const pickFallbackIcon = (name = "") => {
   const n = name.toLowerCase();
-  if (n.includes("ux") || n.includes("ui") || n.includes("dizayn") || n.includes("design")) {
+  if (
+    n.includes("ux") ||
+    n.includes("ui") ||
+    n.includes("dizayn") ||
+    n.includes("design")
+  ) {
     return designer;
   }
   return front;
@@ -37,7 +43,9 @@ const SuggestionCard = ({ data }) => {
               e.currentTarget.src = pickFallbackIcon(recName);
             }}
           />
-          <p className="text-white font-semibold text-lg md:text-xl">{recName}</p>
+          <p className="text-white font-semibold text-lg md:text-xl">
+            {recName}
+          </p>
         </div>
 
         <div className="bg-background flex justify-center items-center rounded-xl p-6 md:p-10 gap-5 w-full md:w-[433px] min-h-[144px]">
@@ -49,13 +57,16 @@ const SuggestionCard = ({ data }) => {
               e.currentTarget.src = pickFallbackIcon(selName);
             }}
           />
-          <p className="text-white font-semibold text-lg md:text-xl">{selName}</p>
+          <p className="text-white font-semibold text-lg md:text-xl">
+            {selName}
+          </p>
         </div>
       </div>
 
       <div className="bg-background rounded-lg p-4 flex flex-col gap-2">
         <p className="text-white font-semibold text-xl">
-          Oxşarlıq dərəcəsi: {typeof similarity === "number" ? `${similarity}%` : "—"}
+          Oxşarlıq dərəcəsi:{" "}
+          {typeof similarity === "number" ? `${similarity}%` : "—"}
         </p>
       </div>
     </div>

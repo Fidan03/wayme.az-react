@@ -1,3 +1,4 @@
+// ✅ FIXED: src/components/resultCard/index.jsx
 import first from "../../assets/first.png";
 import second from "../../assets/second.png";
 import third from "../../assets/third.png";
@@ -13,25 +14,39 @@ const rankIcon = (rank) => {
 
 const fallbackRoleIcon = (name = "") => {
   const n = name.toLowerCase();
-  if (n.includes("ux") || n.includes("ui") || n.includes("dizayn") || n.includes("design")) {
+  if (
+    n.includes("ux") ||
+    n.includes("ui") ||
+    n.includes("dizayn") ||
+    n.includes("design")
+  ) {
     return designer;
   }
   if (n.includes("front")) return programming;
   return backend;
 };
 
-const toPercent = (score, maxScore) => {
-  if (!maxScore) return 0;
-  return Math.round((Number(score || 0) / Number(maxScore)) * 100);
+// ✅ treat backend score as percent; supports 50, "50%", 0.5
+const normalizeScorePercent = (value) => {
+  if (value === null || value === undefined) return 0;
+
+  if (typeof value === "string") {
+    const cleaned = value.replace("%", "").trim().replace(",", ".");
+    const n = Number(cleaned);
+    if (!Number.isFinite(n)) return 0;
+    const p = n <= 1 ? n * 100 : n;
+    return Math.max(0, Math.min(100, Math.round(p)));
+  }
+
+  const n = Number(value);
+  if (!Number.isFinite(n)) return 0;
+
+  const p = n <= 1 ? n * 100 : n;
+  return Math.max(0, Math.min(100, Math.round(p)));
 };
 
 const ResultCard = ({ data }) => {
   const results = Array.isArray(data?.results) ? data.results : [];
-
-  // If backend gives scores like 1/2 etc, convert to %
-  const maxScore = results.length ? Math.max(...results.map((r) => Number(r.score || 0))) : 0;
-
-  // show exactly 3 rows as in your UI
   const top3 = results.slice(0, 3);
 
   return (
@@ -40,12 +55,19 @@ const ResultCard = ({ data }) => {
 
       <div className="flex flex-col gap-4">
         {top3.map((r) => {
-          const percent = toPercent(r.score, maxScore);
+          const percent = normalizeScorePercent(r.score);
 
           return (
-            <div key={r.rank} className="flex items-center justify-between bg-background rounded-xl p-6">
+            <div
+              key={r.rank}
+              className="flex items-center justify-between bg-background rounded-xl p-6"
+            >
               <div className="flex items-center gap-3">
-                <img src={rankIcon(r.rank)} alt={`rank-${r.rank}`} className="w-8 h-8" />
+                <img
+                  src={rankIcon(r.rank)}
+                  alt={`rank-${r.rank}`}
+                  className="w-8 h-8"
+                />
                 <div className="flex items-center gap-2">
                   <img
                     src={r.iconUrl || fallbackRoleIcon(r.name)}
@@ -58,6 +80,8 @@ const ResultCard = ({ data }) => {
                   <p className="text-white font-medium">{r.name}</p>
                 </div>
               </div>
+
+              {/* ✅ shows 50% / 32% / 18% exactly as backend */}
               <p className="text-white font-semibold text-xl">{percent}%</p>
             </div>
           );

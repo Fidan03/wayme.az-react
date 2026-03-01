@@ -1,3 +1,4 @@
+// src/components/NextButton/index.jsx
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import "./main.css";
@@ -19,9 +20,7 @@ const NextButton = ({ to, form, label = "Növbəti", onClick }) => {
         navigate(to);
       }
     } catch (error) {
-      const firstFieldError =
-        error?.errorFields?.[0]?.errors?.[0] ||
-        error?.errorFields?.[0]?.errors?.[0];
+      const firstFieldError = error?.errorFields?.[0]?.errors?.[0];
 
       message.error(firstFieldError || "Zəhmət olmasa bütün sahələri doldurun");
     }
