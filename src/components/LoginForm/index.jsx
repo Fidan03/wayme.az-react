@@ -1,8 +1,8 @@
+// src/components/LoginForm/index.jsx
 import { useState, useRef, useEffect, useMemo } from "react";
 import { Form } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useNavigate } from "react-router-dom";
 
 import person from "../../assets/person.png";
 import calendar from "../../assets/calendar.png";
@@ -11,66 +11,63 @@ dayjs.extend(customParseFormat);
 
 const DATE_FORMAT = "DD.MM.YYYY";
 
-const LoginForm = ({ form }) => {
-  const navigate = useNavigate();
+// ✅ backend rule: only letters, optionally ONE hyphen between 2 words
+// examples valid: "Ali", "Ali-Hasan"
+// invalid: "-Ali", "Ali-", "Ali--Hasan", "Ali Hasan", "Ali1"
+const NAME_BACKEND_REGEX = /^[A-Za-zÇƏĞİÖŞÜçəğiöşü]+(-[A-Za-zÇƏĞİÖŞÜçəğiöşü]+)?$/;
 
+const LoginForm = ({ form }) => {
   const savedData = JSON.parse(localStorage.getItem("loginData") || "{}");
 
-  /* ---------------- Name & Surname Format ---------------- */
+  const saveToStorage = (key, value) => {
+    const current = JSON.parse(localStorage.getItem("loginData") || "{}");
+    localStorage.setItem("loginData", JSON.stringify({ ...current, [key]: value }));
+  };
 
-  const formatInput = (value) => {
+  const parseStrictDate = (value) => {
+    const d = dayjs(value, DATE_FORMAT, true);
+    return d.isValid() ? d : null;
+  };
+
+  const calcAge = (birth) => {
+    // age in years considering month/day (dayjs diff already does that)
+    return dayjs().diff(birth, "year");
+  };
+
+  /* ---------------- Name & Surname Input ---------------- */
+
+  const sanitizeName = (value) => {
+    // allow letters + hyphen only
     let val = value.replace(/[^A-Za-zÇƏĞİÖŞÜçəğiöşü-]/g, "");
 
-    const parts = val.split("-");
-    if (parts.length > 2) val = parts[0] + "-" + parts[1];
+    // remove multiple hyphens
+    val = val.replace(/-+/g, "-");
 
+    // no leading/trailing hyphen
+    val = val.replace(/^-+/, "").replace(/-+$/, "");
+
+    // allow at most one hyphen
+    const parts = val.split("-");
+    if (parts.length > 2) val = `${parts[0]}-${parts[1]}`;
+
+    // max length
     val = val.slice(0, 30);
 
-    if (val.length > 0) {
-      val = val.charAt(0).toUpperCase() + val.slice(1);
-    }
+    // capitalize first letter (optional)
+    if (val.length > 0) val = val.charAt(0).toUpperCase() + val.slice(1);
 
     return val;
   };
 
   const handleChange = (e, field) => {
-    const formatted = formatInput(e.target.value);
-
+    const formatted = sanitizeName(e.target.value);
     form.setFieldsValue({ [field]: formatted });
+    saveToStorage(field, formatted);
 
-    const currentData = JSON.parse(localStorage.getItem("loginData") || "{}");
-
-    localStorage.setItem(
-      "loginData",
-      JSON.stringify({
-        ...currentData,
-        [field]: formatted,
-      })
-    );
-  };
-
-  /* ---------------- Helpers ---------------- */
-
-  const saveToStorage = (key, value) => {
-    const current = JSON.parse(localStorage.getItem("loginData") || "{}");
-
-    localStorage.setItem(
-      "loginData",
-      JSON.stringify({
-        ...current,
-        [key]: value,
-      })
-    );
-  };
-
-  const parseStrictDate = (value) => {
-    // strict parsing: rejects 32.01.2024, 29.02.2023, 00.00.0000, etc.
-    const d = dayjs(value, DATE_FORMAT, true);
-    return d.isValid() ? d : null;
-  };
-
-  const isFutureDayInCurrentMonth = (day) => {
-    return currentMonth.date(day).isAfter(dayjs(), "day");
+    // ✅ clear error if it becomes valid
+    if (formatted && NAME_BACKEND_REGEX.test(formatted)) {
+      form.setFields([{ name: field, errors: [] }]);
+    }
   };
 
   /* ---------------- Date Picker State ---------------- */
@@ -85,24 +82,17 @@ const LoginForm = ({ form }) => {
   }, []);
 
   const [currentMonth, setCurrentMonth] = useState(initialMonth);
-
   const calendarRef = useRef(null);
-
-  /* ---------------- Close Calendar ---------------- */
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (!calendarRef.current?.contains(e.target)) {
-        setShowCalendar(false);
-      }
+      if (!calendarRef.current?.contains(e.target)) setShowCalendar(false);
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  /* ---------------- Calendar Logic ---------------- */
+  const isFutureDayInCurrentMonth = (day) => currentMonth.date(day).isAfter(dayjs(), "day");
 
   const startOfMonth = currentMonth.startOf("month");
   const endOfMonth = currentMonth.endOf("month");
@@ -110,91 +100,71 @@ const LoginForm = ({ form }) => {
   const startDay = startOfMonth.day();
   const totalDays = endOfMonth.date();
 
-  const prevMonth = () => setCurrentMonth((m) => m.subtract(1, "month"));
-  const nextMonth = () => setCurrentMonth((m) => m.add(1, "month"));
-
   const handleDateSelect = (day) => {
     const date = currentMonth.date(day);
     if (date.isAfter(dayjs(), "day")) return;
 
     const formatted = date.format(DATE_FORMAT);
-
     setSelectedDate(formatted);
     form.setFieldsValue({ date: formatted });
     saveToStorage("date", formatted);
-
-    // IMPORTANT: clear any date errors when a valid date is selected
     form.setFields([{ name: "date", errors: [] }]);
-
     setShowCalendar(false);
   };
 
-  /* ---------------- Date Input Formatting + Validation ---------------- */
-
   const formatDateInput = (value) => {
-    // keep only digits and add dots as user types
     const numbers = value.replace(/\D/g, "").slice(0, 8);
-
     let result = "";
     if (numbers.length >= 1) result = numbers.slice(0, 2);
     if (numbers.length >= 3) result += "." + numbers.slice(2, 4);
     if (numbers.length >= 5) result += "." + numbers.slice(4, 8);
-
     return result;
   };
 
   const handleInputChange = (e) => {
     const formatted = formatDateInput(e.target.value);
 
-    // Always show what the user typed (masked)
     setSelectedDate(formatted);
     form.setFieldsValue({ date: formatted });
     saveToStorage("date", formatted);
 
-    // ✅ If user did NOT type all 8 digits (DDMMYYYY => 10 chars with dots),
-    // show error and block submission
     if (formatted.length !== 10) {
-      form.setFields([
-        {
-          name: "date",
-          errors: ["Tarixi tam daxil edin (gg.aa.iiii)"],
-        },
-      ]);
+      form.setFields([{ name: "date", errors: ["Tarixi tam daxil edin (gg.aa.iiii)"] }]);
       return;
     }
 
-    // Full length => validate strictly
     const d = parseStrictDate(formatted);
 
-    if (d && !d.isAfter(dayjs(), "day")) {
-      setCurrentMonth(d);
-      form.setFields([{ name: "date", errors: [] }]);
-    } else {
-      form.setFields([
-        {
-          name: "date",
-          errors: ["Yalnız düzgün və gələcək olmayan tarix daxil edin"],
-        },
-      ]);
+    if (!d) {
+      form.setFields([{ name: "date", errors: ["Düzgün tarix daxil edin"] }]);
+      return;
     }
+
+    if (d.isAfter(dayjs(), "day")) {
+      form.setFields([{ name: "date", errors: ["Gələcək tarix seçmək olmaz"] }]);
+      return;
+    }
+
+    const age = calcAge(d);
+    if (age < 15 || age > 65) {
+      form.setFields([{ name: "date", errors: ["Yaş 15 ilə 65 arasında olmalıdır"] }]);
+      return;
+    }
+
+    setCurrentMonth(d);
+    form.setFields([{ name: "date", errors: [] }]);
   };
 
-  /* ---------------- Calendar Days ---------------- */
-
   const renderDays = () => {
-    const blanks = Array.from({ length: startDay }, (_, i) => (
-      <div key={`b-${i}`} />
-    ));
+    const blanks = Array.from({ length: startDay }, (_, i) => <div key={`b-${i}`} />);
 
     const days = Array.from({ length: totalDays }, (_, i) => {
       const dayNum = i + 1;
       const dateObj = currentMonth.date(dayNum);
 
       const isDisabled = isFutureDayInCurrentMonth(dayNum);
-
       const isSelected =
-        selectedDate === dateObj.format(DATE_FORMAT) &&
-        !!parseStrictDate(selectedDate);
+        selectedDate === dateObj.format(DATE_FORMAT) && !!parseStrictDate(selectedDate);
 
       return (
         <button
@@ -203,14 +173,9 @@ const LoginForm = ({ form }) => {
           disabled={isDisabled}
           onClick={() => !isDisabled && handleDateSelect(dayNum)}
           className={`
-            w-10 h-10 flex items-center justify-center rounded-lg
-            transition-colors duration-200
+            w-10 h-10 flex items-center justify-center rounded-lg transition-colors duration-200
             ${isSelected ? "bg-blue-500 text-white" : ""}
-            ${
-              !isSelected && !isDisabled
-                ? "hover:bg-blue-600 hover:text-white"
-                : ""
-            }
+            ${!isSelected && !isDisabled ? "hover:bg-blue-600 hover:text-white" : ""}
             ${isDisabled ? "text-gray-500 cursor-not-allowed" : "text-white"}
           `}
         >
@@ -222,10 +187,7 @@ const LoginForm = ({ form }) => {
     return [...blanks, ...days];
   };
 
-  /* ---------------- Autofill ---------------- */
-
   useEffect(() => {
-    // set initial values from storage (only if present)
     if (savedData.name || savedData.surname || savedData.date) {
       form.setFieldsValue({
         name: savedData.name || "",
@@ -235,7 +197,6 @@ const LoginForm = ({ form }) => {
       setSelectedDate(savedData.date || "");
     }
 
-    // ensure currentMonth matches saved valid date
     if (savedData.date) {
       const d = parseStrictDate(savedData.date);
       if (d) setCurrentMonth(d);
@@ -243,125 +204,66 @@ const LoginForm = ({ form }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* ---------------- Submit To API ---------------- */
+  /* ---------------- AntD Rules ---------------- */
 
-  const submitPersonalInfo = async (values) => {
-    try {
-      const sessionId = localStorage.getItem("sessionId");
-
-      if (!sessionId) {
-        alert("Session tapılmadı. Yenidən başlayın.");
-        navigate("/");
-        return;
-      }
-
-      // ✅ HARD BLOCK: must be fully typed (8 digits => 10 chars with dots)
-      if (!values.date || String(values.date).length !== 10) {
-        form.setFields([
-          { name: "date", errors: ["Tarixi tam daxil edin (gg.aa.iiii)"] },
-        ]);
-        return;
-      }
-
-      // Validate date strictly before submit
-      const d = parseStrictDate(values.date || "");
-      if (!d) {
-        form.setFields([
-          {
-            name: "date",
-            errors: ["Yalnız düzgün tarix daxil edin (gg.aa.iiii)"],
-          },
-        ]);
-        return;
-      }
-      if (d.isAfter(dayjs(), "day")) {
-        form.setFields([
-          {
-            name: "date",
-            errors: ["Gələcək tarix seçmək olmaz"],
-          },
-        ]);
-        return;
-      }
-
-      // Convert date to backend format
-      const birthDate = d.format("YYYY-MM-DD");
-
-      const body = {
-        name: values.name,
-        surname: values.surname,
-        birthDate,
-      };
-
-      const response = await fetch(
-        `/api/WayMe/sessions/${sessionId}/personal-info`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      );
-
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        console.error("Validation:", err);
-        alert("Məlumatlar düzgün deyil");
-        return;
-      }
-
-      navigate("/test");
-    } catch (err) {
-      console.error(err);
-      alert("Server xətası");
-    }
-  };
-
-  /* ---------------- Date Rule (AntD) ---------------- */
-
-  // ✅ UPDATED: validator REJECTS if date is not fully filled (10 chars)
-  const dateRules = [
-    { required: true, message: "Tarix seçin" },
+  const nameRules = [
+    { required: true, message: "Ad daxil edin" },
     {
       validator: async (_, value) => {
-        if (!value) return Promise.reject(new Error("Tarix seçin"));
-
-        const v = String(value);
-
-        // Must be DD.MM.YYYY (8 digits)
-        if (v.length !== 10) {
-          return Promise.reject(new Error("Tarixi tam daxil edin (gg.aa.iiii)"));
+        const v = String(value || "");
+        if (!NAME_BACKEND_REGEX.test(v)) {
+          return Promise.reject(new Error("Yalnız hərflər və ən çox 1 defis (-) istifadə edin"));
         }
-
-        const d = parseStrictDate(v);
-        if (!d) return Promise.reject(new Error("Düzgün tarix daxil edin"));
-        if (d.isAfter(dayjs(), "day")) {
-          return Promise.reject(new Error("Gələcək tarix seçmək olmaz"));
-        }
-
         return Promise.resolve();
       },
     },
   ];
 
-  /* ---------------- Render ---------------- */
+  const surnameRules = [
+    { required: true, message: "Soyad daxil edin" },
+    {
+      validator: async (_, value) => {
+        const v = String(value || "");
+        if (!NAME_BACKEND_REGEX.test(v)) {
+          return Promise.reject(new Error("Yalnız hərflər və ən çox 1 defis (-) istifadə edin"));
+        }
+        return Promise.resolve();
+      },
+    },
+  ];
+
+  const dateRules = [
+    { required: true, message: "Tarix seçin" },
+    {
+      validator: async (_, value) => {
+        const v = String(value || "");
+        if (v.length !== 10) {
+          return Promise.reject(new Error("Tarixi tam daxil edin (gg.aa.iiii)"));
+        }
+        const d = parseStrictDate(v);
+        if (!d) return Promise.reject(new Error("Düzgün tarix daxil edin"));
+        if (d.isAfter(dayjs(), "day")) {
+          return Promise.reject(new Error("Gələcək tarix seçmək olmaz"));
+        }
+        const age = calcAge(d);
+        if (age < 15 || age > 65) {
+          return Promise.reject(new Error("Yaş 15 ilə 65 arasında olmalıdır"));
+        }
+        return Promise.resolve();
+      },
+    },
+  ];
 
   return (
     <div className="w-full">
-      <Form form={form} autoComplete="off" onFinish={submitPersonalInfo}>
+      <Form form={form} autoComplete="off">
         {/* Name */}
         <div className="mb-4">
           <label className="text-white text-[15px] font-medium">Ad</label>
 
           <div className="flex items-center bg-[#2f4a73] rounded-lg h-12 px-2">
             <img src={person} className="w-5 h-5 mr-2" alt="person" />
-
-            <Form.Item
-              name="name"
-              noStyle
-              rules={[{ required: true, message: "Ad daxil edin" }]}
-            >
+            <Form.Item name="name" noStyle rules={nameRules}>
               <input
                 maxLength={30}
                 placeholder="Adınızı daxil edin"
@@ -378,12 +280,7 @@ const LoginForm = ({ form }) => {
 
           <div className="flex items-center bg-[#2f4a73] rounded-lg h-12 px-2">
             <img src={person} className="w-5 h-5 mr-2" alt="person" />
-
-            <Form.Item
-              name="surname"
-              noStyle
-              rules={[{ required: true, message: "Soyad daxil edin" }]}
-            >
+            <Form.Item name="surname" noStyle rules={surnameRules}>
               <input
                 maxLength={30}
                 placeholder="Soyadınızı daxil edin"
@@ -396,9 +293,7 @@ const LoginForm = ({ form }) => {
 
         {/* Date */}
         <div className="mb-4">
-          <label className="text-white text-[15px] font-medium">
-            Doğum tarixi
-          </label>
+          <label className="text-white text-[15px] font-medium">Doğum tarixi</label>
 
           <div className="relative mt-1" ref={calendarRef}>
             <div className="flex items-center bg-[#2f4a73] rounded-lg h-12 px-2">
@@ -446,11 +341,6 @@ const LoginForm = ({ form }) => {
             )}
           </div>
         </div>
-
-        {/* If you have a submit button elsewhere, keep it.
-            Example:
-            <button type="submit" className="...">Davam et</button>
-        */}
       </Form>
     </div>
   );

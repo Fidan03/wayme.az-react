@@ -8,20 +8,20 @@ const NextButton = ({ to, form, label = "Növbəti", onClick }) => {
 
   const handleClick = async () => {
     try {
+      let values = null;
+
       if (form) {
-        await form.validateFields();
+        values = await form.validateFields(); // ✅ get values
       }
 
       if (onClick) {
-        await onClick();
+        const ok = await onClick(values); // ✅ run API logic
+        if (ok === false) return; // ✅ block navigation
       }
 
-      if (to) {
-        navigate(to);
-      }
+      if (to) navigate(to);
     } catch (error) {
       const firstFieldError = error?.errorFields?.[0]?.errors?.[0];
-
       message.error(firstFieldError || "Zəhmət olmasa bütün sahələri doldurun");
     }
   };
