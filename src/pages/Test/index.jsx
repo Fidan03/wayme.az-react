@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Wave from "../../components/wave/index";
 import NextButton from "../../components/NextButton/index";
 import LoginCardHeader from "../../components/LoginCardHeader";
@@ -27,7 +27,6 @@ async function fetchAllTests(size = 50) {
   }
 
   all.sort((a, b) => (a.orderNo ?? 0) - (b.orderNo ?? 0));
-
   return all;
 }
 
@@ -40,6 +39,9 @@ const Test = () => {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // ✅ Optional: scroll to this element (more reliable than window.scrollTo in some layouts)
+  const topRef = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -58,7 +60,7 @@ const Test = () => {
             .slice()
             .sort((a, b) => (a.orderNo ?? 0) - (b.orderNo ?? 0))
             .map((opt) => ({
-              id: opt.id,              // ✅ REAL optionId from API
+              id: opt.id, // ✅ REAL optionId from API
               text: opt.optionAnswer,
             })),
         }));
@@ -66,6 +68,12 @@ const Test = () => {
         if (!cancelled) {
           setQuestions(formatted);
           setCurrentPage(0);
+
+          // ✅ when tests first load, also jump to top
+          requestAnimationFrame(() => {
+            topRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
+            window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+          });
         }
       } catch (e) {
         console.error("Failed to fetch tests:", e);
@@ -89,10 +97,19 @@ const Test = () => {
   const endIndex = Math.min(startIndex + QUESTIONS_PER_PAGE, questions.length);
   const currentQuestions = questions.slice(startIndex, endIndex);
 
+  // ✅ KEY FIX: whenever page changes, scroll back to the beginning
+  useEffect(() => {
+    // run after DOM paints the new page
+    requestAnimationFrame(() => {
+      topRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+  }, [currentPage]);
+
   const handleSelect = (questionId, optionId) => {
     setSelectedAnswers((prev) => ({
       ...prev,
-      [questionId]: optionId, // ✅ store optionId
+      [questionId]: optionId,
     }));
 
     setShowError((prev) => prev.filter((id) => id !== questionId));
@@ -105,6 +122,12 @@ const Test = () => {
 
     if (unanswered.length > 0) {
       setShowError(unanswered);
+
+      // ✅ also scroll to top so user immediately sees errors (optional but nice)
+      requestAnimationFrame(() => {
+        topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
       return false;
     }
     return true;
@@ -145,6 +168,9 @@ const Test = () => {
 
   return (
     <div className="bg-background min-h-screen flex flex-col">
+      {/* ✅ scroll anchor */}
+      <div ref={topRef} />
+
       <div className="flex-1 relative flex justify-center items-center overflow-hidden px-3 sm:px-6">
         <div className="absolute bottom-0 left-0 w-full z-0">
           <Wave />
@@ -179,7 +205,9 @@ const Test = () => {
                   <div
                     key={q.id}
                     className={`bg-[#2F4A73] border rounded-2xl p-4 sm:p-5 ${
-                      showError.includes(q.id) ? "border-red-500" : "border-[#2F4A73]"
+                      showError.includes(q.id)
+                        ? "border-red-500"
+                        : "border-[#2F4A73]"
                     }`}
                   >
                     <p className="text-white text-[16px] sm:text-[22px] font-semibold mb-4">
@@ -202,10 +230,14 @@ const Test = () => {
                           >
                             <span
                               className={`w-5 h-5 border-2 rounded-full shrink-0 flex justify-center items-center ${
-                                isSelected ? "bg-white border-[#3379FB]" : "border-white"
+                                isSelected
+                                  ? "bg-white border-[#3379FB]"
+                                  : "border-white"
                               }`}
                             >
-                              {isSelected && <span className="w-2 h-2 bg-[#3379FB] rounded-full" />}
+                              {isSelected && (
+                                <span className="w-2 h-2 bg-[#3379FB] rounded-full" />
+                              )}
                             </span>
 
                             {option.text}
@@ -220,21 +252,29 @@ const Test = () => {
               <div className="flex flex-col sm:flex-row gap-3 mt-6">
                 <PrevButton
                   to={currentPage === 0 ? "/choiceSelection" : "#"}
-                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 0))
+                  }
                 />
 
                 <div className="flex-1">
                   {currentPage < totalPages - 1 ? (
-                    <NextButton onClick={handleNext} label={`Növbəti (${startIndex + 1}-${endIndex})`} />
+                    <NextButton
+                      onClick={handleNext}
+                      label={`Növbəti (${startIndex + 1}-${endIndex})`}
+                    />
                   ) : (
                     <NextButton
                       onClick={handleFinish}
-                      label={loadingResults ? "Yüklənir..." : `Nəticəyə bax (${startIndex + 1}-${endIndex})`}
+                      label={
+                        loadingResults
+                          ? "Yüklənir..."
+                          : `Nəticəyə bax (${startIndex + 1}-${endIndex})`
+                      }
                     />
                   )}
                 </div>
               </div>
-
             </div>
           </div>
         </div>
