@@ -3,20 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import "./main.css";
 
-const NextButton = ({ to, form, label = "Növbəti", onClick }) => {
+const NextButton = ({ to, form, label = "Növbəti", onClick, disabled }) => {
   const navigate = useNavigate();
 
   const handleClick = async () => {
+    if (disabled) return;
+
     try {
       let values = null;
 
       if (form) {
-        values = await form.validateFields(); // ✅ get values
+        values = await form.validateFields();
       }
 
       if (onClick) {
-        const ok = await onClick(values); // ✅ run API logic
-        if (ok === false) return; // ✅ block navigation
+        const ok = await onClick(values);
+        if (ok === false) return;
       }
 
       if (to) navigate(to);
@@ -29,7 +31,10 @@ const NextButton = ({ to, form, label = "Növbəti", onClick }) => {
   return (
     <button
       type="button"
-      className="w-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold py-2 px-4 rounded-[15px] h-[50px] text-[20px] cursor-pointer animated-gradient"
+      disabled={disabled}
+      className={`w-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold py-2 px-4 rounded-[15px] h-[50px] text-[20px] cursor-pointer animated-gradient ${
+        disabled ? "opacity-50 cursor-not-allowed" : ""
+      }`}
       onClick={handleClick}
     >
       {label}

@@ -1,3 +1,4 @@
+// src/pages/PDF/index.jsx
 import { useState } from "react";
 import Wave from "../../components/wave/index";
 import NextButton from "../../components/NextButton/index";
@@ -5,23 +6,27 @@ import PrevButton from "../../components/PrevButton/index";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import person from "../../assets/person.png";
-import { useNavigate } from "react-router-dom";
 
 const PDF = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [modalMessage, setModalMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-  const navigate = useNavigate();
+  const [sending, setSending] = useState(false);
 
   const validateEmail = (value) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!value) return setError("");
-    setError(regex.test(value) ? "" : "Email formatı düzgün deyil");
+    if (!value) {
+      setError("");
+      return false;
+    }
+    const ok = regex.test(value);
+    setError(ok ? "" : "Email formatı düzgün deyil");
+    return ok;
   };
 
   const handleChange = (e) => {
-    const value = e.target.value.slice(0, 30);
+    const value = e.target.value.slice(0, 60); // emails can be longer than 30
     setEmail(value);
     validateEmail(value);
   };
@@ -29,38 +34,74 @@ const PDF = () => {
   const handleDownloadPDF = async () => {
     const element = document.getElementById("results-pdf");
     if (!element) return;
+
     const canvas = await html2canvas(element, { scale: 2 });
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
     pdf.save("hesabat.pdf");
+
     setModalMessage("PDF uğurla yaradıldı!");
     setModalVisible(true);
   };
 
-  const handleSendEmail = () => {
-    if (!email || error) return;
-    setModalMessage(`PDF mailə göndərildi: ${email}`);
-    setModalVisible(true);
+  // ✅ SEND EMAIL VIA API
+  const handleSendEmail = async () => {
+    const ok = validateEmail(email);
+    if (!ok || sending) return false;
+
+    const sessionId = localStorage.getItem("sessionId");
+    if (!sessionId) {
+      setModalMessage("Session tapılmadı. Yenidən başlayın.");
+      setModalVisible(true);
+      return false;
+    }
+
+    setSending(true);
+    try {
+      const url = `/api/WayMe/sessions/${sessionId}/result/email?aiAnswer=true`;
+
+      const res = await fetch(url, {
+        method: "POST", // if your backend expects PUT, change here
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) {
+        const errText = await res.text().catch(() => "");
+        console.error("Email API error:", res.status, errText);
+
+        setModalMessage("Email göndərilmədi. Zəhmət olmasa yenidən yoxlayın.");
+        setModalVisible(true);
+        return false;
+      }
+
+      setModalMessage(`PDF mailə göndərildi: ${email}`);
+      setModalVisible(true);
+      return true;
+    } catch (e) {
+      console.error(e);
+      setModalMessage("Server xətası. Email göndərilmədi.");
+      setModalVisible(true);
+      return false;
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
     <div className="bg-background min-h-screen flex flex-col">
-
       <div className="flex-1 relative flex justify-center items-center overflow-hidden px-3 sm:px-6">
-
         <div className="absolute bottom-0 left-0 w-full z-0">
           <Wave />
         </div>
 
         <div className="w-full max-w-[960px] flex flex-col relative z-10">
-
           <div className="w-full inline-block p-0.5 rounded-[10px] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500">
-
             <div className="bg-background rounded-b-[10px] p-4 sm:p-6 space-y-4 sm:space-y-6">
-
               <div>
                 <p className="text-white font-semibold text-[22px] sm:text-[26px]">
                   PDF hesabat alımı
@@ -77,7 +118,10 @@ const PDF = () => {
               </div>
 
               <div className="space-y-2 w-full">
-                <p className="text-white font-medium text-[14px] sm:text-[16px]">Email ünvanı</p>
+                <p className="text-white font-medium text-[14px] sm:text-[16px]">
+                  Email ünvanı
+                </p>
+
                 <div className="flex items-center bg-[#2f4a73] rounded-lg h-12 px-3 gap-2">
                   <img src={person} alt="person" className="w-4 h-4 sm:w-5 sm:h-5" />
                   <input
@@ -89,6 +133,7 @@ const PDF = () => {
                     onKeyDown={(e) => e.key === "Enter" && handleSendEmail()}
                   />
                 </div>
+
                 {error && <p className="text-red-500 text-sm">{error}</p>}
 
                 <p
@@ -103,29 +148,28 @@ const PDF = () => {
                 <PrevButton to="/results" />
                 <div className="flex-1">
                   <NextButton
-                    label="Mailə göndər"
-                    disabled={!!error || !email}
+                    label={sending ? "Göndərilir..." : "Mailə göndər"}
                     onClick={handleSendEmail}
                   />
                 </div>
               </div>
 
+              {/* PDF source content */}
               <div id="results-pdf" className="hidden">
                 <h1 className="text-black">Sizin nəticələriniz</h1>
                 <p className="text-black">Burada hesabatın məzmunu olacaq.</p>
               </div>
-
             </div>
-
           </div>
         </div>
-
       </div>
 
       {modalVisible && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 px-3">
           <div className="bg-[#1E2F4D] p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-xs text-center">
-            <p className="text-white font-medium text-[14px] sm:text-[16px]">{modalMessage}</p>
+            <p className="text-white font-medium text-[14px] sm:text-[16px]">
+              {modalMessage}
+            </p>
             <button
               className="mt-4 px-4 py-2 bg-[#2AA6FF] text-white rounded-lg w-full"
               onClick={() => setModalVisible(false)}
@@ -135,7 +179,6 @@ const PDF = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };
