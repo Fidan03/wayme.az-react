@@ -1,4 +1,3 @@
-// ✅ FIXED: src/components/resultCard/index.jsx
 import first from "../../assets/first.png";
 import second from "../../assets/second.png";
 import third from "../../assets/third.png";
@@ -26,7 +25,6 @@ const fallbackRoleIcon = (name = "") => {
   return backend;
 };
 
-// ✅ treat backend score as percent; supports 50, "50%", 0.5
 const normalizeScorePercent = (value) => {
   if (value === null || value === undefined) return 0;
 
@@ -58,31 +56,42 @@ const ResultCard = ({ data }) => {
           const percent = normalizeScorePercent(r.score);
 
           return (
-            <div
-              key={r.rank}
-              className="flex items-center justify-between bg-background rounded-xl p-6"
-            >
-              <div className="flex items-center gap-3">
-                <img
-                  src={rankIcon(r.rank)}
-                  alt={`rank-${r.rank}`}
-                  className="w-8 h-8"
-                />
-                <div className="flex items-center gap-2">
+            <div key={r.rank} className="flex flex-col gap-3">
+              
+              {/* Result row */}
+              <div className="flex items-center justify-between bg-background rounded-xl p-6">
+                <div className="flex items-center gap-3">
                   <img
-                    src={r.iconUrl || fallbackRoleIcon(r.name)}
-                    alt={r.name}
-                    className="w-10 h-10"
-                    onError={(e) => {
-                      e.currentTarget.src = fallbackRoleIcon(r.name);
-                    }}
+                    src={rankIcon(r.rank)}
+                    alt={`rank-${r.rank}`}
+                    className="w-8 h-8"
                   />
-                  <p className="text-white font-medium">{r.name}</p>
+
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={r.iconUrl || fallbackRoleIcon(r.name)}
+                      alt={r.name}
+                      className="w-10 h-10"
+                      onError={(e) => {
+                        e.currentTarget.src = fallbackRoleIcon(r.name);
+                      }}
+                    />
+                    <p className="text-white font-medium">{r.name}</p>
+                  </div>
                 </div>
+
+                <p className="text-white font-semibold text-xl">{percent}%</p>
               </div>
 
-              {/* ✅ shows 50% / 32% / 18% exactly as backend */}
-              <p className="text-white font-semibold text-xl">{percent}%</p>
+              {/* ✅ Show aiChoice under FIRST result */}
+              {r.rank === 1 && data?.aiChoice && (
+                <div className="bg-background/40 rounded-xl p-4">
+                  <p className="text-[#A2A8B2] text-sm sm:text-base">
+                    {data.aiChoice}
+                  </p>
+                </div>
+              )}
+
             </div>
           );
         })}
