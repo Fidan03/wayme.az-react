@@ -83,11 +83,11 @@ const ResultCard = ({ data }) => {
                 <p className="text-white font-semibold text-xl">{percent}%</p>
               </div>
 
-              {/* ✅ Show aiChoice under FIRST result */}
-              {r.rank === 1 && data?.aiChoice && (
+              {/* ✅ Show summary under FIRST result */}
+              {r.rank === 1 && data?.summary && (
                 <div className="bg-background/40 rounded-xl p-4">
                   <p className="text-[#A2A8B2] text-sm sm:text-base">
-                    {data.aiChoice}
+                    {data.summary}
                   </p>
                 </div>
               )}

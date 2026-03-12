@@ -32,13 +32,12 @@ const Modal = ({ item, onClose }) => {
         setLoading(true);
         setApiError("");
 
-        // API: subdirections by directionId
         const res = await fetchJson(
           `/api/WayMe/directions/${item.id}/subdirections?page=0&size=0`
         );
+
         const apiSubs = Array.isArray(res?.content) ? res.content : [];
 
-        // keep only active + valid objects
         const cleaned = apiSubs.filter(
           (s) =>
             s &&
@@ -49,7 +48,6 @@ const Modal = ({ item, onClose }) => {
             s.active === true
         );
 
-        // map to UI structure expected by your modal
         const mapped = cleaned.map((s) => ({
           id: s.id,
           title: s.name,
@@ -59,13 +57,15 @@ const Modal = ({ item, onClose }) => {
         if (!cancelled) setSubdirections(mapped);
       } catch (e) {
         console.error(e);
-        if (!cancelled) setApiError("Alt istiqamətlər yüklənərkən xəta baş verdi");
+        if (!cancelled)
+          setApiError("Alt istiqamətlər yüklənərkən xəta baş verdi");
       } finally {
         if (!cancelled) setLoading(false);
       }
     };
 
     run();
+
     return () => {
       cancelled = true;
     };
@@ -78,10 +78,11 @@ const Modal = ({ item, onClose }) => {
     >
       <div
         className="bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 rounded-[20px] p-px 
-                   w-full md:w-[1300px] max-w-[95vw] max-h-[90vh] sm:max-h-[85vh] mx-auto"
+        w-full md:w-[1300px] max-w-[95vw] max-h-[90vh] sm:max-h-[85vh] mx-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="bg-background rounded-[20px] p-6 w-full h-full overflow-hidden">
+
           {/* Header */}
           <div className="flex justify-between items-center mb-5">
             <h1 className="text-[20px] sm:text-[24px] md:text-[30px] font-semibold text-white">
@@ -104,7 +105,9 @@ const Modal = ({ item, onClose }) => {
             Sahələr:
           </p>
 
-          {apiError && <div className="text-red-400 text-sm mb-3">{apiError}</div>}
+          {apiError && (
+            <div className="text-red-400 text-sm mb-3">{apiError}</div>
+          )}
           {loading && <div className="text-white mb-3">Yüklənir...</div>}
 
           {/* Cards */}
@@ -121,10 +124,9 @@ const Modal = ({ item, onClose }) => {
                     border border-white/10
                     bg-[#357CFF33]
                     rounded-[20px]
-                    px-3 py-2.5
+                    px-4 py-3
                     w-full sm:w-[275px]
                     cursor-pointer
-
                     transition-all duration-300 ease-in-out
                     hover:scale-[1.03]
                     hover:bg-[#357CFF55]
@@ -132,22 +134,16 @@ const Modal = ({ item, onClose }) => {
                   "
                 >
                   {/* Top */}
-                  <div className="flex items-start mb-2.5 w-full">
+                  <div className="flex items-center justify-start mb-2.5 w-full gap-6">
                     <img
                       src={programming}
                       alt="programming"
-                      className="w-[44px] h-[44px] mr-4"
+                      className="w-[44px] h-[44px]"
                     />
 
-                    <div>
-                      <h3 className="font-semibold text-sm text-white">
-                        {direction.title}
-                      </h3>
-
-                      <p className="text-xs text-[#A2A8B2]">
-                        React, Vue, Angular
-                      </p>
-                    </div>
+                    <h3 className="font-semibold text-[14px] sm:text-[15px] md:text-[16px] text-white leading-tight">
+                      {direction.title}
+                    </h3>
                   </div>
 
                   {/* Arrow */}
@@ -181,7 +177,9 @@ const Modal = ({ item, onClose }) => {
             })}
 
             {!loading && !apiError && subdirections.length === 0 && (
-              <div className="text-[#A2A8B2] text-sm">Alt istiqamət yoxdur</div>
+              <div className="text-[#A2A8B2] text-sm">
+                Alt istiqamət yoxdur
+              </div>
             )}
           </div>
         </div>
