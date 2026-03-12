@@ -150,7 +150,7 @@ const About = () => {
                 bizimlə əlaqə saxlayın:
               </p>
               <p className="font-medium text-[16px] sm:text-[18px] text-[#2AA6FF]">
-                Email: email@gmail.com
+                Email: wayme.az.ai@gmail.com
               </p>
             </div>
           </div>
