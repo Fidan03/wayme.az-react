@@ -1,4 +1,3 @@
-// src/components/LoginForm/index.jsx
 import { useState, useRef, useEffect, useMemo } from "react";
 import { Form } from "antd";
 import dayjs from "dayjs";
@@ -11,10 +10,10 @@ dayjs.extend(customParseFormat);
 
 const DATE_FORMAT = "DD.MM.YYYY";
 
-// ✅ backend rule: only letters, optionally ONE hyphen between 2 words
-// examples valid: "Ali", "Ali-Hasan"
-// invalid: "-Ali", "Ali-", "Ali--Hasan", "Ali Hasan", "Ali1"
-const NAME_BACKEND_REGEX = /^[A-Za-zÇƏĞİÖŞÜçəğiöşü]+(-[A-Za-zÇƏĞİÖŞÜçəğiöşü]+)?$/;
+// allows any Unicode letter, including Azerbaijani letters
+// valid: Ali, Əli, Çinar, Əli-Həsən
+// invalid: -Əli, Əli-, Əli--Həsən, Əli Həsən, Əli1
+const NAME_BACKEND_REGEX = /^\p{L}+(-\p{L}+)?$/u;
 
 const LoginForm = ({ form }) => {
   const savedData = JSON.parse(localStorage.getItem("loginData") || "{}");
@@ -30,17 +29,19 @@ const LoginForm = ({ form }) => {
   };
 
   const calcAge = (birth) => {
-    // age in years considering month/day (dayjs diff already does that)
     return dayjs().diff(birth, "year");
   };
 
   /* ---------------- Name & Surname Input ---------------- */
 
   const sanitizeName = (value) => {
-    // allow letters + hyphen only
-    let val = value.replace(/[^A-Za-zÇƏĞİÖŞÜçəğiöşü-]/g, "");
+    // normalize unicode characters
+    let val = value.normalize("NFC");
 
-    // remove multiple hyphens
+    // allow only letters and hyphen
+    val = val.replace(/[^\p{L}-]/gu, "");
+
+    // remove repeated hyphens
     val = val.replace(/-+/g, "-");
 
     // no leading/trailing hyphen
@@ -48,13 +49,17 @@ const LoginForm = ({ form }) => {
 
     // allow at most one hyphen
     const parts = val.split("-");
-    if (parts.length > 2) val = `${parts[0]}-${parts[1]}`;
+    if (parts.length > 2) {
+      val = `${parts[0]}-${parts[1]}`;
+    }
 
     // max length
     val = val.slice(0, 30);
 
-    // capitalize first letter (optional)
-    if (val.length > 0) val = val.charAt(0).toUpperCase() + val.slice(1);
+    // capitalize first character safely
+    if (val.length > 0) {
+      val = val.charAt(0).toLocaleUpperCase("az-Latn-AZ") + val.slice(1);
+    }
 
     return val;
   };
@@ -64,7 +69,6 @@ const LoginForm = ({ form }) => {
     form.setFieldsValue({ [field]: formatted });
     saveToStorage(field, formatted);
 
-    // ✅ clear error if it becomes valid
     if (formatted && NAME_BACKEND_REGEX.test(formatted)) {
       form.setFields([{ name: field, errors: [] }]);
     }
@@ -78,7 +82,6 @@ const LoginForm = ({ form }) => {
   const initialMonth = useMemo(() => {
     const saved = parseStrictDate(savedData.date || "");
     return saved ? saved : dayjs();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [currentMonth, setCurrentMonth] = useState(initialMonth);
@@ -92,7 +95,8 @@ const LoginForm = ({ form }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const isFutureDayInCurrentMonth = (day) => currentMonth.date(day).isAfter(dayjs(), "day");
+  const isFutureDayInCurrentMonth = (day) =>
+    currentMonth.date(day).isAfter(dayjs(), "day");
 
   const startOfMonth = currentMonth.startOf("month");
   const endOfMonth = currentMonth.endOf("month");
@@ -201,7 +205,6 @@ const LoginForm = ({ form }) => {
       const d = parseStrictDate(savedData.date);
       if (d) setCurrentMonth(d);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /* ---------------- AntD Rules ---------------- */
@@ -210,9 +213,11 @@ const LoginForm = ({ form }) => {
     { required: true, message: "Ad daxil edin" },
     {
       validator: async (_, value) => {
-        const v = String(value || "");
+        const v = String(value || "").normalize("NFC");
         if (!NAME_BACKEND_REGEX.test(v)) {
-          return Promise.reject(new Error("Yalnız hərflər və ən çox 1 defis (-) istifadə edin"));
+          return Promise.reject(
+            new Error("Yalnız hərflər və ən çox 1 defis (-) istifadə edin")
+          );
         }
         return Promise.resolve();
       },
@@ -223,9 +228,11 @@ const LoginForm = ({ form }) => {
     { required: true, message: "Soyad daxil edin" },
     {
       validator: async (_, value) => {
-        const v = String(value || "");
+        const v = String(value || "").normalize("NFC");
         if (!NAME_BACKEND_REGEX.test(v)) {
-          return Promise.reject(new Error("Yalnız hərflər və ən çox 1 defis (-) istifadə edin"));
+          return Promise.reject(
+            new Error("Yalnız hərflər və ən çox 1 defis (-) istifadə edin")
+          );
         }
         return Promise.resolve();
       },
@@ -319,13 +326,19 @@ const LoginForm = ({ form }) => {
             {showCalendar && (
               <div className="absolute bottom-full left-0 mb-2 bg-[#2f4a73] rounded-lg p-4 shadow-lg z-50 w-64">
                 <div className="flex justify-between items-center mb-3 text-white font-semibold">
-                  <button type="button" onClick={() => setCurrentMonth((m) => m.subtract(1, "month"))}>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentMonth((m) => m.subtract(1, "month"))}
+                  >
                     &lt;
                   </button>
 
                   <span>{currentMonth.format("MMMM YYYY")}</span>
 
-                  <button type="button" onClick={() => setCurrentMonth((m) => m.add(1, "month"))}>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentMonth((m) => m.add(1, "month"))}
+                  >
                     &gt;
                   </button>
                 </div>

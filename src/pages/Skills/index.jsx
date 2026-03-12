@@ -7,6 +7,8 @@ import ChoicesCard from "../../components/ChoicesCard";
 import PrevButton from "../../components/PrevButton";
 import { useNavigate } from "react-router-dom";
 
+const SKILL_REGEX = /^[\p{L}]+([ -][\p{L}]+)*$/u;
+
 const Skills = () => {
   const navigate = useNavigate();
 
@@ -16,6 +18,32 @@ const Skills = () => {
   const [loadingSkills, setLoadingSkills] = useState(true);
 
   const requestIdRef = useRef(0);
+
+  const sanitizeSkill = (value) => {
+    let val = value.normalize("NFC");
+
+    // allow letters, single spaces, and hyphen
+    val = val.replace(/[^\p{L}\s-]/gu, "");
+
+    // collapse multiple spaces
+    val = val.replace(/\s+/g, " ");
+
+    // collapse multiple hyphens
+    val = val.replace(/-+/g, "-");
+
+    // remove leading/trailing spaces and hyphens
+    val = val.trim().replace(/^-+/, "").replace(/-+$/, "");
+
+    // max length
+    val = val.slice(0, 30);
+
+    // capitalize first letter safely
+    if (val.length > 0) {
+      val = val.charAt(0).toLocaleUpperCase("az-Latn-AZ") + val.slice(1);
+    }
+
+    return val;
+  };
 
   /* ---------------- Load From Storage ---------------- */
   useEffect(() => {
@@ -69,13 +97,17 @@ const Skills = () => {
 
   /* ---------------- Add Skill ---------------- */
   const addSkill = (skill) => {
+    const normalizedSkill = String(skill || "").normalize("NFC").trim();
+
     if (selectedSkills.length >= 10) {
       message.warning("Maksimum 10 bacarıq əlavə edə bilərsiniz");
       return;
     }
 
-    if (!selectedSkills.includes(skill)) {
-      saveSkills([...selectedSkills, skill]);
+    if (!normalizedSkill) return;
+
+    if (!selectedSkills.includes(normalizedSkill)) {
+      saveSkills([...selectedSkills, normalizedSkill]);
     }
   };
 
@@ -86,8 +118,14 @@ const Skills = () => {
       return;
     }
 
-    const skill = customSkill.trim();
+    const skill = sanitizeSkill(customSkill);
+
     if (!skill) return;
+
+    if (!SKILL_REGEX.test(skill)) {
+      message.error("Yalnız hərflər, boşluq və tək defis istifadə edin");
+      return;
+    }
 
     addSkill(skill);
     setCustomSkill("");
@@ -122,7 +160,6 @@ const Skills = () => {
 
             <div className="bg-background rounded-b-[10px] p-4 sm:p-6">
               <div className="flex flex-col w-full">
-
                 <div className="mb-6">
                   <p className="text-white font-semibold text-[25px]">
                     Bacarıqlarınız
@@ -141,8 +178,9 @@ const Skills = () => {
                     type="text"
                     placeholder="Məsələn: Figma"
                     value={customSkill}
-                    onChange={(e) => setCustomSkill(e.target.value)}
+                    onChange={(e) => setCustomSkill(sanitizeSkill(e.target.value))}
                     onKeyDown={(e) => e.key === "Enter" && addCustomSkill()}
+                    maxLength={30}
                     className="flex-1 bg-[#2f4a73] h-12 rounded-lg px-3 text-white outline-none"
                   />
 
@@ -163,7 +201,6 @@ const Skills = () => {
                   </div>
                 )}
 
-                {/* ✅ API Skills Section */}
                 <div className="mt-5">
                   <p className="text-[#A2A8B2] text-[18px]">
                     Asan seçimlər
@@ -193,7 +230,6 @@ const Skills = () => {
                   Növbəti
                 </button>
               </div>
-
             </div>
           </div>
         </div>
